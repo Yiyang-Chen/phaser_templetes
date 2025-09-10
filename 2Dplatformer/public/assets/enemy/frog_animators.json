@@ -1,0 +1,35 @@
+{
+    "name": "frog",
+    "type": "enemy",
+    "image_filename": "frog.png",
+    "atlas_json_name": "frog.json",
+    "frame_size": {
+        "width": 64,
+        "height": 64
+    },
+    "original_size": {
+        "width": 64,
+        "height": 64
+    },
+    "flipped": true,
+    "animations": [
+        {
+            "name": "idle",
+            "frames": [
+                "idle/frame0000"
+            ]
+        },
+        {
+            "name": "jump",
+            "frames": [
+                "jump/frame0000"
+            ]
+        },
+        {
+            "name": "rest",
+            "frames": [
+                "rest/frame0000"
+            ]
+        }
+    ]
+}

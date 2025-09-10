@@ -1,0 +1,95 @@
+{
+    "textures": [
+        {
+            "image": "frog.png",
+            "format": "RGBA8888",
+            "size": {
+                "w": 192,
+                "h": 64
+            },
+            "scale": 1,
+            "frames": [
+                {
+                    "filename": "idle/frame0000",
+                    "frame": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 64,
+                        "h": 64
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 64,
+                        "h": 64
+                    },
+                    "sourceSize": {
+                        "w": 64,
+                        "h": 64
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "jump/frame0000",
+                    "frame": {
+                        "x": 64,
+                        "y": 0,
+                        "w": 64,
+                        "h": 64
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 64,
+                        "h": 64
+                    },
+                    "sourceSize": {
+                        "w": 64,
+                        "h": 64
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "rest/frame0000",
+                    "frame": {
+                        "x": 128,
+                        "y": 0,
+                        "w": 64,
+                        "h": 64
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 64,
+                        "h": 64
+                    },
+                    "sourceSize": {
+                        "w": 64,
+                        "h": 64
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "app": "AtlasGenerator",
+        "version": "1.0",
+        "smartupdate": "$AtlasGenerator:SmartUpdate:1.0$"
+    }
+}
