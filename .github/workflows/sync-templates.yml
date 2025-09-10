@@ -1,0 +1,88 @@
+name: Sync Templates to Individual Repositories
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - '2Dplatformer/**'
+      - 'BaseTemplete/**'
+  workflow_dispatch:
+
+jobs:
+  sync-2dplatformer:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, '2Dplatformer') || contains(github.event.head_commit.modified, '2Dplatformer/') || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout source repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+    
+    - name: Sync 2Dplatformer to template repository
+      run: |
+        # Create temporary directory
+        mkdir temp-2dplatformer
+        cd temp-2dplatformer
+        
+        # Clone the target repository
+        git clone https://github.com/Yiyang-Chen/2Dplatformer-template.git .
+        
+        # Remove all existing files except .git
+        find . -not -path './.git*' -delete
+        
+        # Copy 2Dplatformer content
+        cp -r ../2Dplatformer/* .
+        
+        # Add all changes
+        git add .
+        
+        # Commit changes
+        git commit -m "Sync 2Dplatformer template from phaser_templetes repository" || exit 0
+        
+        # Push to target repository
+        git push origin main || git push origin master
+
+  sync-basetemplate:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'BaseTemplete') || contains(github.event.head_commit.modified, 'BaseTemplete/') || github.event_name == 'workflow_dispatch'
+    
+    steps:
+    - name: Checkout source repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+    
+    - name: Sync BaseTemplete to template repository
+      run: |
+        # Create temporary directory
+        mkdir temp-basetemplate
+        cd temp-basetemplate
+        
+        # Clone the target repository
+        git clone https://github.com/Yiyang-Chen/BaseTemplete-template.git .
+        
+        # Remove all existing files except .git
+        find . -not -path './.git*' -delete
+        
+        # Copy BaseTemplete content
+        cp -r ../BaseTemplete/* .
+        
+        # Add all changes
+        git add .
+        
+        # Commit changes
+        git commit -m "Sync BaseTemplete template from phaser_templetes repository" || exit 0
+        
+        # Push to target repository
+        git push origin main || git push origin master
