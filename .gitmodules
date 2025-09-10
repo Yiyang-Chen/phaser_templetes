@@ -1,0 +1,6 @@
+[submodule "2Dplatformer"]
+	path = 2Dplatformer
+	url = https://github.com/wang-sy/2DPlatformGame.git
+[submodule "BaseTemplete"]
+	path = BaseTemplete
+	url = https://github.com/phaserjs/template-vite-ts.git
