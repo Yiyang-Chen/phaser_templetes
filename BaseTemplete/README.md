@@ -32,4 +32,4 @@ A Phaser 3 TypeScript template using Vite.
 - `public/` - Static assets
 - `vite/` - Vite configuration files
 
-<!-- Test sync trigger - $(date) -->
+<!-- Test sync trigger - $(date) - Retest after fixes -->
