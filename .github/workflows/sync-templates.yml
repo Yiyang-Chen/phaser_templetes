@@ -11,13 +11,19 @@ on:
 jobs:
   sync-2dplatformer:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, '2Dplatformer') || contains(github.event.head_commit.modified, '2Dplatformer/') || github.event_name == 'workflow_dispatch'
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      (github.event_name == 'push' && (
+        contains(github.event.head_commit.message, '2Dplatformer') || 
+        contains(github.event.head_commit.modified, '2Dplatformer/')
+      ))
     
     steps:
     - name: Checkout source repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        token: ${{ secrets.TARGET_REPO_TOKEN }}
     
     - name: Setup Git
       run: |
@@ -25,13 +31,24 @@ jobs:
         git config --global user.email "actions@github.com"
     
     - name: Sync 2Dplatformer to template repository
+      env:
+        TARGET_REPO_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
       run: |
         # Create temporary directory
         mkdir temp-2dplatformer
         cd temp-2dplatformer
         
         # Clone the target repository
-        git clone https://github.com/Yiyang-Chen/2Dplatformer-template.git .
+        git clone https://$TARGET_REPO_TOKEN@github.com/Yiyang-Chen/2Dplatformer-template.git .
+        
+        # Check if clone was successful
+        if [ ! -d ".git" ]; then
+          echo "❌ Failed to clone target repository. Please check:"
+          echo "1. Repository exists: https://github.com/Yiyang-Chen/2Dplatformer-template"
+          echo "2. TARGET_REPO_TOKEN has correct permissions"
+          echo "3. Token is not expired"
+          exit 1
+        fi
         
         # Remove all existing files except .git
         find . -not -path './.git*' -delete
@@ -42,21 +59,33 @@ jobs:
         # Add all changes
         git add .
         
-        # Commit changes
-        git commit -m "Sync 2Dplatformer template from phaser_templetes repository" || exit 0
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "ℹ️ No changes to commit for 2Dplatformer"
+          exit 0
+        fi
         
-        # Push to target repository
-        git push origin main || git push origin master
+        # Commit changes
+        git commit -m "Sync 2Dplatformer template from phaser_templetes repository"
+        
+        # Push to main branch (create if doesn't exist)
+        git push origin HEAD:main || git push origin HEAD:master
 
   sync-basetemplate:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'BaseTemplete') || contains(github.event.head_commit.modified, 'BaseTemplete/') || github.event_name == 'workflow_dispatch'
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      (github.event_name == 'push' && (
+        contains(github.event.head_commit.message, 'BaseTemplete') || 
+        contains(github.event.head_commit.modified, 'BaseTemplete/')
+      ))
     
     steps:
     - name: Checkout source repository
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
+        token: ${{ secrets.TARGET_REPO_TOKEN }}
     
     - name: Setup Git
       run: |
@@ -64,13 +93,24 @@ jobs:
         git config --global user.email "actions@github.com"
     
     - name: Sync BaseTemplete to template repository
+      env:
+        TARGET_REPO_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
       run: |
         # Create temporary directory
         mkdir temp-basetemplate
         cd temp-basetemplate
         
         # Clone the target repository
-        git clone https://github.com/Yiyang-Chen/BaseTemplete-template.git .
+        git clone https://$TARGET_REPO_TOKEN@github.com/Yiyang-Chen/BaseTemplete-template.git .
+        
+        # Check if clone was successful
+        if [ ! -d ".git" ]; then
+          echo "❌ Failed to clone target repository. Please check:"
+          echo "1. Repository exists: https://github.com/Yiyang-Chen/BaseTemplete-template"
+          echo "2. TARGET_REPO_TOKEN has correct permissions"
+          echo "3. Token is not expired"
+          exit 1
+        fi
         
         # Remove all existing files except .git
         find . -not -path './.git*' -delete
@@ -81,8 +121,14 @@ jobs:
         # Add all changes
         git add .
         
-        # Commit changes
-        git commit -m "Sync BaseTemplete template from phaser_templetes repository" || exit 0
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "ℹ️ No changes to commit for BaseTemplete"
+          exit 0
+        fi
         
-        # Push to target repository
-        git push origin main || git push origin master
+        # Commit changes
+        git commit -m "Sync BaseTemplete template from phaser_templetes repository"
+        
+        # Push to main branch (create if doesn't exist)
+        git push origin HEAD:main || git push origin HEAD:master
