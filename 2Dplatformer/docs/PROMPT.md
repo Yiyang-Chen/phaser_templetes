@@ -13,6 +13,8 @@ You can design some more complex maps, which are very attractive to players
 
 <must_follow>
 
+Unless specified or special case for gameplay, make sure the physics collision matches the visual of the tilemap. 
+
 You must use the `tilemap_overlap_modify` tool to check whether `objects` in the map overlap with terrain.
 
 </must_follow>
