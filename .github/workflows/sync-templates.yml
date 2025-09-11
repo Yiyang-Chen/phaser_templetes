@@ -65,8 +65,14 @@ jobs:
           exit 0
         fi
         
-        # Commit changes
-        git commit -m "Sync 2Dplatformer template from phaser_templetes repository"
+        # Get the original commit information from the source repository
+        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s" ../)
+        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an" ../)
+        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae" ../)
+        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso ../)
+        
+        # Commit changes with original message and author info
+        git commit -m "$ORIGINAL_COMMIT_MSG" --author="$ORIGINAL_AUTHOR_NAME <$ORIGINAL_AUTHOR_EMAIL>" --date="$ORIGINAL_COMMIT_DATE"
         
         # Push to main branch (create if doesn't exist)
         git push origin HEAD:main || git push origin HEAD:master
@@ -127,8 +133,14 @@ jobs:
           exit 0
         fi
         
-        # Commit changes
-        git commit -m "Sync BaseTemplete template from phaser_templetes repository"
+        # Get the original commit information from the source repository
+        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s" ../)
+        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an" ../)
+        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae" ../)
+        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso ../)
+        
+        # Commit changes with original message and author info
+        git commit -m "$ORIGINAL_COMMIT_MSG" --author="$ORIGINAL_AUTHOR_NAME <$ORIGINAL_AUTHOR_EMAIL>" --date="$ORIGINAL_COMMIT_DATE"
         
         # Push to main branch (create if doesn't exist)
         git push origin HEAD:main || git push origin HEAD:master
