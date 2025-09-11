@@ -36,3 +36,4 @@ A comprehensive 2D platformer game template built with Phaser 3 and TypeScript.
 - `docs/` - Documentation and guides
 
 <!-- Test sync trigger - $(date) - Retest after fixes -->
+# 测试同步功能 - Thu Sep 11 11:30:55 CST 2025
