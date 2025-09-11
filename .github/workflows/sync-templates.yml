@@ -30,6 +30,19 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
     
+    - name: Get source commit information
+      id: source-info
+      run: |
+        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
+        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae")
+        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso)
+        
+        echo "commit_msg=$ORIGINAL_COMMIT_MSG" >> $GITHUB_OUTPUT
+        echo "author_name=$ORIGINAL_AUTHOR_NAME" >> $GITHUB_OUTPUT
+        echo "author_email=$ORIGINAL_AUTHOR_EMAIL" >> $GITHUB_OUTPUT
+        echo "commit_date=$ORIGINAL_COMMIT_DATE" >> $GITHUB_OUTPUT
+
     - name: Sync 2Dplatformer to template repository
       env:
         TARGET_REPO_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
@@ -65,14 +78,8 @@ jobs:
           exit 0
         fi
         
-        # Get the original commit information from the source repository
-        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s" $GITHUB_WORKSPACE)
-        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an" $GITHUB_WORKSPACE)
-        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae" $GITHUB_WORKSPACE)
-        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso $GITHUB_WORKSPACE)
-        
         # Commit changes with original message and author info
-        git commit -m "$ORIGINAL_COMMIT_MSG" --author="$ORIGINAL_AUTHOR_NAME <$ORIGINAL_AUTHOR_EMAIL>" --date="$ORIGINAL_COMMIT_DATE"
+        git commit -m "${{ steps.source-info.outputs.commit_msg }}" --author="${{ steps.source-info.outputs.author_name }} <${{ steps.source-info.outputs.author_email }}>" --date="${{ steps.source-info.outputs.commit_date }}"
         
         # Push to main branch (create if doesn't exist)
         git push origin HEAD:main || git push origin HEAD:master
@@ -98,6 +105,19 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
     
+    - name: Get source commit information
+      id: source-info-basetemplate
+      run: |
+        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
+        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae")
+        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso)
+        
+        echo "commit_msg=$ORIGINAL_COMMIT_MSG" >> $GITHUB_OUTPUT
+        echo "author_name=$ORIGINAL_AUTHOR_NAME" >> $GITHUB_OUTPUT
+        echo "author_email=$ORIGINAL_AUTHOR_EMAIL" >> $GITHUB_OUTPUT
+        echo "commit_date=$ORIGINAL_COMMIT_DATE" >> $GITHUB_OUTPUT
+
     - name: Sync BaseTemplete to template repository
       env:
         TARGET_REPO_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
@@ -133,14 +153,8 @@ jobs:
           exit 0
         fi
         
-        # Get the original commit information from the source repository
-        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s" $GITHUB_WORKSPACE)
-        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an" $GITHUB_WORKSPACE)
-        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae" $GITHUB_WORKSPACE)
-        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso $GITHUB_WORKSPACE)
-        
         # Commit changes with original message and author info
-        git commit -m "$ORIGINAL_COMMIT_MSG" --author="$ORIGINAL_AUTHOR_NAME <$ORIGINAL_AUTHOR_EMAIL>" --date="$ORIGINAL_COMMIT_DATE"
+        git commit -m "${{ steps.source-info-basetemplate.outputs.commit_msg }}" --author="${{ steps.source-info-basetemplate.outputs.author_name }} <${{ steps.source-info-basetemplate.outputs.author_email }}>" --date="${{ steps.source-info-basetemplate.outputs.commit_date }}"
         
         # Push to main branch (create if doesn't exist)
         git push origin HEAD:main || git push origin HEAD:master
