@@ -294,12 +294,18 @@ export class UIManager {
         });
         
         container.on('pointerup', () => {
+            console.log('🖱️ UIManager: 按钮点击被检测到');
             this.scene.tweens.add({
                 targets: container,
                 scale: this.getScaleValue(originalScale) * hoverScale,
                 duration: 50
             });
-            if (config.onClick) config.onClick();
+            if (config.onClick) {
+                console.log('🖱️ UIManager: 执行onClick回调');
+                config.onClick();
+            } else {
+                console.log('🖱️ UIManager: 没有onClick回调');
+            }
         });
         
         this.applyCommonProperties(container, config);

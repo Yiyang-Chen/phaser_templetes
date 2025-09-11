@@ -1,5 +1,4 @@
 import { Scene } from 'phaser';
-import { Game } from './Game';
 import { eventBus, GameEvent } from '../events/EventBus';
 import { UIManager, UILayoutConfig } from '../managers/UIManager';
 import { DeviceDetector } from '../utils/DeviceDetector';
@@ -156,15 +155,20 @@ export class MainMenu extends Scene
     }
 
     private startGame(): void {
+        console.log('🎮 MainMenu: startGame() 被调用');
+        
         // Emit scene change event
         eventBus.emit(GameEvent.SCENE_CHANGE, {
             from: 'MainMenu',
             to: 'Game'
         });
         
-        // Re-add and start a fresh Game scene
-        this.scene.add('Game', Game, false);
+        console.log('🎮 MainMenu: 准备启动Game场景');
+        
+        // Start the Game scene (it's already registered in main.ts)
         this.scene.start('Game');
+        
+        console.log('🎮 MainMenu: Game场景启动命令已发送');
         
         // Clean up UI
         this.uiManager.destroy();

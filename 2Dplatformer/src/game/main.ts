@@ -1,6 +1,6 @@
 import { Boot } from './scenes/Boot';
 import { GameOver } from './scenes/GameOver';
-// import { Game as MainGame } from './scenes/Game';
+import { Game as MainGame } from './scenes/Game';
 import { MainMenu } from './scenes/MainMenu';
 import { Victory } from './scenes/Victory';
 import { AUTO, Game } from 'phaser';
@@ -26,6 +26,7 @@ const config: Phaser.Types.Core.GameConfig = {
         Boot,
         Preloader,
         MainMenu,
+        MainGame,
         GameOver,
         Victory
     ],
@@ -46,7 +47,7 @@ const StartGame = (parent: string) => {
     const gameConfig = { ...config };
     
     // 如果URL参数中指定了调试模式，启用物理调试
-    if (urlParams.getBoolean('debug')) {
+    if (urlParams.isDebugMode()) {
         if (gameConfig.physics?.arcade) {
             gameConfig.physics.arcade.debug = true;
         }

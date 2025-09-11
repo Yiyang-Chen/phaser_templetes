@@ -49,6 +49,8 @@ export class Game extends Scene
 
     create ()
     {
+        console.log('🎮 Game场景: create() 方法开始执行');
+        
         // Enable EventBus debugger in development mode
         // Disabled to reduce console noise
         // if (import.meta.env.DEV) {
@@ -131,6 +133,53 @@ export class Game extends Scene
             if (this.player) {
                 this.player.setMobileControls(this.mobileControls);
             }
+        }
+        
+        // Create debug mode indicator
+        this.createDebugIndicator();
+    }
+
+    private createDebugIndicator() {
+        // Check if debug mode is enabled
+        const debugMode = this.registry.get('debugMode');
+        
+        if (debugMode) {
+            // Create debug mode indicator in top-right corner
+            const debugText = this.add.text(this.cameras.main.width - 10, 10, 'DEBUG MODE', {
+                fontSize: '16px',
+                color: '#00ff00',
+                fontFamily: 'Arial',
+                stroke: '#000000',
+                strokeThickness: 2
+            });
+            debugText.setOrigin(1, 0); // Right-align
+            debugText.setScrollFactor(0); // Don't scroll with camera
+            debugText.setDepth(2000); // High depth to appear on top
+            
+            // Add pulsing animation to make it more noticeable
+            this.tweens.add({
+                targets: debugText,
+                alpha: { from: 1, to: 0.5 },
+                duration: 1000,
+                yoyo: true,
+                repeat: -1,
+                ease: 'Sine.easeInOut'
+            });
+            
+            // Add a subtle background rectangle
+            const debugBg = this.add.rectangle(
+                this.cameras.main.width - 5, 
+                5, 
+                debugText.width + 10, 
+                debugText.height + 10, 
+                0x000000, 
+                0.3
+            );
+            debugBg.setOrigin(1, 0);
+            debugBg.setScrollFactor(0);
+            debugBg.setDepth(1999);
+            
+            console.log('🐛 Debug模式视觉指示器已创建');
         }
     }
 
