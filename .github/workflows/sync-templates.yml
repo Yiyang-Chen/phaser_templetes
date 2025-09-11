@@ -66,10 +66,10 @@ jobs:
         fi
         
         # Get the original commit information from the source repository
-        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s" ../)
-        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an" ../)
-        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae" ../)
-        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso ../)
+        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s" $GITHUB_WORKSPACE)
+        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an" $GITHUB_WORKSPACE)
+        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae" $GITHUB_WORKSPACE)
+        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso $GITHUB_WORKSPACE)
         
         # Commit changes with original message and author info
         git commit -m "$ORIGINAL_COMMIT_MSG" --author="$ORIGINAL_AUTHOR_NAME <$ORIGINAL_AUTHOR_EMAIL>" --date="$ORIGINAL_COMMIT_DATE"
@@ -134,10 +134,10 @@ jobs:
         fi
         
         # Get the original commit information from the source repository
-        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s" ../)
-        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an" ../)
-        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae" ../)
-        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso ../)
+        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s" $GITHUB_WORKSPACE)
+        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an" $GITHUB_WORKSPACE)
+        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae" $GITHUB_WORKSPACE)
+        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso $GITHUB_WORKSPACE)
         
         # Commit changes with original message and author info
         git commit -m "$ORIGINAL_COMMIT_MSG" --author="$ORIGINAL_AUTHOR_NAME <$ORIGINAL_AUTHOR_EMAIL>" --date="$ORIGINAL_COMMIT_DATE"
