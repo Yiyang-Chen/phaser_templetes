@@ -133,8 +133,15 @@ export class Preloader extends Scene
         this.soundEffectPlayer.onSoundsLoaded();
         console.log('[Preloader] Sound effect system ready');
         
-        //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
-        this.scene.start('MainMenu');
+        // 检查是否有选定的关卡，决定下一步跳转
+        const selectedLevel = this.registry.get('selectedLevel');
+        if (selectedLevel) {
+            console.log('🎮 Preloader: 检测到选定的关卡，直接进入游戏:', selectedLevel);
+            this.scene.start('Game');
+        } else {
+            // 正常流程：进入主菜单
+            this.scene.start('MainMenu');
+        }
     }
     
     private processAnimationConfigs(): void {

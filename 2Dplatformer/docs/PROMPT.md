@@ -20,3 +20,14 @@ You must use the `tilemap_overlap_modify` tool to check whether `objects` in the
 </must_follow>
 
 </tilemap_design>
+
+<url_parameter>
+
+Read `URL_PARAMETERS_GUIDE.md` for usage.
+
+<must_follow>
+
+The url parameter `level` is required no matter if there are one or multiple levels. You need to make sure that this parameter can be used to directly begin a level and all the game state and parameters are set up correctly.
+
+</must_follow>
+</url_parameter>

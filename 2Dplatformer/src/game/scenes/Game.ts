@@ -51,6 +51,10 @@ export class Game extends Scene
     {
         console.log('🎮 Game场景: create() 方法开始执行');
         
+        // 获取选定的关卡
+        const selectedLevel = this.registry.get('selectedLevel') || 1;
+        console.log('🎮 Game场景: 当前关卡:', selectedLevel);
+        
         // Enable EventBus debugger in development mode
         // Disabled to reduce console noise
         // if (import.meta.env.DEV) {
@@ -59,7 +63,8 @@ export class Game extends Scene
         
         // Emit scene start event
         eventBus.emit(GameEvent.SCENE_START, {
-            scene: 'Game'
+            scene: 'Game',
+            level: selectedLevel
         });
         
         // Emit game start event

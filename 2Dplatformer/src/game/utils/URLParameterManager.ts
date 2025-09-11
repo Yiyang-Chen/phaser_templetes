@@ -1,10 +1,11 @@
 /**
  * URL参数管理器
- * 用于处理游戏启动时的URL参数（仅支持debug模式）
+ * 用于处理游戏启动时的URL参数（支持debug模式和level选择）
  */
 export class URLParameterManager {
     private static instance: URLParameterManager;
     private debugMode: boolean = false;
+    private level: number | null = null;
 
     private constructor() {
         this.parseURLParameters();
@@ -23,11 +24,23 @@ export class URLParameterManager {
     private parseURLParameters(): void {
         const urlParams = new URLSearchParams(window.location.search);
         
-        // 只检查debug参数
+        // 检查debug参数
         const debugValue = urlParams.get('debug');
         if (debugValue) {
             this.debugMode = debugValue.toLowerCase() === 'true' || debugValue === '1' || debugValue.toLowerCase() === 'yes';
             console.log('🎮 检测到URL参数: debug=' + debugValue);
+        }
+        
+        // 检查level参数
+        const levelValue = urlParams.get('level');
+        if (levelValue) {
+            const levelInt = parseInt(levelValue, 10);
+            if (!isNaN(levelInt) && levelInt > 0) {
+                this.level = levelInt;
+                console.log('🎮 检测到URL参数: level=' + levelInt);
+            } else {
+                console.warn('🎮 无效的level参数:', levelValue, '必须是正整数');
+            }
         }
     }
 
@@ -36,5 +49,19 @@ export class URLParameterManager {
      */
     public isDebugMode(): boolean {
         return this.debugMode;
+    }
+
+    /**
+     * 获取指定的关卡
+     */
+    public getLevel(): number | null {
+        return this.level;
+    }
+
+    /**
+     * 检查是否指定了关卡
+     */
+    public hasLevel(): boolean {
+        return this.level !== null;
     }
 }

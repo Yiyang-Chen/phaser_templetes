@@ -95,7 +95,7 @@ export class MainMenu extends Scene
         this.uiManager.createUI();
 
         // Scale background to cover screen
-        const background = this.uiManager.getElement('background');
+        const background = this.uiManager.getElement('background') as Phaser.GameObjects.Image;
         if (background) {
             const screenSize = this.uiManager.getScreenSize();
             const bgScale = Math.max(

@@ -60,6 +60,7 @@ export interface EventData {
     };
     [GameEvent.SCENE_START]: {
         scene: string;
+        level?: number;
     };
     [GameEvent.SCENE_PAUSE]: {
         scene: string;
@@ -232,11 +233,15 @@ export class EventBus {
     }
     
     public once<T extends GameEvent>(event: T, callback: EventCallback<T>): void {
-        const onceCallback: EventCallback<T> = (data) => {
-            callback(data);
-            this.off(event, onceCallback);
+        const onceCallback = (data: any) => {
+            if (data === undefined) {
+                (callback as () => void)();
+            } else {
+                (callback as (data: any) => void)(data);
+            }
+            this.off(event, onceCallback as EventCallback<T>);
         };
-        this.on(event, onceCallback);
+        this.on(event, onceCallback as EventCallback<T>);
     }
     
     public emit<T extends GameEvent>(event: T, ...args: EventData[T] extends void ? [] : [EventData[T]]): void {

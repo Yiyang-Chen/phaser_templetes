@@ -6,7 +6,7 @@
 
 ## 支持的参数
 
-### debug (示例参数)
+### debug (调试参数)
 
 启用调试模式，用于开发和测试目的。
 
@@ -20,6 +20,22 @@ https://yourgame.com/?debug=true
 - 启用Phaser物理引擎的调试显示（碰撞框等）
 - 在游戏画面右上角显示 "DEBUG MODE" 视觉指示器
 
+### level (关卡选择参数)
+
+直接跳转到指定关卡，跳过主菜单。
+
+**使用方法：**
+```
+https://yourgame.com/?level=1
+https://yourgame.com/?level=2
+https://yourgame.com/?level=3
+```
+
+**效果：**
+- 跳过主菜单，直接进入指定关卡
+- 参数必须是正整数（1, 2, 3...）
+- 无效参数会显示警告并使用默认流程
+
 ## 技术实现示例
 
 ### URL参数解析
@@ -27,8 +43,20 @@ https://yourgame.com/?debug=true
 ```typescript
 // 解析URL参数
 const urlParams = new URLSearchParams(window.location.search);
+
+// 解析debug参数
 const debugValue = urlParams.get('debug');
 const debugMode = debugValue?.toLowerCase() === 'true' || debugValue === '1';
+
+// 解析level参数
+const levelValue = urlParams.get('level');
+let level: number | null = null;
+if (levelValue) {
+    const levelInt = parseInt(levelValue, 10);
+    if (!isNaN(levelInt) && levelInt > 0) {
+        level = levelInt;
+    }
+}
 ```
 
 ### 参数传递
@@ -36,16 +64,20 @@ const debugMode = debugValue?.toLowerCase() === 'true' || debugValue === '1';
 ```typescript
 // 通过Phaser Registry在场景间传递参数
 this.registry.set('debugMode', debugMode);
+this.registry.set('selectedLevel', level);
 ```
 
-### 视觉反馈
+### 参数使用
 
 ```typescript
-// 在游戏场景中显示参数状态
+// 在游戏场景中使用参数
 if (this.registry.get('debugMode')) {
-    // 创建视觉指示器
+    // 创建调试视觉指示器
     const debugText = this.add.text(x, y, 'DEBUG MODE', style);
 }
+
+const selectedLevel = this.registry.get('selectedLevel') || 1;
+console.log('当前关卡:', selectedLevel);
 ```
 
 ## 扩展指南
@@ -110,9 +142,17 @@ create() {
 ## 示例URL
 
 ```
+# 启用调试模式
 https://yourgame.com/?debug=true
 https://yourgame.com/?debug=1
-https://yourgame.com/?debug=yes
+
+# 直接进入关卡
+https://yourgame.com/?level=1
+https://yourgame.com/?level=2
+https://yourgame.com/?level=3
+
+# 组合参数
+https://yourgame.com/?debug=true&level=2
 ```
 
-这个实现展示了如何构建一个灵活的参数系统，可以根据项目需求进行扩展和定制。
+这个实现展示了如何构建一个灵活的参数系统，支持调试模式和关卡选择，可以根据项目需求进行扩展和定制。

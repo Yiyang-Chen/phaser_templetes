@@ -27,7 +27,15 @@ export class Boot extends Scene
         // 将URL参数管理器传递给游戏数据
         this.registry.set('urlParams', this.urlParams);
         
-        this.scene.start('Preloader');
+        // 检查是否指定了关卡，如果指定了则跳过主菜单直接进入游戏
+        if (this.urlParams.hasLevel()) {
+            console.log('🎮 Boot: 检测到level参数，跳过主菜单直接进入游戏');
+            this.registry.set('selectedLevel', this.urlParams.getLevel());
+            this.scene.start('Preloader');
+        } else {
+            // 正常流程：进入预加载器然后到主菜单
+            this.scene.start('Preloader');
+        }
     }
 
     /**

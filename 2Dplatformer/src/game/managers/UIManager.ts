@@ -464,7 +464,7 @@ export class UIManager {
         }
     }
 
-    public animateElement(key: string, tweenConfig: Phaser.Types.Tweens.TweenBuilderConfig): void {
+    public animateElement(key: string, tweenConfig: Omit<Phaser.Types.Tweens.TweenBuilderConfig, 'targets'>): void {
         const element = this.elements.get(key);
         const config = this.config.elements[key];
         if (element && config) {
