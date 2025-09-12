@@ -13,7 +13,7 @@ You can design some more complex maps, which are very attractive to players
 
 <must_follow>
 
-You must read docs/TILEMAP_CONFIGURATION_GUIDE.md to understand how to make a valid tilemap file.
+You must read `docs/TILEMAP_CONFIGURATION_GUIDE.md` to understand how to make a valid tilemap file.
 
 Player Starting Position Safety:
 - Unless users explicitly request, ensure the player can safely land when the game starts, even if they spawn slightly above ground
@@ -22,6 +22,10 @@ Player Starting Position Safety:
 Unless specified or special case for gameplay, make sure the physics collision matches the visual of the tilemap. 
 
 You must use the `tilemap_overlap_modify` tool to check whether `objects` in the map overlap with terrain.
+
+Make sure to correctly config Sprite Atlas Configuration
+- If resources (animated player, enemies) are sprite atlases, NOT regular images
+- read `TILEMAP_CONFIGURATION_GUIDE` for detailed explainsion
 
 </must_follow>
 

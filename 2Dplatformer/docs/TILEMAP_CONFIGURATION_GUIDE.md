@@ -462,6 +462,50 @@ Contains all interactive entities.
 - `character_purple.json`: Frame definitions
 - `character_purple_animators.json`: Animation config
 
+#### ⚠️ Critical: Sprite Atlas Configuration
+
+**Problem:** When AI generates tilemaps, character resources are often treated as regular images instead of sprite atlases, causing the entire sprite sheet to display instead of individual animation frames.
+
+**Solution:** Always add `atlas: true` property to character tilesets that use sprite sheets.
+
+**Correct Configuration:**
+```json
+{
+  "firstgid": 3,
+  "image": "assets/player/character_purple.png",
+  "name": "character_purple",
+  "tiles": [
+    {
+      "id": 0,
+      "properties": [
+        {
+          "name": "atlas",
+          "type": "bool",
+          "value": true     // ESSENTIAL for sprite atlases
+        }
+      ]
+    }
+  ]
+}
+```
+
+**What happens without `atlas: true`:**
+- ❌ Displays entire sprite sheet as one image
+- ❌ No animation frames work
+- ❌ Character appears as large, distorted image
+- ❌ Game physics may break due to incorrect dimensions
+
+**What happens with `atlas: true`:**
+- ✅ Loads sprite sheet correctly
+- ✅ Uses .json file to define individual frames
+- ✅ Animations work properly
+- ✅ Correct character dimensions and physics
+
+**Assets that MUST have `atlas: true`:**
+- All character sprites (player, enemies)
+- Any animated objects using sprite sheets
+- Multi-frame assets with accompanying .json files
+
 ### Property Inheritance
 1. **Tileset properties**: Default values
 2. **Object properties**: Override tileset values
@@ -625,6 +669,9 @@ Example:
 - [ ] Layer data array length = width × height
 - [ ] Image paths are correct
 - [ ] Color values in #RRGGBB format
+- [ ] **Character tilesets have `atlas: true` property**
+- [ ] **Sprite atlas .json files exist for all atlas tilesets**
+- [ ] **Animation files (_animators.json) exist for animated sprites**
 
 ### Common Issues
 
@@ -633,6 +680,12 @@ Example:
 - Verify image path in tileset
 - Ensure visible: true
 - Check coordinates
+
+#### Characters Display as Full Sprite Sheet (Most Common AI Error)
+- **Symptom**: Character appears as large, distorted image showing all animation frames
+- **Cause**: Missing `atlas: true` property in tileset
+- **Solution**: Add `atlas: true` to tileset properties
+- **Prevention**: Always check character tilesets have atlas property when using sprite sheets
 
 #### Collisions Not Working  
 - Tile needs `collides: true` property
@@ -650,6 +703,12 @@ Example:
 - Object properties override tileset
 - Property names are case-sensitive
 - Arrays use index-based access
+
+#### Animation Not Playing
+- Verify `atlas: true` is set in tileset
+- Check .json and _animators.json files exist
+- Ensure frame names match between files
+- Verify animation is triggered in code
 
 ## Performance Guidelines
 
