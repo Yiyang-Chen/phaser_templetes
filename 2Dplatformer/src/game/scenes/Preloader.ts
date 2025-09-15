@@ -27,10 +27,8 @@ export class Preloader extends Scene
 
         //  Use the 'progress' event emitted by the LoaderPlugin to update the loading bar
         this.load.on('progress', (progress: number) => {
-
             //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
             bar.width = 4 + (460 * progress);
-
         });
     }
 
@@ -39,19 +37,13 @@ export class Preloader extends Scene
         //  Load the assets for the game - Replace with your own assets
         this.load.image('logo', 'assets/logo.png');
         
-        // Load tilemap JSON
-        this.load.tilemapTiledJSON('tilemap', 'assets/tilemap/scenes/tilemap.json');
+        // 使用扩展的自定义tilemap加载器 - 自动处理tileset资源
+        // 现在返回LoaderPlugin，支持链式调用，Phaser会等待所有资源完成
 
-        // Download tilemap.
-        this.load.text('tilemap_json_raw', 'assets/tilemap/scenes/tilemap.json');
-        
-        // Listen for text file loading completion, then load other resources during preload phase
-        this.load.once('filecomplete-text-tilemap_json_raw', () => {
-            this.loadAllAssets();
-        });
+        this.load.customTilemap('tilemap', 'assets/tilemap/scenes/tilemap.json');
 
         // Initialize SoundEffectPlayer and load config
-        console.log('[Preloader] Initializing SoundEffectPlayer...');
+
         this.soundEffectPlayer.init(this);
         await this.soundEffectPlayer.loadConfig();
         
@@ -62,60 +54,6 @@ export class Preloader extends Scene
 
     }
 
-    private loadAllAssets() {
-        // parse raw tilemap json.
-        let tilemapJsonRaw = this.cache.text.get('tilemap_json_raw');
-        let tilemapJsonObj = null;
-        try {
-            tilemapJsonObj = JSON.parse(tilemapJsonRaw);
-        } catch (e) {
-            console.error('Failed to parse tilemap_json_raw:', e);
-        }
-
-        let tilesets = tilemapJsonObj["tilesets"];
-        if (!tilesets) {
-            return;
-        }
-
-        tilesets.forEach((tileset: any) => {
-            let isAtlas = false;
-
-            let tiles = tileset["tiles"];
-            if (tiles && tiles.length && tiles.length > 0) {
-                let properties = tiles[0]["properties"];
-                if (properties && properties.length && properties.length > 0) {
-                    properties.forEach((property: any) => {
-                        if (property.name === "atlas" && property.value === true) {
-                            isAtlas = true;
-                        }
-                    })
-                }
-            }
-            
-            let imageUri = tileset["image"] as string;
-            if (!imageUri) {
-                return;
-            }
-            
-            let name = tileset["name"] as string;
-            if (!name) {
-                return;
-            }
-
-            if (isAtlas) {
-                // Replace the file extension of imageUri with .json
-                let atlasJsonUri = imageUri.replace(/(\.[^/.]+)$/, '.json');
-                this.load.atlas(name, imageUri, atlasJsonUri);
-                
-                // Load animation configuration if it exists
-                let animationConfigUri = imageUri.replace(/(\.[^/.]+)$/, '_animators.json');
-                this.load.json(`${name}_animations`, animationConfigUri);
-            } else {
-                this.load.image(name, imageUri);
-                console.log("load image", name, imageUri)
-            }
-        })
-    }
 
     create ()
     {

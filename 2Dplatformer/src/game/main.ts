@@ -7,6 +7,7 @@ import { AUTO, Game } from 'phaser';
 import { Preloader } from './scenes/Preloader';
 import { BGMPlayer } from './managers/BGMPlayer';
 import { URLParameterManager } from './utils/URLParameterManager';
+import { extendLoader } from './loaders/LoaderExtensions';
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig
@@ -40,6 +41,9 @@ const config: Phaser.Types.Core.GameConfig = {
 };
 
 const StartGame = (parent: string) => {
+    // 扩展Phaser加载器
+    extendLoader();
+    
     // 获取URL参数管理器
     const urlParams = URLParameterManager.getInstance();
     
