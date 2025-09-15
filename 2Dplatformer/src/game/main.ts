@@ -5,7 +5,7 @@ import { MainMenu } from './scenes/MainMenu';
 import { Victory } from './scenes/Victory';
 import { AUTO, Game } from 'phaser';
 import { Preloader } from './scenes/Preloader';
-import { BGMPlayer } from './managers/BGMPlayer';
+// AudioManager 将在 Preloader 中初始化，这里不需要导入
 import { URLParameterManager } from './utils/URLParameterManager';
 import { extendLoader } from './loaders/LoaderExtensions';
 
@@ -59,8 +59,8 @@ const StartGame = (parent: string) => {
     
     const game = new Game({ ...gameConfig, parent });
     
-    // Initialize BGMPlayer with the game instance
-    BGMPlayer.getInstance().initialize(game);
+    // AudioManager 将在 Preloader 中初始化
+    // 这里不需要额外的初始化，因为 AudioManager 是单例且会在 Preloader 中完成设置
     
     return game;
 }

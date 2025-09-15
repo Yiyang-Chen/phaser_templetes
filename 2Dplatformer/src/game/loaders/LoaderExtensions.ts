@@ -1,5 +1,6 @@
 import { registerCustomTilemapLoader } from './CustomLoader/CustomTileMapLoader';
 import { registerCustomSpriteAtlasLoader } from './CustomLoader/CustomSpriteAtlasLoader';
+import { registerAudioConfigLoader } from './CustomLoader/AudioConfigLoader';
 
 /**
  * 扩展Phaser加载器
@@ -8,11 +9,14 @@ import { registerCustomSpriteAtlasLoader } from './CustomLoader/CustomSpriteAtla
 export function extendLoader() {
     console.log('🔧 初始化所有自定义加载器...');
     
-    // 注册智能tilemap加载器
+    // 注册自定义tilemap加载器
     registerCustomTilemapLoader();
     
     // 注册精灵图集加载器
     registerCustomSpriteAtlasLoader();
+    
+    // 注册音频配置加载器
+    registerAudioConfigLoader();
     
     console.log('✅ 所有自定义加载器初始化完成');
 }

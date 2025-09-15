@@ -1,17 +1,17 @@
 import { Scene } from 'phaser';
 import { AnimationManager } from '../managers/AnimationManager';
-import { SoundEffectPlayer } from '../managers/SoundEffectPlayer';
+import { AudioManager } from '../audio/AudioManager';
 
 export class Preloader extends Scene
 {
     private animationManager: AnimationManager;
-    private soundEffectPlayer: SoundEffectPlayer;
+    private audioManager: AudioManager;
     
     constructor ()
     {
         super('Preloader');
         this.animationManager = AnimationManager.getInstance();
-        this.soundEffectPlayer = SoundEffectPlayer.getInstance();
+        this.audioManager = AudioManager.getInstance();
     }
 
     init ()
@@ -32,30 +32,22 @@ export class Preloader extends Scene
         });
     }
 
-    async preload ()
+    preload ()
     {
         //  Load the assets for the game - Replace with your own assets
         this.load.image('logo', 'assets/logo.png');
         
         // 使用扩展的自定义tilemap加载器 - 自动处理tileset资源
-        // 现在返回LoaderPlugin，支持链式调用，Phaser会等待所有资源完成
-
         this.load.customTilemap('tilemap', 'assets/tilemap/scenes/tilemap.json');
 
-        // Initialize SoundEffectPlayer and load config
-
-        this.soundEffectPlayer.init(this);
-        await this.soundEffectPlayer.loadConfig();
-        
-        // Preload all sound effects
-        console.log('[Preloader] Preloading sound effects...');
-        this.soundEffectPlayer.preloadSounds();
-        
-
+        // 使用自定义音频配置加载器 - 自动处理音频资源加载
+        // 这会加载配置文件并自动添加音频资源到Phaser的加载队列
+        console.log('[Preloader] 添加音频配置到加载队列...');
+        this.load.audioConfig('audio-config', '/assets/audio/audio-config.json');
     }
 
 
-    create ()
+    async create ()
     {
         // Initialize AnimationManager with this scene
         this.animationManager.init(this);
@@ -66,10 +58,14 @@ export class Preloader extends Scene
         // Create all animations
         this.animationManager.createAllAnimations();
         
-        // Initialize loaded sounds after all audio files are loaded
-        console.log('[Preloader] Initializing loaded sounds...');
-        this.soundEffectPlayer.onSoundsLoaded();
-        console.log('[Preloader] Sound effect system ready');
+        // 初始化AudioManager（跳过配置加载，因为已经通过自定义加载器完成）
+
+        await this.audioManager.initialize(this, this.game, true); // skipConfigLoad = true
+        
+        // 处理已加载的音频资源
+        console.log('[Preloader] 处理已加载的音频资源...');
+        this.audioManager.processLoadedAudio();
+        console.log('[Preloader] 音频系统准备就绪');
         
         // 检查是否有选定的关卡，决定下一步跳转
         const selectedLevel = this.registry.get('selectedLevel');
