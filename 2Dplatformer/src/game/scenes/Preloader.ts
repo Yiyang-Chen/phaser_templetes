@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { AnimationManager } from '../managers/AnimationManager';
 import { AudioManager } from '../audio/AudioManager';
 import { URLParameterManager } from '../utils/URLParameterManager';
+import { getDefaultLevelNumber } from '../resourceManager/CustomLoader/LevelSceneConfigLoader';
 
 export class Preloader extends Scene
 {
@@ -42,8 +43,24 @@ export class Preloader extends Scene
         //  Load the assets for the game - Replace with your own assets
         this.load.image('logo', 'assets/logo.png');
         
-        // 使用扩展的自定义tilemap加载器 - 自动处理tileset资源
-        this.load.customTilemap('tilemap', 'assets/tilemap/scenes/tilemap.json');
+        // 检查是否有选定的关卡，决定加载什么关卡
+        const urlParams = URLParameterManager.getInstance();
+        if (urlParams.hasLevel()) {
+            const selectedLevel = urlParams.getLevel();
+            if (selectedLevel !== null) {
+                console.log(`[Preloader] 加载指定关卡: level${selectedLevel}`);
+                // 根据选定的关卡加载对应的 tilemap
+                // 这里可以根据 game_config.json 中的场景配置来动态加载
+                this.loadLevelResources(selectedLevel);
+            } else {
+                console.log('[Preloader] 关卡参数无效，加载默认关卡');
+                this.loadLevelResources(getDefaultLevelNumber());
+            }
+        } else {
+            console.log('[Preloader] 加载默认关卡');
+            // 加载默认关卡
+            this.loadLevelResources(getDefaultLevelNumber());
+        }
 
         // 使用自定义音频配置加载器 - 自动处理音频资源加载
         this.load.audioConfig('audio-config', '/assets/audio/audio-config.json');
@@ -71,6 +88,20 @@ export class Preloader extends Scene
             // 正常流程：进入主菜单
             this.scene.start('MainMenu');
         }
+    }
+    
+    /**
+     * 根据关卡编号加载对应的资源
+     * 使用 game_config.json 中的场景配置和自定义的 levelSceneConfig 加载器
+     */
+    private loadLevelResources(levelNumber: number): void {
+        console.log(`[Preloader] 使用 levelSceneConfig 加载器加载关卡 ${levelNumber} 的资源...`);
+        
+        // 使用自定义的 levelSceneConfig 加载器
+        // 它会自动从 game_config.json 的 scenes 配置中查找对应关卡的资源
+        this.load.levelSceneConfig('level-scene', levelNumber);
+        
+        console.log(`[Preloader] 关卡 ${levelNumber} 资源加载请求已提交`);
     }
     
     private processAnimationConfigs(): void {

@@ -5,18 +5,20 @@ This guide documents how to configure `public/assets/tilemap/scenes/tilemap.json
 
 ## System Overview
 
-### 🆕 Resource Loading Flow (v2.0)
+### 🆕 Resource Loading Flow (v3.0)
 1. **Boot Scene (preload)** - 处理URL参数，加载`game_config.json`并初始化GlobalResourceManager
 2. **Boot Scene (create)** - 所有配置加载完成，启动Preloader场景
-3. **Preloader** - 加载`tilemap.json`并通过资源键解析实际路径
-4. **CustomTileMapLoader** - 自动使用资源键加载tileset资源
-5. **Game Scene** - 创建tilemap图层并实例化游戏对象
-6. **Sprites** - 从tileset和对象实例读取属性
-7. **Properties cascade** - Tileset默认值 → 对象覆盖值
+3. **Preloader** - 使用`LevelSceneConfigLoader`根据关卡编号加载场景资源
+4. **LevelSceneConfigLoader** - 优先加载远程资源，自动映射tilemap key为统一的`'tilemap'`
+5. **CustomTileMapLoader** - 自动使用资源键加载tileset资源
+6. **Game Scene** - 创建tilemap图层并实例化游戏对象
+7. **Sprites** - 从tileset和对象实例读取属性
+8. **Properties cascade** - Tileset默认值 → 对象覆盖值
 
 ### Core Components
 - **game_config.json**: Central resource configuration defining asset paths
-- **GlobalResourceManager**: Resolves resource keys to local/remote paths
+- **GlobalResourceManager**: Resolves resource keys to local/remote paths (优先远程资源)
+- **LevelSceneConfigLoader**: 关卡场景配置加载器，根据关卡编号加载对应资源
 - **Tilemap**: JSON file defining level structure using resource keys
 - **Layers**: Tile layers (terrain) and Object layers (entities)
 - **Tilesets**: Asset definitions using resource keys instead of hardcoded paths

@@ -10,6 +10,7 @@
 
 - **GlobalResourceManager**: 全局资源管理器，单例模式
 - **GameConfigLoader**: 游戏配置加载器
+- **LevelSceneConfigLoader**: 关卡场景配置加载器（新增）
 - **CustomLoaders**: 自定义资源加载器集合
 - **game_config.json**: 中央资源配置文件
 
@@ -124,7 +125,8 @@ src/game/resourceManager/
 │   ├── AudioConfigLoader.ts       # 音频配置加载器
 │   ├── CustomTileMapLoader.ts     # Tilemap加载器
 │   ├── CustomSpriteAtlasLoader.ts # 精灵图集加载器
-│   └── GameConfigLoader.ts        # 游戏配置加载器
+│   ├── GameConfigLoader.ts        # 游戏配置加载器
+│   └── LevelSceneConfigLoader.ts  # 关卡场景配置加载器（新增）
 ├── CustomLoadFile/                 # 自定义文件类型
 │   ├── AudioConfigFile.ts         # 音频配置文件
 │   ├── CustomTilemapFile.ts       # 自定义Tilemap文件
@@ -271,9 +273,9 @@ import { GlobalResourceManager } from './resourceManager/GlobalResourceManager';
 
 const resourceManager = GlobalResourceManager.getInstance();
 
-// 获取资源实际路径
+// 获取资源实际路径（优先返回远程资源）
 const imagePath = resourceManager.getResourcePath('character_purple_image');
-// 返回: "assets/player/character_purple.png" 或 "https://cdn.example.com/..."
+// 返回: 优先 "https://cdn.example.com/..." 
 
 // 获取资源配置
 const resource = resourceManager.getResource('character_purple_image');
@@ -283,7 +285,28 @@ const resource = resourceManager.getResource('character_purple_image');
 const asset = resourceManager.getAsset(3);
 
 // 根据key获取scene配置  
-const scene = resourceManager.getScene('level1');
+const scene = resourceManager.getScene(1);  // 使用数字key
+```
+
+### 4. 使用关卡场景配置加载器
+
+```typescript
+// 在 Preloader.ts 中
+import { getDefaultLevelNumber } from '../resourceManager/CustomLoader/LevelSceneConfigLoader';
+
+export class Preloader extends Scene {
+    preload() {
+        // 根据URL参数或默认关卡加载场景资源
+        const urlParams = URLParameterManager.getInstance();
+        const levelNumber = urlParams.hasLevel() ? 
+            urlParams.getLevel() : getDefaultLevelNumber();
+        
+        // 使用关卡场景配置加载器
+        this.load.levelSceneConfig('level-scene', levelNumber);
+        
+        // 其他资源加载...
+    }
+}
 ```
 
 ## 🚀 部署策略
@@ -312,6 +335,41 @@ const scene = resourceManager.getScene('level1');
     "url": "https://cdn.example.com/assets/player/character.png"
   }
 }
+```
+
+### 🆕 远程资源优先策略
+
+系统现在实现了智能的远程资源优先加载策略：
+
+#### 1. 资源优先级规则
+- **远程资源优先**: 如果资源同时有 `remote` 和 `local` 配置，优先使用远程版本
+- **本地资源备用**: 只有在没有远程配置时才使用本地资源
+- **统一Key映射**: 对于 tilemap 资源，自动将配置中的任意key映射为统一的 `'tilemap'` key
+
+#### 2. 加载顺序优化
+```typescript
+// LevelSceneConfigLoader 的加载策略
+const remoteResources = sceneConfig.resources.filter(resource => resource.remote);
+const localResources = sceneConfig.resources.filter(resource => resource.local);
+
+// 第一轮：优先加载所有远程资源
+remoteResources.forEach(resource => {
+    // 加载远程资源
+});
+
+// 第二轮：只加载没有远程配置的本地资源
+localResources.forEach(resource => {
+    if (!resource.remote && resource.local) {  // 避免重复加载
+        // 加载本地资源
+    }
+});
+```
+
+#### 3. Tilemap Key 统一映射
+```typescript
+// 配置文件中的原始key: "level1_tilemap"
+// 加载时自动映射为: "tilemap"
+// 确保与 Game.ts 中的使用一致: this.make.tilemap({ key: 'tilemap' })
 ```
 
 ### 混合部署

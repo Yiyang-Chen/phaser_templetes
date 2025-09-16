@@ -269,7 +269,7 @@
     ],
     "scenes": [
         {
-            "key": "level1",
+            "key": 1,
             "name": "level1",
             "description": "level1 haha",
             "resources": [

@@ -26,7 +26,7 @@ interface AssetConfig {
 }
 
 interface SceneConfig {
-    key: string;
+    key: number;
     name: string;
     description: string;
     resources: ResourceConfig[];
@@ -44,7 +44,7 @@ interface GameConfig {
 export class GlobalResourceManager {
     private static instance: GlobalResourceManager;
     private assetsDict: Map<number, AssetConfig> = new Map();
-    private scenesDict: Map<string, SceneConfig> = new Map();
+    private scenesDict: Map<number, SceneConfig> = new Map();
     private resourceKeyMap: Map<string, ResourceConfig> = new Map();
 
     static getInstance(): GlobalResourceManager {
@@ -100,6 +100,7 @@ export class GlobalResourceManager {
 
     /**
      * 根据资源key获取实际的加载路径
+     * 优先返回远程资源路径
      */
     getResourcePath(key: string): string | null {
         const resource = this.resourceKeyMap.get(key);
@@ -108,14 +109,16 @@ export class GlobalResourceManager {
             return null;
         }
 
-        // 优先使用local资源
-        if (resource.local) {
-            return resource.local.full_path || resource.local.path || '';
+        // 优先使用远程资源
+        if (resource.remote) {
+            console.log(`[GlobalResourceManager] 优先使用远程资源: ${key} -> ${resource.remote.url}`);
+            return resource.remote.url;
         }
 
-        // 使用remote资源
-        if (resource.remote) {
-            return resource.remote.url;
+        // 备用本地资源
+        if (resource.local) {
+            console.log(`[GlobalResourceManager] 使用本地资源: ${key} -> ${resource.local.full_path || resource.local.path}`);
+            return resource.local.full_path || resource.local.path || '';
         }
 
         return null;
@@ -138,7 +141,7 @@ export class GlobalResourceManager {
     /**
      * 根据key获取scene配置
      */
-    getScene(key: string): SceneConfig | null {
+    getScene(key: number): SceneConfig | null {
         return this.scenesDict.get(key) || null;
     }
 
