@@ -153,7 +153,6 @@ export class AnimationManager {
     createAnimationsForAtlas(atlasKey: string): void {
         const animations = this.atlasAnimations.get(atlasKey);
         if (!animations) {
-            console.warn(`No animations registered for atlas: ${atlasKey}`);
             return;
         }
         

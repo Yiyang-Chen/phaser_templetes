@@ -28,7 +28,7 @@ export class URLParameterManager {
         const debugValue = urlParams.get('debug');
         if (debugValue) {
             this.debugMode = debugValue.toLowerCase() === 'true' || debugValue === '1' || debugValue.toLowerCase() === 'yes';
-            console.log('🎮 检测到URL参数: debug=' + debugValue);
+            console.log('[URLParameterManager] 检测到URL参数: debug=' + debugValue);
         }
         
         // 检查level参数
@@ -37,9 +37,9 @@ export class URLParameterManager {
             const levelInt = parseInt(levelValue, 10);
             if (!isNaN(levelInt) && levelInt > 0) {
                 this.level = levelInt;
-                console.log('🎮 检测到URL参数: level=' + levelInt);
+                console.log('[URLParameterManager] 检测到URL参数: level=' + levelInt);
             } else {
-                console.warn('🎮 无效的level参数:', levelValue, '必须是正整数');
+                console.warn('[URLParameterManager] 无效的level参数:', levelValue, '必须是正整数');
             }
         }
     }

@@ -116,12 +116,41 @@ public/assets/audio/
 import { AudioManager } from '../audio/AudioManager';
 
 export class Preloader extends Scene {
-    async create() {
-        // 初始化音频管理器
-        await AudioManager.getInstance().initialize(this);
+    private audioManager: AudioManager;
+    
+    constructor() {
+        super('Preloader');
+        this.audioManager = AudioManager.getInstance();
+    }
+    
+    init() {
+        // 在资源加载之前初始化AudioManager
+        this.audioManager.initialize(this, this.game);
+    }
+    
+    preload() {
+        // 使用自定义音频配置加载器
+        this.load.audioConfig('audio-config', '/assets/audio/audio-config.json');
+    }
+    
+    create() {
+        // 处理已加载的音频资源
+        this.audioManager.processLoadedAudio();
     }
 }
 ```
+
+#### 初始化顺序说明
+
+**最佳实践**：
+1. **init()阶段**: 初始化管理器实例，设置基础配置
+2. **preload()阶段**: 加载音频配置和资源文件
+3. **create()阶段**: 处理已加载的资源，创建音频对象
+
+这样的顺序确保了：
+- 管理器在资源加载前就已准备好
+- 可以监听加载过程中的事件
+- 避免重复初始化和资源竞争
 
 ### 2. 播放BGM
 

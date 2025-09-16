@@ -24,18 +24,7 @@ export class Boot extends Scene
         // 处理URL参数
         this.handleURLParameters();
         
-        // 将URL参数管理器传递给游戏数据
-        this.registry.set('urlParams', this.urlParams);
-        
-        // 检查是否指定了关卡，如果指定了则跳过主菜单直接进入游戏
-        if (this.urlParams.hasLevel()) {
-            console.log('🎮 Boot: 检测到level参数，跳过主菜单直接进入游戏');
-            this.registry.set('selectedLevel', this.urlParams.getLevel());
-            this.scene.start('Preloader');
-        } else {
-            // 正常流程：进入预加载器然后到主菜单
-            this.scene.start('Preloader');
-        }
+        this.scene.start('Preloader');
     }
 
     /**
@@ -44,9 +33,19 @@ export class Boot extends Scene
     private handleURLParameters(): void {
         // 调试模式
         if (this.urlParams.isDebugMode()) {
-            console.log('🐛 调试模式已启用');
-            this.game.config.physics?.arcade && (this.game.config.physics.arcade.debug = true);
+            // 安全地设置物理调试模式
+            if (this.game.config.physics && 'arcade' in this.game.config.physics && this.game.config.physics.arcade) {
+                this.game.config.physics.arcade.debug = true;
+            }
             this.registry.set('debugMode', true);
+            console.log('[Boot] 调试模式已启用');
+        }
+        
+        // 关卡选择
+        if (this.urlParams.hasLevel()) {
+            const selectedLevel = this.urlParams.getLevel();
+            this.registry.set('selectedLevel', selectedLevel);
+            console.log(`[Boot] 设置关卡: ${selectedLevel}`);
         }
     }
 }

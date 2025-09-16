@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { AnimationManager } from '../managers/AnimationManager';
 import { AudioManager } from '../audio/AudioManager';
+import { URLParameterManager } from '../utils/URLParameterManager';
 
 export class Preloader extends Scene
 {
@@ -30,6 +31,10 @@ export class Preloader extends Scene
             //  Update the progress bar (our bar is 464px wide, so 100% = 464px)
             bar.width = 4 + (460 * progress);
         });
+
+        // 初始化管理器 - 在资源加载之前准备好
+        this.audioManager.initialize(this, this.game);
+        this.animationManager.init(this);
     }
 
     preload ()
@@ -41,36 +46,26 @@ export class Preloader extends Scene
         this.load.customTilemap('tilemap', 'assets/tilemap/scenes/tilemap.json');
 
         // 使用自定义音频配置加载器 - 自动处理音频资源加载
-        // 这会加载配置文件并自动添加音频资源到Phaser的加载队列
-        console.log('[Preloader] 添加音频配置到加载队列...');
         this.load.audioConfig('audio-config', '/assets/audio/audio-config.json');
     }
 
 
-    async create ()
+    create ()
     {
-        // Initialize AnimationManager with this scene
-        this.animationManager.init(this);
-        
-        // Process all loaded animation configurations
+        // 处理已加载的动画配置
         this.processAnimationConfigs();
         
-        // Create all animations
+        // 创建所有动画
         this.animationManager.createAllAnimations();
         
-        // 初始化AudioManager（跳过配置加载，因为已经通过自定义加载器完成）
-
-        await this.audioManager.initialize(this, this.game, true); // skipConfigLoad = true
-        
         // 处理已加载的音频资源
-        console.log('[Preloader] 处理已加载的音频资源...');
         this.audioManager.processLoadedAudio();
-        console.log('[Preloader] 音频系统准备就绪');
         
         // 检查是否有选定的关卡，决定下一步跳转
-        const selectedLevel = this.registry.get('selectedLevel');
-        if (selectedLevel) {
-            console.log('🎮 Preloader: 检测到选定的关卡，直接进入游戏:', selectedLevel);
+        const urlParams = URLParameterManager.getInstance();
+        if (urlParams.hasLevel()) {
+            const selectedLevel = urlParams.getLevel();
+            console.log(`[Preloader] 检测到选定的关卡，直接进入游戏: ${selectedLevel}`);
             this.scene.start('Game');
         } else {
             // 正常流程：进入主菜单
@@ -83,9 +78,8 @@ export class Preloader extends Scene
         const textureKeys = this.textures.getTextureKeys();
         
         for (const key of textureKeys) {
-            // Check if this is an atlas (has frames)
-            const texture = this.textures.get(key);
-            if (texture && texture.frameTotal > 1) {
+            // Check if this texture is marked as atlas in tilemap
+            if (this.isAtlasTexture(key)) {
                 // Check if we have animation config for this atlas
                 const animConfigKey = `${key}_animations`;
                 if (this.cache.json.exists(animConfigKey)) {
@@ -97,5 +91,41 @@ export class Preloader extends Scene
                 }
             }
         }
+    }
+    
+    /**
+     * Check if a texture is marked as atlas in tilemap configuration
+     */
+    private isAtlasTexture(textureKey: string): boolean {
+        // Check if tilemap is loaded
+        if (!this.cache.tilemap.exists('tilemap')) {
+            return false;
+        }
+        
+        const tilemapData = this.cache.tilemap.get('tilemap');
+        if (!tilemapData || !tilemapData.data || !tilemapData.data.tilesets) {
+            return false;
+        }
+        
+        // Look for this texture in tilesets
+        for (const tileset of tilemapData.data.tilesets) {
+            if (tileset.name === textureKey) {
+                // Check if this tileset has tiles with atlas property
+                if (tileset.tiles) {
+                    for (const tile of tileset.tiles) {
+                        if (tile.properties) {
+                            for (const prop of tile.properties) {
+                                if (prop.name === 'atlas' && prop.value === true) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        
+        return false;
     }
 }
