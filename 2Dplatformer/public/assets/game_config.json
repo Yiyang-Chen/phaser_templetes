@@ -1,0 +1,167 @@
+{
+    "assets": [
+        {
+            "type": "ground_asset_package",
+            "id": 1,
+            "name": "terrain_grass",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "terrain_grass_block_center",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/tilemap/tiles/terrain_grass_block_center.png"
+                    }
+                },
+                {
+                    "remote": {
+                        "key": "terrain_grass_block_top",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/tilemap/tiles/terrain_grass_block_top.png"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "sprite",
+            "id": 3,
+            "name": "character_purple",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "character_purple_image",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/player/character_purple.png"
+                    }
+                },
+                {
+                    "remote": {
+                        "key": "character_purple_json",
+                        "resource_type": "json",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/player/character_purple.json"
+                    }
+                },
+                {
+                    "remote": {
+                        "key": "character_purple_animators",
+                        "resource_type": "json",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/player/character_purple_animators.json"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "sprite",
+            "id": 20,
+            "name": "frog",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "frog_image",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/enemy/frog.png"
+                    }
+                },
+                {
+                    "remote": {
+                        "key": "frog_json",
+                        "resource_type": "json",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/enemy/frog.json"
+                    }
+                },
+                {
+                    "remote": {
+                        "key": "frog_animators",
+                        "resource_type": "json",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/enemy/frog_animators.json"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "static_image",
+            "id": 76,
+            "name": "coin_gold",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "coin_gold",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/collectible/coin_gold.png"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "static_image",
+            "id": 31,
+            "name": "hud_key_green",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "hud_key_green",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/collectible/coin_gold.png"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "static_image",
+            "id": 69,
+            "name": "spikes",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "spikes",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/hazards/spikes.png"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "static_image",
+            "id": 161,
+            "name": "flag_green_a",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "flag_green_a",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/goal/flag_green_a.png"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "static_image",
+            "id": 104,
+            "name": "block_empty",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "block_empty",
+                        "resource_type": "image",
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/obstacle/block_empty.png"
+                    }
+                }
+            ]
+        }
+    ],
+    "scenes": [
+        {
+            "key": "level1",
+            "name": "level1",
+            "description": "level1 haha",
+            "resources": [
+                {
+                    "local": {
+                        "key": "level1_tilemap",
+                        "resource_type": "tilemap",
+                        "full_path": "assets/tilemap/scenes/tilemap.json"
+                    }
+                }
+            ]
+        }
+    ]
+}
