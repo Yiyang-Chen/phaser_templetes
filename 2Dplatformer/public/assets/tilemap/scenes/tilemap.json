@@ -571,7 +571,7 @@
   "tilesets": [
     {
       "firstgid": 1,
-      "image": "assets/tilemap/tiles/terrain_grass_block_center.png",
+      "image": "terrain_grass_block_center",
       "imageheight": 64,
       "imagewidth": 64,
       "margin": 0,
@@ -593,7 +593,7 @@
     },
     {
       "firstgid": 2,
-      "image": "assets/tilemap/tiles/terrain_grass_block_top.png",
+      "image": "terrain_grass_block_top",
       "imageheight": 64,
       "imagewidth": 64,
       "margin": 0,
@@ -615,7 +615,7 @@
     },
     {
       "firstgid": 3,
-      "image": "assets/player/character_purple.png",
+      "image": "character_purple_image",
       "imageheight": 102,
       "imagewidth": 84,
       "margin": 0,
@@ -638,7 +638,7 @@
     },
     {
       "firstgid": 4,
-      "image": "assets/hazards/spikes.png",
+      "image": "spikes",
       "imageheight": 64,
       "imagewidth": 64,
       "margin": 0,
@@ -660,7 +660,7 @@
     },
     {
       "firstgid": 5,
-      "image": "assets/goal/flag_green_a.png",
+      "image": "flag_green_a",
       "imageheight": 64,
       "imagewidth": 64,
       "margin": 0,
@@ -672,7 +672,7 @@
     },
     {
       "firstgid": 6,
-      "image": "assets/collectible/coin_gold.png",
+      "image": "coin_gold",
       "imageheight": 64,
       "imagewidth": 64,
       "margin": 0,
@@ -709,7 +709,7 @@
     },
     {
       "firstgid": 7,
-      "image": "assets/collectible/hud_key_green.png",
+      "image": "hud_key_green",
       "imageheight": 64,
       "imagewidth": 64,
       "margin": 0,
@@ -746,7 +746,7 @@
     },
     {
       "firstgid": 8,
-      "image": "assets/enemy/frog.png",
+      "image": "frog_image",
       "imageheight": 64,
       "imagewidth": 64,
       "margin": 0,
@@ -784,7 +784,7 @@
     },
     {
       "firstgid": 9,
-      "image": "assets/obstacle/block_empty.png",
+      "image": "block_empty",
       "imageheight": 64,
       "imagewidth": 64,
       "margin": 0,

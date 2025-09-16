@@ -43,7 +43,7 @@ export function registerCustomTilemapLoader() {
  * @example
  * ```typescript
  * // 在main.ts中注册
- * import { registerCustomTilemapLoader } from './loaders/CustomLoader/CustomTileMapLoader';
+ * import { registerCustomTilemapLoader } from './resourceManager/CustomLoader/CustomTileMapLoader';
  * 
  * const StartGame = (parent: string) => {
  *     registerCustomTilemapLoader();

@@ -378,7 +378,7 @@ export class CustomPreloader extends Scene {
 
 ```typescript
 // main.ts
-import { registerCustomLoaders } from './loaders/CustomLoaders';
+import { registerCustomLoaders } from './resourceManager/CustomLoaders';
 
 const StartGame = (parent: string) => {
     // 注册自定义加载器

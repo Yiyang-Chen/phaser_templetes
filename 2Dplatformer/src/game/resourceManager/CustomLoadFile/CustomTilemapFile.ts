@@ -1,3 +1,5 @@
+import { GlobalResourceManager } from '../GlobalResourceManager';
+
 /**
  * 自定义Tilemap文件类型
  * 继承自Phaser.Loader.File，实现自定义的tilemap加载逻辑
@@ -60,28 +62,43 @@ export class CustomTilemapFile extends Phaser.Loader.File {
         }
 
         console.log(`📋 CustomTilemap: 处理 ${tilesets.length} 个tilesets`);
+        const resourceManager = GlobalResourceManager.getInstance();
 
         tilesets.forEach((tileset: any) => {
             const isAtlas = this.checkIfAtlas(tileset);
-            const imageUri = tileset.image;
+            const imageKey = tileset.image; // 现在这是一个key而不是路径
             const name = tileset.name;
 
-            if (!imageUri || !name) {
+            if (!imageKey || !name) {
                 console.warn(`⚠️ CustomTilemap: tileset缺少必要信息`, tileset);
                 return;
             }
 
+            // 从全局资源管理器获取实际路径
+            const actualImagePath = resourceManager.getResourcePath(imageKey);
+            if (!actualImagePath) {
+                console.error(`❌ CustomTilemap: 无法找到资源key对应的路径: ${imageKey}`);
+                return;
+            }
+
             if (isAtlas) {
-                console.log(`🎭 CustomTilemap: 加载图集 ${name}`);
+                console.log(`🎭 CustomTilemap: 加载图集 ${name} (${imageKey} -> ${actualImagePath})`);
                 // 加载图集和相关文件
-                const atlasJsonUri = imageUri.replace(/(\.[^/.]+)$/, '.json');
-                const animationConfigUri = imageUri.replace(/(\.[^/.]+)$/, '_animators.json');
+                const atlasJsonKey = imageKey.replace('_image', '_json');
+                const animationConfigKey = imageKey.replace('_image', '_animators');
                 
-                this.loader.atlas(name, imageUri, atlasJsonUri);
-                this.loader.json(`${name}_animations`, animationConfigUri);
+                const atlasJsonPath = resourceManager.getResourcePath(atlasJsonKey);
+                const animationConfigPath = resourceManager.getResourcePath(animationConfigKey);
+                
+                if (atlasJsonPath) {
+                    this.loader.atlas(name, actualImagePath, atlasJsonPath);
+                }
+                if (animationConfigPath) {
+                    this.loader.json(`${name}_animations`, animationConfigPath);
+                }
             } else {
-                console.log(`🖼️ CustomTilemap: 加载图片 ${name}`);
-                this.loader.image(name, imageUri);
+                console.log(`🖼️ CustomTilemap: 加载图片 ${name} (${imageKey} -> ${actualImagePath})`);
+                this.loader.image(name, actualImagePath);
             }
         });
     }

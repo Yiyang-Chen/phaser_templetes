@@ -1,4 +1,5 @@
 import { AudioManager, AudioType, AudioConfig } from '../../audio/AudioManager';
+import { GlobalResourceManager } from '../GlobalResourceManager';
 
 /**
  * 自定义音频配置文件加载器
@@ -59,14 +60,21 @@ export class AudioConfigFile extends Phaser.Loader.File {
      */
     private addAudioAssetsToQueue(config: AudioConfig): void {
         let addedCount = 0;
+        const resourceManager = GlobalResourceManager.getInstance();
         
         // 添加BGM资源
         if (!this.audioType || this.audioType === AudioType.BGM) {
             for (const [key, asset] of Object.entries(config.assets.bgm)) {
                 if (asset.preload && !this.loader.scene.cache.audio.exists(key)) {
-                    console.log(`🎵 AudioConfig: 添加BGM到队列 - ${key}`);
-                    this.loader.audio(key, asset.url);
-                    addedCount++;
+                    // 从全局资源管理器获取实际路径
+                    const actualPath = resourceManager.getResourcePath(asset.url);
+                    if (actualPath) {
+                        console.log(`🎵 AudioConfig: 添加BGM到队列 - ${key} (${asset.url} -> ${actualPath})`);
+                        this.loader.audio(key, actualPath);
+                        addedCount++;
+                    } else {
+                        console.error(`❌ AudioConfig: 无法找到BGM资源路径: ${asset.url}`);
+                    }
                 }
             }
         }
@@ -75,9 +83,15 @@ export class AudioConfigFile extends Phaser.Loader.File {
         if (!this.audioType || this.audioType === AudioType.SFX) {
             for (const [key, asset] of Object.entries(config.assets.sfx)) {
                 if (asset.preload && !this.loader.scene.cache.audio.exists(key)) {
-                    console.log(`🔊 AudioConfig: 添加SFX到队列 - ${key}`);
-                    this.loader.audio(key, asset.url);
-                    addedCount++;
+                    // 从全局资源管理器获取实际路径
+                    const actualPath = resourceManager.getResourcePath(asset.url);
+                    if (actualPath) {
+                        console.log(`🔊 AudioConfig: 添加SFX到队列 - ${key} (${asset.url} -> ${actualPath})`);
+                        this.loader.audio(key, actualPath);
+                        addedCount++;
+                    } else {
+                        console.error(`❌ AudioConfig: 无法找到SFX资源路径: ${asset.url}`);
+                    }
                 }
             }
         }

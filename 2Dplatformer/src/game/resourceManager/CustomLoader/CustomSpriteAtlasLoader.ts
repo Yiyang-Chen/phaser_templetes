@@ -43,7 +43,7 @@ export function registerCustomSpriteAtlasLoader() {
  * @example
  * ```typescript
  * // 在main.ts中注册
- * import { registerCustomSpriteAtlasLoader } from './loaders/CustomLoader/CustomSpriteAtlasLoader';
+ * import { registerCustomSpriteAtlasLoader } from './resourceManager/CustomLoader/CustomSpriteAtlasLoader';
  * 
  * const StartGame = (parent: string) => {
  *     registerCustomSpriteAtlasLoader();

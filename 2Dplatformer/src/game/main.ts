@@ -7,7 +7,7 @@ import { AUTO, Game } from 'phaser';
 import { Preloader } from './scenes/Preloader';
 // AudioManager 将在 Preloader 中初始化，这里不需要导入
 import { URLParameterManager } from './utils/URLParameterManager';
-import { extendLoader } from './loaders/LoaderExtensions';
+import { extendLoader } from './resourceManager/LoaderExtensions';
 
 //  Find out more information about the Game Config at:
 //  https://docs.phaser.io/api-documentation/typedef/types-core#gameconfig

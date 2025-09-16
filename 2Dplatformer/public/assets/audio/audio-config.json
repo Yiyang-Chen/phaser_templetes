@@ -76,25 +76,25 @@
   "assets": {
     "bgm": {
       "menu_theme": {
-        "url": "/assets/audio/bgm/Baltic Levity.mp3",
+        "url": "bgm_baltic_levity",
         "preload": true,
         "volume": 0.7,
         "loop": true
       },
       "game_theme": {
-        "url": "/assets/audio/bgm/Alls Fair In Love.mp3",
+        "url": "bgm_alls_fair_in_love",
         "preload": false,
         "volume": 0.5,
         "loop": true
       },
       "victory_theme": {
-        "url": "/assets/audio/bgm/Attic Secrets.mp3",
+        "url": "bgm_attic_secrets",
         "preload": false,
         "volume": 0.8,
         "loop": false
       },
       "gameover_theme": {
-        "url": "/assets/audio/bgm/Baltic Levity.mp3",
+        "url": "bgm_baltic_levity",
         "preload": false,
         "volume": 0.6,
         "loop": false
@@ -102,115 +102,115 @@
     },
     "sfx": {
       "player_walk_1": {
-        "url": "assets/audio/sfx/sfx_bump.mp3",
+        "url": "sfx_bump",
         "preload": true
       },
       "player_walk_2": {
-        "url": "assets/audio/sfx/sfx_select.mp3",
+        "url": "sfx_select",
         "preload": true
       },
       "player_jump": {
-        "url": "assets/audio/sfx/sfx_jump.mp3",
+        "url": "sfx_jump",
         "preload": true
       },
       "player_jump_high": {
-        "url": "assets/audio/sfx/sfx_jump-high.mp3",
+        "url": "sfx_jump_high",
         "preload": true
       },
       "player_land": {
-        "url": "assets/audio/sfx/sfx_bump.mp3",
+        "url": "sfx_bump",
         "preload": true
       },
       "player_attack": {
-        "url": "assets/audio/sfx/sfx_throw.mp3",
+        "url": "sfx_throw",
         "preload": true
       },
       "player_hurt": {
-        "url": "assets/audio/sfx/sfx_hurt.mp3",
+        "url": "sfx_hurt",
         "preload": true
       },
       "player_die": {
-        "url": "assets/audio/sfx/sfx_disappear.mp3",
+        "url": "sfx_disappear",
         "preload": true
       },
       "collect_coin": {
-        "url": "assets/audio/sfx/sfx_coin.mp3",
+        "url": "sfx_coin",
         "preload": true
       },
       "collect_gem": {
-        "url": "assets/audio/sfx/sfx_gem.mp3",
+        "url": "sfx_gem",
         "preload": true
       },
       "magic_cast": {
-        "url": "assets/audio/sfx/sfx_magic.mp3",
+        "url": "sfx_magic",
         "preload": true
       },
       "purple_walk_1": {
-        "url": "assets/audio/sfx/sfx_select.mp3",
+        "url": "sfx_select",
         "preload": true
       },
       "purple_jump": {
-        "url": "assets/audio/sfx/sfx_jump.mp3",
+        "url": "sfx_jump",
         "preload": true
       },
       "purple_hurt": {
-        "url": "assets/audio/sfx/sfx_hurt.mp3",
+        "url": "sfx_hurt",
         "preload": true
       },
       "frog_jump_1": {
-        "url": "assets/audio/sfx/sfx_jump.mp3",
+        "url": "sfx_jump",
         "preload": true
       },
       "frog_jump_2": {
-        "url": "assets/audio/sfx/sfx_select.mp3",
+        "url": "sfx_select",
         "preload": true
       },
       "frog_hurt": {
-        "url": "assets/audio/sfx/sfx_hurt.mp3",
+        "url": "sfx_hurt",
         "preload": true
       },
       "frog_die": {
-        "url": "assets/audio/sfx/sfx_disappear.mp3",
+        "url": "sfx_disappear",
         "preload": true
       },
       "frog_attack": {
-        "url": "assets/audio/sfx/sfx_throw.mp3",
+        "url": "sfx_throw",
         "preload": true
       },
       "enemy_walk": {
-        "url": "assets/audio/sfx/sfx_select.mp3",
+        "url": "sfx_select",
         "preload": true
       },
       "enemy_jump": {
-        "url": "assets/audio/sfx/sfx_jump.mp3",
+        "url": "sfx_jump",
         "preload": true
       },
       "enemy_attack": {
-        "url": "assets/audio/sfx/sfx_throw.mp3",
+        "url": "sfx_throw",
         "preload": true
       },
       "enemy_hurt": {
-        "url": "assets/audio/sfx/sfx_hurt.mp3",
+        "url": "sfx_hurt",
         "preload": true
       },
       "enemy_die": {
-        "url": "assets/audio/sfx/sfx_disappear.mp3",
+        "url": "sfx_disappear",
         "preload": true
       },
       "coin_collect": {
-        "url": "assets/audio/sfx/sfx_coin.mp3",
+        "url": "sfx_coin",
         "preload": true
       },
       "key_collect": {
-        "url": "assets/audio/sfx/sfx_gem.mp3",
+        "url": "sfx_gem",
         "preload": true
       },
       "flag_reach": {
-        "url": "assets/audio/sfx/sfx_magic.mp3",
+        "url": "sfx_magic",
         "preload": true
       },
       "spike_damage": {
-        "url": "assets/audio/sfx/sfx_hurt.mp3",
+        "url": "sfx_hurt",
         "preload": true
       }
     }

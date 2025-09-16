@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { URLParameterManager } from '../utils/URLParameterManager';
+import { extendLoader } from '../loaders/LoaderExtensions';
 
 export class Boot extends Scene
 {
@@ -17,6 +18,10 @@ export class Boot extends Scene
         //  The smaller the file size of the assets, the better, as the Boot Scene itself has no preloader.
 
         this.load.image('background', 'assets/bg.png');
+        
+        // 加载游戏配置文件
+        console.log('[Boot] 加载游戏配置文件...');
+        this.load.gameConfig('game-config', 'assets/game_config.json');
     }
 
     create ()
@@ -24,6 +29,7 @@ export class Boot extends Scene
         // 处理URL参数
         this.handleURLParameters();
         
+        console.log('[Boot] 游戏配置加载完成，启动Preloader...');
         this.scene.start('Preloader');
     }
 

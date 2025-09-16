@@ -1,4 +1,5 @@
 import { eventBus, GameEvent } from '../events/EventBus';
+import { GlobalResourceManager } from '../resourceManager/GlobalResourceManager';
 
 // 音频类型枚举
 export enum AudioType {
@@ -741,9 +742,20 @@ export class AudioManager {
             return;
         }
 
+        // 通过GlobalResourceManager解析实际的音频文件路径
+        const resourceManager = GlobalResourceManager.getInstance();
+        const actualUrl = resourceManager.getResourcePath(url);
+        
+        if (!actualUrl) {
+            console.error(`❌ AudioManager: 无法解析音频资源路径: ${url}`);
+            throw new Error(`Cannot resolve audio resource path: ${url}`);
+        }
+
+        console.log(`🎵 AudioManager: 动态加载音频 ${key} (${url} -> ${actualUrl})`);
+
         try {
             await new Promise<void>((resolve, reject) => {
-                this.scene!.load.audio(key, url);
+                this.scene!.load.audio(key, actualUrl);
                 
                 this.scene!.load.once('complete', () => {
                     if (this.scene!.cache.audio.exists(key)) {
@@ -770,7 +782,7 @@ export class AudioManager {
                 });
 
                 this.scene!.load.once('loaderror', () => {
-                    reject(new Error(`Failed to load audio "${key}" from "${url}"`));
+                    reject(new Error(`Failed to load audio "${key}" from "${actualUrl}" (resolved from "${url}")`));
                 });
 
                 this.scene!.load.start();

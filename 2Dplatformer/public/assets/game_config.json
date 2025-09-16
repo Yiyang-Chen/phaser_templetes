@@ -146,6 +146,125 @@
                     }
                 }
             ]
+        },
+        {
+            "type": "audio_package",
+            "id": 200,
+            "name": "audio_config",
+            "resources": [
+                {
+                    "local": {
+                        "key": "audio_config_json",
+                        "resource_type": "json",
+                        "full_path": "assets/audio/audio-config.json"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "audio_bgm",
+            "id": 201,
+            "name": "bgm_files",
+            "resources": [
+                {
+                    "local": {
+                        "key": "bgm_baltic_levity",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/bgm/Baltic Levity.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "bgm_alls_fair_in_love",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/bgm/Alls Fair In Love.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "bgm_attic_secrets",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/bgm/Attic Secrets.mp3"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 202,
+            "name": "sfx_files",
+            "resources": [
+                {
+                    "local": {
+                        "key": "sfx_bump",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_bump.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_select",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_select.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_jump",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_jump.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_jump_high",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_jump-high.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_throw",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_throw.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_hurt",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_hurt.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_disappear",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_disappear.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_coin",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_coin.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_gem",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_gem.mp3"
+                    }
+                },
+                {
+                    "local": {
+                        "key": "sfx_magic",
+                        "resource_type": "audio",
+                        "full_path": "assets/audio/sfx/sfx_magic.mp3"
+                    }
+                }
+            ]
         }
     ],
     "scenes": [

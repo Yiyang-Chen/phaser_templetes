@@ -5,7 +5,7 @@
 ## 📁 文件结构
 
 ```
-loaders/
+resourceManager/
 ├── CustomLoadFile/              # 自定义文件类型
 │   ├── CustomTilemapFile.ts    # 自定义Tilemap文件类型
 │   └── SpriteAtlasFile.ts      # 精灵图集文件类型
@@ -34,7 +34,7 @@ loaders/
 
 ### 1. 在main.ts中初始化
 ```typescript
-import { extendLoader } from './game/loaders/LoaderExtensions';
+import { extendLoader } from './game/resourceManager/LoaderExtensions';
 
 const StartGame = (parent: string) => {
     // 注册所有自定义加载器
