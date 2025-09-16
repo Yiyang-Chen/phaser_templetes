@@ -15,6 +15,12 @@ interface PlayerAbilities {
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+    private wasdKeys: {
+        W: Phaser.Input.Keyboard.Key;
+        A: Phaser.Input.Keyboard.Key;
+        S: Phaser.Input.Keyboard.Key;
+        D: Phaser.Input.Keyboard.Key;
+    };
     private moveSpeed: number = 200;
     private jumpSpeed: number = 500;
     private currentAnimation: string = '';
@@ -125,6 +131,14 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setPushable(false);
         
         this.cursors = scene.input.keyboard!.createCursorKeys();
+        
+        // Initialize WASD keys
+        this.wasdKeys = {
+            W: scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.W),
+            A: scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A),
+            S: scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.S),
+            D: scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+        };
         
         this.shootKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.X);
         
@@ -300,8 +314,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         
         // Horizontal movement (keyboard or mobile)
         if (this.abilities.canMove) {
-            const leftPressed = this.cursors.left.isDown || mobileX < -0.3;
-            const rightPressed = this.cursors.right.isDown || mobileX > 0.3;
+            const leftPressed = this.cursors.left.isDown || this.wasdKeys.A.isDown || mobileX < -0.3;
+            const rightPressed = this.cursors.right.isDown || this.wasdKeys.D.isDown || mobileX > 0.3;
             
             if (leftPressed) {
                 this.setVelocityX(-this.moveSpeed * (mobileX !== 0 ? Math.abs(mobileX) : 1));
@@ -340,7 +354,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.setVelocityX(0);
             
-            if (onGround && !this.cursors.down.isDown && !this.isCharging) {
+            if (onGround && !this.cursors.down.isDown && !this.wasdKeys.S.isDown && !this.isCharging) {
                 this.playAnimation('idle');
                 
                 // Emit player idle event
@@ -351,18 +365,19 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         }
         
         // Duck state (keyboard or mobile joystick down)
-        const isDucking = (this.cursors.down.isDown || mobileY > 0.5) && onGround;
+        const isDucking = (this.cursors.down.isDown || this.wasdKeys.S.isDown || mobileY > 0.5) && onGround;
         
         // Jump keys setup
         const spaceKey = this.scene.input.keyboard?.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         const upKey = this.cursors.up;
+        const wKey = this.wasdKeys.W;
         
         // Check if either jump key is pressed (keyboard or mobile)
-        const jumpKeyPressed = spaceKey?.isDown || upKey.isDown || this.mobileJumpPressed;
+        const jumpKeyPressed = spaceKey?.isDown || upKey.isDown || wKey.isDown || this.mobileJumpPressed;
         const jumpKeyJustPressed = Phaser.Input.Keyboard.JustDown(spaceKey!) || Phaser.Input.Keyboard.JustDown(upKey) || 
-                                  this.mobileJumpJustPressed;
+                                  Phaser.Input.Keyboard.JustDown(wKey) || this.mobileJumpJustPressed;
         const jumpKeyJustReleased = Phaser.Input.Keyboard.JustUp(spaceKey!) || Phaser.Input.Keyboard.JustUp(upKey) || 
-                                   this.mobileJumpJustReleased;
+                                   Phaser.Input.Keyboard.JustUp(wKey) || this.mobileJumpJustReleased;
         
         // Handle jump logic
         if (jumpKeyJustPressed && !this.isCharging) {
