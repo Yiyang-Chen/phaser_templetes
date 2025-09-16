@@ -148,23 +148,9 @@
             ]
         },
         {
-            "type": "audio_package",
-            "id": 200,
-            "name": "audio_config",
-            "resources": [
-                {
-                    "local": {
-                        "key": "audio_config_json",
-                        "resource_type": "json",
-                        "full_path": "assets/audio/audio-config.json"
-                    }
-                }
-            ]
-        },
-        {
             "type": "audio_bgm",
             "id": 201,
-            "name": "bgm_files",
+            "name": "bgm_baltic_levity",
             "resources": [
                 {
                     "local": {
@@ -172,14 +158,28 @@
                         "resource_type": "audio",
                         "full_path": "assets/audio/bgm/Baltic Levity.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_bgm",
+            "id": 202,
+            "name": "bgm_alls_fair_in_love",
+            "resources": [
                 {
                     "local": {
                         "key": "bgm_alls_fair_in_love",
                         "resource_type": "audio",
                         "full_path": "assets/audio/bgm/Alls Fair In Love.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_bgm",
+            "id": 203,
+            "name": "bgm_attic_secrets",
+            "resources": [
                 {
                     "local": {
                         "key": "bgm_attic_secrets",
@@ -191,8 +191,8 @@
         },
         {
             "type": "audio_sfx",
-            "id": 202,
-            "name": "sfx_files",
+            "id": 204,
+            "name": "sfx_bump",
             "resources": [
                 {
                     "local": {
@@ -200,63 +200,126 @@
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_bump.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 205,
+            "name": "sfx_select",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_select",
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_select.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 206,
+            "name": "sfx_jump",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_jump",
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_jump.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 207,
+            "name": "sfx_jump_high",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_jump_high",
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_jump-high.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 208,
+            "name": "sfx_throw",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_throw",
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_throw.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 209,
+            "name": "sfx_hurt",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_hurt",
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_hurt.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 210,
+            "name": "sfx_disappear",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_disappear",
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_disappear.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 211,
+            "name": "sfx_coin",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_coin",
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_coin.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 212,
+            "name": "sfx_gem",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_gem",
                         "resource_type": "audio",
                         "full_path": "assets/audio/sfx/sfx_gem.mp3"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "type": "audio_sfx",
+            "id": 213,
+            "name": "sfx_magic",
+            "resources": [
                 {
                     "local": {
                         "key": "sfx_magic",
