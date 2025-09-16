@@ -1,5 +1,7 @@
 # Phaser 自定义加载器开发指南
 
+> **注意**: 本项目的加载器系统位于 `src/game/resourceManager/` 目录中，已从原来的 `loaders/` 重命名为 `resourceManager/` 以更好地反映其职责范围。
+
 ## 概述
 
 本文档介绍如何在Phaser中创建完全自定义的加载器，使其能够像原生的 `this.load.image()` 一样触发标准的Phaser事件并完全集成到加载系统中。
@@ -378,11 +380,11 @@ export class CustomPreloader extends Scene {
 
 ```typescript
 // main.ts
-import { registerCustomLoaders } from './resourceManager/CustomLoaders';
+import { extendLoader } from './game/resourceManager/LoaderExtensions';
 
 const StartGame = (parent: string) => {
-    // 注册自定义加载器
-    registerCustomLoaders();
+    // 注册所有自定义加载器
+    extendLoader();
     
     // 其他初始化代码...
     const game = new Game(config);

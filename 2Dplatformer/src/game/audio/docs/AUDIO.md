@@ -8,8 +8,11 @@
 
 ### 核心组件
 
-- **AudioManager**: 统一音频管理器，单例模式
-- **音频配置文件**: `public/assets/audio/audio-config.json`
+- **AudioManager**: 统一音频管理器，单例模式（`src/game/audio/AudioManager.ts`）
+- **GlobalResourceManager**: 全局资源管理器，解析音频资源路径（`src/game/resourceManager/GlobalResourceManager.ts`）
+- **AudioConfigLoader**: 音频配置加载器（`src/game/resourceManager/CustomLoader/AudioConfigLoader.ts`）
+- **音频配置文件**: `public/assets/audio/audio-config.json` - 使用资源键引用音频文件
+- **游戏配置文件**: `public/assets/game_config.json` - 定义音频资源的实际路径
 - **音频资源**: 存放在 `public/assets/audio/` 目录下
 
 ### 特性
@@ -20,35 +23,127 @@
 - ✅ **懒加载支持**: 支持预加载和按需加载策略
 - ✅ **音量控制**: 独立的BGM和SFX音量控制
 - ✅ **事件驱动**: 基于EventBus的音频事件系统
+- ✅ **统一资源管理**: 通过GlobalResourceManager支持本地/远程音频资源
 
 ## 📁 文件结构
 
 ```
 src/game/audio/
-├── AudioManager.ts          # 统一音频管理器
+├── AudioManager.ts           # 统一音频管理器
+└── docs/
+    └── AUDIO.md             # 本文档
 
-public/assets/audio/
-├── audio-config.json        # 音频配置文件
-├── bgm/                     # 背景音乐文件
-│   ├── Alls Fair In Love.mp3
-│   ├── Attic Secrets.mp3
-│   └── Baltic Levity.mp3
-└── sfx/                    # 音效文件
-    ├── sfx_bump.mp3
-    ├── sfx_coin.mp3
-    ├── sfx_disappear.mp3
-    ├── sfx_gem.mp3
-    ├── sfx_hurt.mp3
-    ├── sfx_jump-high.mp3
-    ├── sfx_jump.mp3
-    ├── sfx_magic.mp3
-    ├── sfx_select.mp3
-    └── sfx_throw.mp3
+src/game/resourceManager/     # 🆕 资源管理系统
+├── GlobalResourceManager.ts  # 全局资源管理器
+├── LoaderExtensions.ts      # 加载器扩展注册
+└── CustomLoader/
+    └── AudioConfigLoader.ts # 音频配置加载器
+
+public/assets/
+├── game_config.json         # 🎯 统一资源配置（定义音频文件路径）
+└── audio/
+    ├── audio-config.json    # 音频配置文件（使用资源键引用）
+    ├── bgm/                 # 背景音乐文件
+    │   ├── Alls Fair In Love.mp3
+    │   ├── Attic Secrets.mp3
+    │   └── Baltic Levity.mp3
+    └── sfx/                 # 音效文件
+        ├── sfx_bump.mp3
+        ├── sfx_coin.mp3
+        ├── sfx_disappear.mp3
+        ├── sfx_gem.mp3
+        ├── sfx_hurt.mp3
+        ├── sfx_jump-high.mp3
+        ├── sfx_jump.mp3
+        ├── sfx_magic.mp3
+        ├── sfx_select.mp3
+        └── sfx_throw.mp3
 ```
 
 ## ⚙️ 配置文件
 
-### 主配置文件 (`audio-config.json`)
+### 🆕 资源管理系统
+
+从版本2.0开始，音频系统采用统一的资源管理方式：
+
+#### 1. 游戏配置文件 (`game_config.json`)
+定义音频资源的实际路径：
+
+```json
+{
+  "assets": [
+    {
+      "type": "audio_bgm",
+      "id": 201,
+      "name": "bgm_files",
+      "resources": [
+        {
+          "local": {
+            "key": "bgm_baltic_levity",
+            "resource_type": "audio",
+            "full_path": "assets/audio/bgm/Baltic Levity.mp3"
+          }
+        },
+        {
+          "remote": {
+            "key": "bgm_alls_fair_in_love", 
+            "resource_type": "audio",
+            "url": "https://cdn.example.com/audio/bgm/Alls Fair In Love.mp3"
+          }
+        }
+      ]
+    },
+    {
+      "type": "audio_sfx",
+      "id": 202,
+      "name": "sfx_files", 
+      "resources": [
+        {
+          "local": {
+            "key": "sfx_jump",
+            "resource_type": "audio",
+            "full_path": "assets/audio/sfx/sfx_jump.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### 2. 音频配置文件 (`audio-config.json`)
+使用key引用资源，而不是硬编码路径：
+
+```json
+{
+  "assets": {
+    "bgm": {
+      "menu_theme": {
+        "url": "bgm_baltic_levity",     // 🆕 使用key引用
+        "preload": true,
+        "volume": 0.7,
+        "loop": true
+      },
+      "game_theme": {
+        "url": "bgm_alls_fair_in_love", // 🆕 使用key引用
+        "preload": false,
+        "volume": 0.5,
+        "loop": true
+      }
+    },
+    "sfx": {
+      "player_jump": {
+        "url": "sfx_jump",              // 🆕 使用key引用
+        "preload": true,
+        "volume": 0.8,
+        "loop": false
+      }
+    }
+  }
+}
+```
+
+### 主配置文件 (`audio-config.json`) - 完整结构
 
 ```json
 {
@@ -80,15 +175,21 @@ public/assets/audio/
   "assets": {
     "bgm": {
       "menu_theme": {
-        "url": "assets/audio/bgm/Alls Fair In Love.mp3",
+        "url": "bgm_baltic_levity",
         "preload": true,
         "volume": 0.6,
+        "loop": true
+      },
+      "game_theme": {
+        "url": "bgm_alls_fair_in_love",
+        "preload": false,
+        "volume": 0.5,
         "loop": true
       }
     },
     "sfx": {
       "player_jump": {
-        "url": "assets/audio/sfx/sfx_jump.mp3",
+        "url": "sfx_jump",
         "preload": true,
         "volume": 0.8
       }
@@ -96,6 +197,12 @@ public/assets/audio/
   }
 }
 ```
+
+**🔗 资源键引用说明**：
+- `url` 字段现在使用 **ResourceManager 中定义的资源键**，而不是直接的文件路径
+- AudioManager 会自动通过 `GlobalResourceManager.getResourcePath()` 解析实际的文件路径
+- 支持本地文件和远程CDN资源的统一管理
+- 资源键在 `game_config.json` 中定义，如 `bgm_baltic_levity` → `assets/audio/bgm/Baltic Levity.mp3`
 
 ### 配置项说明
 
@@ -233,15 +340,39 @@ AudioManager会自动监听用户交互（点击、触摸、按键）来解锁�
 
 ### 添加新的BGM
 
-1. 将音频文件放入 `public/assets/audio/bgm/` 目录
-2. 在 `audio-config.json` 中添加配置：
+#### 步骤1: 添加资源到ResourceManager
+在 `game_config.json` 中定义音频资源：
+
+```json
+{
+  "assets": [
+    {
+      "type": "audio_bgm",
+      "id": 203,
+      "name": "new_bgm_files",
+      "resources": [
+        {
+          "local": {
+            "key": "bgm_new_theme",
+            "resource_type": "audio",
+            "full_path": "assets/audio/bgm/new_theme.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### 步骤2: 在音频配置中引用资源键
+在 `audio-config.json` 中添加配置：
 
 ```json
 {
   "assets": {
     "bgm": {
       "new_theme": {
-        "url": "assets/audio/bgm/new_theme.mp3",
+        "url": "bgm_new_theme",
         "preload": true,
         "volume": 0.7,
         "loop": true
@@ -251,7 +382,8 @@ AudioManager会自动监听用户交互（点击、触摸、按键）来解锁�
 }
 ```
 
-3. 在场景映射中关联：
+#### 步骤3: 配置场景映射
+在场景映射中关联：
 
 ```json
 {
@@ -267,15 +399,39 @@ AudioManager会自动监听用户交互（点击、触摸、按键）来解锁�
 
 ### 添加新的音效
 
-1. 将音频文件放入 `public/assets/audio/sfx/` 目录
-2. 在配置文件中添加：
+#### 步骤1: 添加资源到ResourceManager
+在 `game_config.json` 中定义音效资源：
+
+```json
+{
+  "assets": [
+    {
+      "type": "audio_sfx",
+      "id": 204,
+      "name": "new_sfx_files",
+      "resources": [
+        {
+          "local": {
+            "key": "sfx_new_sound",
+            "resource_type": "audio",
+            "full_path": "assets/audio/sfx/new_sound.mp3"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### 步骤2: 在音频配置中引用资源键
+在 `audio-config.json` 中添加配置：
 
 ```json
 {
   "assets": {
     "sfx": {
       "new_sound": {
-        "url": "assets/audio/sfx/new_sound.mp3",
+        "url": "sfx_new_sound",
         "preload": true,
         "volume": 0.6
       }
@@ -284,7 +440,8 @@ AudioManager会自动监听用户交互（点击、触摸、按键）来解锁�
 }
 ```
 
-3. 可选：绑定到动画
+#### 步骤3: 可选 - 绑定到动画
+在动画映射中关联：
 
 ```json
 {
@@ -337,6 +494,8 @@ A: 在 `sceneMapping` 中不配置该场景，或设置为空字符串。
 - ✅ 移除旧的BGMPlayer和SoundEffectPlayer
 - ✅ 清理旧的配置文件(bgm-config.json, sound_effect/config.json)
 - ✅ 重组音频目录结构(sound_effect → sfx)
+- ✅ 集成GlobalResourceManager，支持资源键引用
+- ✅ 支持本地和远程音频资源的统一管理
 
 ### v1.0.0 (已废弃)
 - ❌ 分离的BGMPlayer和SoundEffectPlayer

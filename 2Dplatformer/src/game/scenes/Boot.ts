@@ -1,6 +1,5 @@
 import { Scene } from 'phaser';
 import { URLParameterManager } from '../utils/URLParameterManager';
-import { extendLoader } from '../loaders/LoaderExtensions';
 
 export class Boot extends Scene
 {
@@ -19,16 +18,15 @@ export class Boot extends Scene
 
         this.load.image('background', 'assets/bg.png');
         
-        // 加载游戏配置文件
-        console.log('[Boot] 加载游戏配置文件...');
-        this.load.gameConfig('game-config', 'assets/game_config.json');
+        // 处理URL参数
+        this.handleURLParameters();
+
+        // 加载游戏配置文件（支持远程配置）
+        this.loadGameConfig();
     }
 
     create ()
     {
-        // 处理URL参数
-        this.handleURLParameters();
-        
         console.log('[Boot] 游戏配置加载完成，启动Preloader...');
         this.scene.start('Preloader');
     }
@@ -53,5 +51,60 @@ export class Boot extends Scene
             this.registry.set('selectedLevel', selectedLevel);
             console.log(`[Boot] 设置关卡: ${selectedLevel}`);
         }
+    }
+
+    /**
+     * 加载游戏配置文件（支持远程配置）
+     */
+    private loadGameConfig(): void {
+        // 检查是否有dev_game_config_token参数
+        const devConfigUrl = this.urlParams.getParameter('dev_game_config_token');
+        
+        if (devConfigUrl) {
+            console.log('[Boot] 检测到dev_game_config_token参数，尝试从远程加载配置:', devConfigUrl);
+            
+            // 验证URL格式
+            try {
+                new URL(devConfigUrl);
+            } catch (urlError) {
+                console.warn('[Boot] 无效的URL格式，使用本地配置:', devConfigUrl);
+                this.loadLocalGameConfig();
+                return;
+            }
+            
+            // 尝试加载远程配置，失败时回退到本地
+            this.loadRemoteGameConfig(devConfigUrl);
+        } else {
+            // 使用本地配置文件
+            console.log('[Boot] 使用本地游戏配置文件...');
+            this.loadLocalGameConfig();
+        }
+    }
+
+    /**
+     * 从远程URL加载游戏配置
+     */
+    private loadRemoteGameConfig(url: string): void {
+        console.log('[Boot] 使用GameConfigLoader加载远程配置:', url);
+        
+        // 直接使用GameConfigLoader加载远程配置
+        // 这样可以复用所有现有的处理逻辑
+        this.load.gameConfig('remote-game-config', url);
+        
+        // 监听加载错误，失败时回退到本地配置
+        this.load.once('loaderror', (file: any) => {
+            if (file.key === 'remote-game-config') {
+                console.warn('[Boot] 远程配置加载失败，回退到本地配置:', file.src);
+                this.loadLocalGameConfig();
+            }
+        });
+    }
+
+    /**
+     * 加载本地游戏配置
+     */
+    private loadLocalGameConfig(): void {
+        console.log('[Boot] 加载本地游戏配置文件');
+        this.load.gameConfig('game-config', 'assets/game_config.json');
     }
 }

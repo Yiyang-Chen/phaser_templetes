@@ -36,6 +36,25 @@ https://yourgame.com/?level=3
 - 参数必须是正整数（1, 2, 3...）
 - 无效参数会显示警告并使用默认流程
 
+### 🆕 dev_game_config_token (开发配置参数)
+
+用于开发和测试环境，允许从远程URL加载游戏配置文件。
+
+**使用方法：**
+```
+https://yourgame.com/?dev_game_config_token=https://example.com/config/game_config.json
+```
+
+**效果：**
+- 优先从指定URL下载game_config.json
+- 下载失败时自动回退到本地配置文件
+- 支持动态配置切换，便于开发测试
+- URL必须是有效的HTTP/HTTPS地址
+
+**安全说明：**
+- 仅建议在开发和测试环境中使用
+- 生产环境应禁用此功能或添加域名白名单验证
+
 ## 技术实现示例
 
 ### 架构设计
@@ -94,6 +113,23 @@ export class Boot extends Scene {
         this.urlParams = URLParameterManager.getInstance();
     }
 
+    preload() {
+        // 加载基础资源
+        this.load.image('background', 'assets/bg.png');
+        
+        // 处理URL参数（在preload阶段处理）
+        this.handleURLParameters();
+        
+        // 根据参数加载配置
+        this.loadGameConfig();
+    }
+
+    create() {
+        // 所有资源和配置已加载完成
+        console.log('[Boot] 游戏配置加载完成，启动Preloader...');
+        this.scene.start('Preloader');
+    }
+
     private handleURLParameters(): void {
         // 调试模式处理
         if (this.urlParams.isDebugMode()) {
@@ -102,13 +138,54 @@ export class Boot extends Scene {
                 this.game.config.physics.arcade.debug = true;
             }
             this.registry.set('debugMode', true);
+            console.log('[Boot] 🐛 调试模式已启用');
         }
         
         // 关卡选择处理
         if (this.urlParams.hasLevel()) {
             const selectedLevel = this.urlParams.getLevel();
             this.registry.set('selectedLevel', selectedLevel);
+            console.log(`[Boot] 🎯 设置关卡: ${selectedLevel}`);
         }
+    }
+
+    private loadGameConfig(): void {
+        // 检查远程配置参数
+        const devConfigUrl = this.urlParams.getParameter('dev_game_config_token');
+        
+        if (devConfigUrl) {
+            console.log('[Boot] 🌐 检测到dev_game_config_token参数，尝试从远程加载配置');
+            this.loadRemoteGameConfig(devConfigUrl);
+        } else {
+            console.log('[Boot] 📁 使用本地游戏配置文件');
+            this.loadLocalGameConfig();
+        }
+    }
+
+    private loadRemoteGameConfig(url: string): void {
+        // 验证URL格式
+        try {
+            new URL(url);
+        } catch (urlError) {
+            console.warn('[Boot] ❌ 无效的URL格式，使用本地配置:', url);
+            this.loadLocalGameConfig();
+            return;
+        }
+
+        // 使用GameConfigLoader加载远程配置
+        this.load.gameConfig('remote-game-config', url);
+        
+        // 监听加载错误，失败时回退到本地配置
+        this.load.once('loaderror', (file: any) => {
+            if (file.key === 'remote-game-config') {
+                console.warn('[Boot] ⚠️ 远程配置加载失败，回退到本地配置');
+                this.loadLocalGameConfig();
+            }
+        });
+    }
+
+    private loadLocalGameConfig(): void {
+        this.load.gameConfig('game-config', 'assets/game_config.json');
     }
 }
 ```
@@ -131,6 +208,31 @@ console.log('当前关卡:', selectedLevel);
 // 或者直接从URLParameterManager获取
 const levelFromManager = urlParams.getLevel() || 1;
 console.log('当前关卡:', levelFromManager);
+```
+
+## 组合参数使用
+
+### 开发调试组合
+
+```
+# 使用远程配置 + 调试模式 + 指定关卡
+https://yourgame.com/?dev_game_config_token=https://dev-server.com/configs/test_config.json&debug=true&level=2
+
+# 仅调试模式 + 指定关卡
+https://yourgame.com/?debug=true&level=1
+```
+
+### 测试场景示例
+
+```
+# 测试新资源配置
+https://yourgame.com/?dev_game_config_token=https://cdn.example.com/test/game_config_v2.json
+
+# 快速测试特定关卡
+https://yourgame.com/?level=3&debug=true
+
+# 生产环境调试（不推荐）
+https://yourgame.com/?debug=true
 ```
 
 ## 扩展指南

@@ -5,16 +5,21 @@ This guide documents how to configure `public/assets/tilemap/scenes/tilemap.json
 
 ## System Overview
 
-### File Loading Flow
-1. **Preloader** loads `tilemap.json` and parses tileset references
-2. **Game Scene** creates tilemap layers and instantiates objects
-3. **Sprites** read properties from both tilesets and object instances
-4. **Properties cascade**: Tileset defaults → Object overrides
+### 🆕 Resource Loading Flow (v2.0)
+1. **Boot Scene (preload)** - 处理URL参数，加载`game_config.json`并初始化GlobalResourceManager
+2. **Boot Scene (create)** - 所有配置加载完成，启动Preloader场景
+3. **Preloader** - 加载`tilemap.json`并通过资源键解析实际路径
+4. **CustomTileMapLoader** - 自动使用资源键加载tileset资源
+5. **Game Scene** - 创建tilemap图层并实例化游戏对象
+6. **Sprites** - 从tileset和对象实例读取属性
+7. **Properties cascade** - Tileset默认值 → 对象覆盖值
 
 ### Core Components
-- **Tilemap**: JSON file defining the level structure
+- **game_config.json**: Central resource configuration defining asset paths
+- **GlobalResourceManager**: Resolves resource keys to local/remote paths
+- **Tilemap**: JSON file defining level structure using resource keys
 - **Layers**: Tile layers (terrain) and Object layers (entities)
-- **Tilesets**: Asset definitions with default properties
+- **Tilesets**: Asset definitions using resource keys instead of hardcoded paths
 - **Objects**: Game entities with specific behaviors
 - **Properties**: Configuration parameters for customization
 
@@ -410,11 +415,37 @@ Contains all interactive entities.
 
 ## Tileset Configuration
 
-### Basic Tileset
+### 🆕 Resource Key System (v2.0)
+
+Tilesets now use resource keys instead of hardcoded file paths. The actual paths are resolved through `game_config.json`.
+
+#### 1. Configure Resource in game_config.json
+```json
+{
+  "assets": [
+    {
+      "type": "ground_asset_package",
+      "id": 1,
+      "name": "terrain_grass",
+      "resources": [
+        {
+          "remote": {
+            "key": "terrain_grass_block_center",
+            "resource_type": "image",
+            "url": "https://cdn.example.com/assets/tilemap/tiles/terrain_grass_block_center.png"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### 2. Reference in Tilemap using Resource Key
 ```json
 {
   "firstgid": 1,            // Global ID start
-  "image": "assets/tilemap/tiles/terrain_grass_block_center.png",
+  "image": "terrain_grass_block_center",  // 🆕 Resource key instead of path
   "imageheight": 64,
   "imagewidth": 64,
   "name": "terrain_grass_block_center",
@@ -436,11 +467,65 @@ Contains all interactive entities.
 }
 ```
 
+### ⚠️ Migration from Hardcoded Paths
+
+**Old Way (Deprecated):**
+```json
+{
+  "image": "assets/tilemap/tiles/terrain_grass_block_center.png"  // ❌ Hardcoded path
+}
+```
+
+**New Way (Recommended):**
+```json
+{
+  "image": "terrain_grass_block_center"  // ✅ Resource key
+}
+```
+
 ### Sprite Atlas Tileset
+
+#### 1. Configure Sprite Resources in game_config.json
+```json
+{
+  "assets": [
+    {
+      "type": "sprite",
+      "id": 3,
+      "name": "character_purple",
+      "resources": [
+        {
+          "remote": {
+            "key": "character_purple_image",
+            "resource_type": "image",
+            "url": "https://cdn.example.com/assets/player/character_purple.png"
+          }
+        },
+        {
+          "remote": {
+            "key": "character_purple_json",
+            "resource_type": "json", 
+            "url": "https://cdn.example.com/assets/player/character_purple.json"
+          }
+        },
+        {
+          "remote": {
+            "key": "character_purple_animators",
+            "resource_type": "json",
+            "url": "https://cdn.example.com/assets/player/character_purple_animators.json"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### 2. Reference in Tilemap using Resource Key
 ```json
 {
   "firstgid": 3,
-  "image": "assets/player/character_purple.png",
+  "image": "character_purple_image",  // 🆕 Use image resource key
   "name": "character_purple",
   "tiles": [
     {
@@ -457,10 +542,10 @@ Contains all interactive entities.
 }
 ```
 
-**Required Atlas Files:**
-- `character_purple.png`: Sprite sheet
-- `character_purple.json`: Frame definitions
-- `character_purple_animators.json`: Animation config
+**Required Atlas Files (Auto-loaded by CustomTileMapLoader):**
+- `character_purple_image`: Sprite sheet (PNG)
+- `character_purple_json`: Frame definitions (JSON)
+- `character_purple_animators`: Animation config (JSON)
 
 #### ⚠️ Critical: Sprite Atlas Configuration
 
@@ -472,7 +557,7 @@ Contains all interactive entities.
 ```json
 {
   "firstgid": 3,
-  "image": "assets/player/character_purple.png",
+  "image": "character_purple_image",  // 🆕 Use resource key
   "name": "character_purple",
   "tiles": [
     {
@@ -791,9 +876,132 @@ Place platforms requiring specific abilities:
 - `src/game/sprites/*.ts`: Object implementations
 
 ### Asset Files
-- `public/assets/tilemap/scenes/tilemap.json`: Level data
-- `public/assets/*/`: Graphics and audio
-- `public/assets/*/*.json`: Atlas definitions
+- `public/assets/game_config.json`: 🆕 Central resource configuration
+- `public/assets/tilemap/scenes/tilemap.json`: Level data (uses resource keys)
+- `public/assets/*/`: Graphics and audio (referenced by keys)
+- `public/assets/*/*.json`: Atlas definitions (referenced by keys)
+
+## 🆕 Resource Management Integration (v2.0)
+
+### Unified Asset Loading
+
+The tilemap system now integrates with the unified resource management system:
+
+#### Configuration Flow
+1. **Define resources** in `game_config.json` with local/remote paths
+2. **Reference by key** in `tilemap.json` instead of hardcoded paths
+3. **Auto-resolution** by CustomTileMapLoader during loading
+4. **Flexible deployment** - switch between local/remote without changing tilemap
+
+#### Example Complete Configuration
+
+**game_config.json:**
+```json
+{
+  "assets": [
+    {
+      "type": "ground_asset_package",
+      "id": 1,
+      "name": "terrain_grass",
+      "resources": [
+        {
+          "remote": {
+            "key": "terrain_grass_block_center",
+            "resource_type": "image",
+            "url": "https://cdn.example.com/tiles/grass_center.png"
+          }
+        },
+        {
+          "remote": {
+            "key": "terrain_grass_block_top", 
+            "resource_type": "image",
+            "url": "https://cdn.example.com/tiles/grass_top.png"
+          }
+        }
+      ]
+    },
+    {
+      "type": "sprite",
+      "id": 3,
+      "name": "character_purple",
+      "resources": [
+        {
+          "remote": {
+            "key": "character_purple_image",
+            "resource_type": "image",
+            "url": "https://cdn.example.com/sprites/character_purple.png"
+          }
+        },
+        {
+          "remote": {
+            "key": "character_purple_json",
+            "resource_type": "json",
+            "url": "https://cdn.example.com/sprites/character_purple.json"
+          }
+        },
+        {
+          "remote": {
+            "key": "character_purple_animators",
+            "resource_type": "json", 
+            "url": "https://cdn.example.com/sprites/character_purple_animators.json"
+          }
+        }
+      ]
+    }
+  ]
+}
+```
+
+**tilemap.json (using resource keys):**
+```json
+{
+  "tilesets": [
+    {
+      "firstgid": 1,
+      "image": "terrain_grass_block_center",  // Resource key
+      "name": "terrain_grass_block_center"
+    },
+    {
+      "firstgid": 2,
+      "image": "terrain_grass_block_top",     // Resource key
+      "name": "terrain_grass_block_top"
+    },
+    {
+      "firstgid": 3,
+      "image": "character_purple_image",     // Resource key
+      "name": "character_purple",
+      "tiles": [
+        {
+          "id": 0,
+          "properties": [
+            {
+              "name": "atlas",
+              "type": "bool",
+              "value": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Benefits of Resource Key System
+
+- ✅ **Flexible Deployment**: Switch between local/CDN without changing tilemap
+- ✅ **Version Control**: Easy asset versioning through URL changes
+- ✅ **Performance**: Optimized loading with proper caching headers
+- ✅ **Scalability**: Support for multiple environments (dev/staging/prod)
+- ✅ **Maintainability**: Centralized asset path management
+
+### Migration Guide
+
+**Step 1:** Add resources to `game_config.json`
+**Step 2:** Replace hardcoded paths with resource keys in `tilemap.json`
+**Step 3:** Test loading in both development and production environments
+
+For detailed information, see [RESOURCE_MANAGEMENT_GUIDE.md](./RESOURCE_MANAGEMENT_GUIDE.md).
 
 ## Summary
 
@@ -803,6 +1011,7 @@ This tilemap configuration system provides:
 3. **Seven object types** with specific behaviors
 4. **Trigger system** for dynamic interactions
 5. **Sprite atlas support** for animations
+6. **🆕 Unified resource management** with local/remote asset support
 
 Key principles:
 - Properties cascade from tileset to object

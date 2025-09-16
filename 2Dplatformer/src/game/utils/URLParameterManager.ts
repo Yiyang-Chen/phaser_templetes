@@ -64,4 +64,20 @@ export class URLParameterManager {
     public hasLevel(): boolean {
         return this.level !== null;
     }
+
+    /**
+     * 获取指定的URL参数
+     */
+    public getParameter(name: string): string | null {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    /**
+     * 检查是否存在指定的URL参数
+     */
+    public hasParameter(name: string): boolean {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.has(name);
+    }
 }

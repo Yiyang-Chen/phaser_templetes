@@ -23,13 +23,17 @@
                  ↓
 ┌─────────────────────────────────────┐
 │         Scene Management            │
-│   (Boot → Preloader → Game)        │
+│   Boot(preload+create) → Preloader → Game │
 └─────────────────────────────────────┘
                  ↓
 ┌─────────────────────────────────────┐
 │         Core Systems                │
 │  ┌──────────┬──────────┬─────────┐ │
 │  │ EventBus │ Managers │  Utils  │ │
+│  │          │ Resource │         │ │
+│  │          │ Manager  │         │ │
+│  │          │ Audio    │         │ │
+│  │          │ Animation│         │ │
 │  └──────────┴──────────┴─────────┘ │
 └─────────────────────────────────────┘
                  ↓
@@ -46,6 +50,7 @@
 2. **Event-Driven Communication**: Loose coupling between components
 3. **Property-Based Configuration**: Data-driven object behavior
 4. **Composition Over Inheritance**: Flexible object capabilities
+5. **Unified Resource Management**: Local/remote asset loading through configuration
 
 ## Core Design Patterns
 
@@ -1427,5 +1432,124 @@ Key principles for extension:
 - **Singleton Managers**: Centralize global state and functionality
 - **Composition Over Inheritance**: Build flexible objects through composition
 - **Type Safety**: Leverage TypeScript for robust extensions
+- **Resource Management**: Use GlobalResourceManager for unified asset loading
 
-By following these patterns and practices, you can extend the game engine while maintaining code quality, reusability, and maintainability.
+## 🆕 Resource Management System Extensions
+
+### 系统概述
+
+资源管理系统位于 `src/game/resourceManager/` 目录，提供统一的本地/远程资源加载能力：
+
+```
+src/game/resourceManager/
+├── GlobalResourceManager.ts     # 全局资源管理器（单例）
+├── LoaderExtensions.ts         # 加载器扩展注册
+├── CustomLoader/               # 自定义加载器
+│   ├── GameConfigLoader.ts     # 游戏配置加载器
+│   ├── AudioConfigLoader.ts    # 音频配置加载器
+│   └── CustomTileMapLoader.ts  # 瓦片地图加载器
+└── CustomLoadFile/             # 自定义文件类型
+    ├── AudioConfigFile.ts      # 音频配置文件
+    └── CustomTilemapFile.ts    # 自定义瓦片地图文件
+```
+
+### 添加新资源类型
+
+#### 1. 扩展GameConfig接口
+
+```typescript
+// 在 GlobalResourceManager.ts 中扩展接口
+interface CustomResourceConfig extends ResourceConfig {
+    local?: {
+        key: string;
+        resource_type: 'custom_type';
+        full_path: string;
+        custom_property?: any;
+    };
+    remote?: {
+        key: string;
+        resource_type: 'custom_type';
+        url: string;
+        custom_property?: any;
+    };
+}
+
+// Create custom loader
+export function registerCustomResourceLoader(): void {
+    Loader.LoaderPlugin.prototype.customResource = function(key: string, configPath: string) {
+        const resourceManager = GlobalResourceManager.getInstance();
+        
+        // Load configuration
+        this.json(key, configPath);
+        
+        this.once('filecomplete-json-' + key, (fileKey: string, type: string, data: any) => {
+            // Process custom resources
+            data.customResources?.forEach((resourceKey: string) => {
+                const resource = resourceManager.getResource(resourceKey);
+                if (resource && resource.local?.resource_type === 'custom_type') {
+                    const actualPath = resourceManager.getResourcePath(resourceKey);
+                    if (actualPath) {
+                        // Add to loading queue with custom handling
+                        this.customLoad(resourceKey, actualPath, resource.local.custom_property);
+                    }
+                }
+            });
+        });
+
+        return this;
+    };
+}
+```
+
+### Resource Management Best Practices
+
+```typescript
+// Use resource manager in custom components
+export class CustomGameObject extends BaseSprite {
+    private resourceManager = GlobalResourceManager.getInstance();
+    
+    constructor(scene: Scene, config: any) {
+        super(scene, config.x, config.y, config.texture, 'custom');
+        
+        // Load additional resources dynamically
+        this.loadCustomResources(config.resources);
+    }
+    
+    private async loadCustomResources(resourceKeys: string[]): Promise<void> {
+        for (const key of resourceKeys) {
+            const resource = this.resourceManager.getResource(key);
+            if (resource) {
+                const actualPath = this.resourceManager.getResourcePath(key);
+                if (actualPath) {
+                    // Load resource based on type
+                    await this.loadResourceByType(key, actualPath, resource);
+                }
+            }
+        }
+    }
+    
+    private async loadResourceByType(key: string, path: string, resource: ResourceConfig): Promise<void> {
+        const resourceType = resource.local?.resource_type || resource.remote?.resource_type;
+        
+        switch (resourceType) {
+            case 'image':
+                this.scene.load.image(key, path);
+                break;
+            case 'audio':
+                this.scene.load.audio(key, path);
+                break;
+            case 'json':
+                this.scene.load.json(key, path);
+                break;
+            // Add more resource types as needed
+        }
+        
+        return new Promise((resolve) => {
+            this.scene.load.once('complete', resolve);
+            this.scene.load.start();
+        });
+    }
+}
+```
+
+By following these patterns and practices, you can extend the game engine while maintaining code quality, reusability, and maintainability. The unified resource management system provides a solid foundation for scalable asset handling across local and remote deployments.

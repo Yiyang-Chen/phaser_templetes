@@ -22,6 +22,15 @@ Start here if you want to get the project running quickly.
 
 Read this if you want to modify game levels or add new game objects.
 
+### 4. **Resource Management System**
+**Unified Asset Loading**
+- `game_config.json` - Central resource configuration
+- Local vs Remote resource loading
+- Dynamic asset path resolution
+- Audio and tilemap resource management
+
+The game uses a unified resource management system that supports both local and remote assets through configuration.
+
 ### 3. [CODE_EXTENSION_GUIDE.md](./CODE_EXTENSION_GUIDE.md)
 **Developer Extension Guide**
 - Architecture overview
@@ -40,6 +49,8 @@ Read this if you want to extend the game engine with new features.
 | Deploy the game | [HOW_TO_BUILD.md](./HOW_TO_BUILD.md) |
 | Modify existing levels | [TILEMAP_CONFIGURATION_GUIDE.md](./TILEMAP_CONFIGURATION_GUIDE.md) |
 | Add new enemies or items | [TILEMAP_CONFIGURATION_GUIDE.md](./TILEMAP_CONFIGURATION_GUIDE.md) |
+| Configure asset loading | Resource Management System |
+| Switch between local/remote assets | Resource Management System |
 | Create new game mechanics | [CODE_EXTENSION_GUIDE.md](./CODE_EXTENSION_GUIDE.md) |
 | Add new sprite types | [CODE_EXTENSION_GUIDE.md](./CODE_EXTENSION_GUIDE.md) |
 | Understand the architecture | [CODE_EXTENSION_GUIDE.md](./CODE_EXTENSION_GUIDE.md) |
@@ -51,7 +62,8 @@ If you are an AI model reading this documentation to help with development:
 
 1. **Start with TILEMAP_CONFIGURATION_GUIDE.md** to understand how game levels are configured through JSON
 2. **Reference CODE_EXTENSION_GUIDE.md** for understanding the codebase architecture and patterns
-3. **Use HOW_TO_BUILD.md** for build and deployment commands
+3. **Check RESOURCE_MANAGEMENT_GUIDE.md** for asset loading and configuration
+4. **Use HOW_TO_BUILD.md** for build and deployment commands
 
 The tilemap configuration is data-driven - most game changes can be made by modifying JSON without touching code.
 
@@ -60,7 +72,8 @@ The tilemap configuration is data-driven - most game changes can be made by modi
 For new developers:
 1. First, follow [HOW_TO_BUILD.md](./HOW_TO_BUILD.md) to get the project running
 2. Then, explore [TILEMAP_CONFIGURATION_GUIDE.md](./TILEMAP_CONFIGURATION_GUIDE.md) to understand level creation
-3. Finally, dive into [CODE_EXTENSION_GUIDE.md](./CODE_EXTENSION_GUIDE.md) when you need to add new features
+3. Read [RESOURCE_MANAGEMENT_GUIDE.md](./RESOURCE_MANAGEMENT_GUIDE.md) to understand asset loading
+4. Finally, dive into [CODE_EXTENSION_GUIDE.md](./CODE_EXTENSION_GUIDE.md) when you need to add new features
 
 ## 📧 Questions?
 
