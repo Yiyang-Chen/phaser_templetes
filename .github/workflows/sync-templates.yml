@@ -11,12 +11,7 @@ on:
 jobs:
   sync-2dplatformer:
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'workflow_dispatch' || 
-      (github.event_name == 'push' && (
-        contains(github.event.head_commit.message, '2Dplatformer') || 
-        contains(github.event.head_commit.modified, '2Dplatformer/')
-      ))
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '2Dplatformer')
     
     steps:
     - name: Checkout source repository
@@ -86,12 +81,7 @@ jobs:
 
   sync-basetemplate:
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'workflow_dispatch' || 
-      (github.event_name == 'push' && (
-        contains(github.event.head_commit.message, 'BaseTemplete') || 
-        contains(github.event.head_commit.modified, 'BaseTemplete/')
-      ))
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'BaseTemplete')
     
     steps:
     - name: Checkout source repository
