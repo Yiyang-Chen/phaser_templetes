@@ -321,54 +321,95 @@ export class CustomPreloader extends Scene {
   },
   "assets": [
     {
-      "type": "image",
-      "key": "ui_button",
-      "url": "assets/ui/button.png"
+      "type": "static_image",
+      "id": 100,
+      "name": "ui_button",
+      "resources": [
+        {
+          "remote": {
+            "key": "ui_button",
+            "resource_type": "image",
+            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=100"
+          }
+        }
+      ]
     },
     {
-      "type": "atlas",
-      "key": "ui_elements",
-      "image": "assets/ui/elements.png",
-      "atlas": "assets/ui/elements.json"
+      "type": "sprite",
+      "id": 101,
+      "name": "ui_elements",
+      "resources": [
+        {
+          "remote": {
+            "key": "ui_elements_image",
+            "resource_type": "image",
+            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=101&key=image"
+          }
+        },
+        {
+          "remote": {
+            "key": "ui_elements_json",
+            "resource_type": "json",
+            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=101&key=atlas_json"
+          }
+        }
+      ]
     },
     {
       "type": "audio",
-      "key": "click_sound",
-      "url": "assets/audio/click.mp3"
+      "id": 102,
+      "name": "click_sound",
+      "resources": [
+        {
+          "remote": {
+            "key": "click_sound",
+            "resource_type": "audio",
+            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=audio&asset_id=102"
+          }
+        }
+      ]
     }
   ]
 }
 ```
 
+**API下载规则说明**：
+- **固定host**: `https://game-api.dev.knoffice.tech`
+- **路径**: `/game/api/v1/assets/download`
+- **参数**:
+  - `asset_type`: `static_image`、`sprite`、`audio`、`ground_asset_package` 等
+  - `asset_id`: 资源的数字ID
+  - `key`: 对于sprite类型可选 `image`、`atlas_json`、`animation_json`
+
 #### level1-pack.json
 ```json
 {
   "name": "草原关卡",
-  "tilemap": "assets/tilemap/scenes/level1.json",
-  "background": "assets/backgrounds/grassland.png",
-  "bgm": "assets/audio/bgm/grassland.mp3",
+  "tilemap": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=tilemap&asset_id=1",
+  "background": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=200",
+  "bgm": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=audio&asset_id=201",
   "sprites": [
     {
       "type": "atlas",
       "key": "player",
-      "image": "assets/player/character.png",
-      "atlas": "assets/player/character.json"
+      "image": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=image",
+      "atlas": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
     },
     {
       "type": "atlas", 
       "key": "enemies",
-      "image": "assets/enemies/pack.png",
-      "atlas": "assets/enemies/pack.json"
+      "image": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=20&key=image",
+      "atlas": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=20&key=atlas_json"
     }
   ],
   "sounds": [
     {
       "key": "jump",
-      "url": "assets/audio/sfx/jump.mp3"
+      "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=audio&asset_id=206"
     },
     {
       "key": "collect",
-      "url": "assets/audio/sfx/collect.mp3"
+      "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=audio&asset_id=211"
     }
   ]
 }

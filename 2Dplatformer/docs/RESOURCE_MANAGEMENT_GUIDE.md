@@ -164,7 +164,7 @@ public/assets/
           "remote": {
             "key": "character_purple_json",
             "resource_type": "json",
-            "url": "https://cdn.example.com/assets/player/character_purple.json"
+            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
           }
         }
       ]
@@ -208,9 +208,79 @@ public/assets/
   "remote": {
     "key": "resource_key", 
     "resource_type": "image|json|audio|tilemap",
-    "url": "https://cdn.example.com/path/to/file.ext"
+    "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=...&asset_id=...&key=..."
   }
 }
+```
+
+**API下载规则**：
+- **固定host**: `https://game-api.dev.knoffice.tech`
+- **路径**: `/game/api/v1/assets/download`
+- **查询参数**：
+  - `asset_type`（必填）：不区分大小写，接受 `static_image`、`atlas`、`sprite/sprites`、`ground_asset_package`、`audio` 或 `ASSET_TYPE_*` 枚举字符串
+  - `asset_id`（必填）：目标素材或素材包的数字ID
+  - `key`（选填）：
+    - Atlas 可用 `image` / `atlas_json` / `animation_json`
+    - ground_asset_package 需传资源项的名称，并拼接文件类型如`.png`
+    - image/audio 类型忽略该参数
+
+## 🌐 API下载规则详解
+
+### 基础URL构成
+所有远程资源的下载链接由以下部分组成：
+- **固定host**: `https://game-api.dev.knoffice.tech`
+- **固定路径**: `/game/api/v1/assets/download`
+- **查询参数**: 根据资源类型动态构建
+
+### 查询参数规则
+
+#### asset_type（必填）
+资源类型参数，不区分大小写，支持以下值：
+- `static_image` - 静态图片资源
+- `atlas` - 图集资源（已废弃，建议使用sprite）
+- `sprite` 或 `sprites` - 精灵资源（包含图片、图集配置、动画配置）
+- `ground_asset_package` - 地形资源包
+- `audio` - 音频资源
+- `ASSET_TYPE_*` - 枚举字符串格式
+
+#### asset_id（必填）
+目标素材或素材包的数字ID，对应`game_config.json`中定义的资源ID。
+
+#### key（选填）
+根据资源类型决定是否需要：
+
+**Sprite类型资源**：
+- `image` - 获取精灵图片
+- `atlas_json` - 获取图集配置JSON
+- `animation_json` - 获取动画配置JSON
+
+**Ground Asset Package类型**：
+- 需要传入具体的资源项名称，并拼接文件扩展名
+- 例如：`terrain_grass_block_center.png`
+
+**Static Image和Audio类型**：
+- 忽略此参数，直接返回对应的文件
+
+### 完整URL示例
+
+```bash
+# 精灵图片
+https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=image
+
+# 精灵图集配置
+https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=atlas_json
+
+# 精灵动画配置
+https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=animation_json
+
+# 地形资源包中的具体文件
+https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png
+
+# 静态图片（无需key参数）
+https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=76
+
+# 音频文件（无需key参数）
+https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=audio&asset_id=201
 ```
 
 ## 🔧 使用方式
@@ -275,7 +345,7 @@ const resourceManager = GlobalResourceManager.getInstance();
 
 // 获取资源实际路径（优先返回远程资源）
 const imagePath = resourceManager.getResourcePath('character_purple_image');
-// 返回: 优先 "https://cdn.example.com/..." 
+// 返回: 优先 "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?..." 
 
 // 获取资源配置
 const resource = resourceManager.getResource('character_purple_image');
@@ -332,7 +402,7 @@ export class Preloader extends Scene {
   "remote": {
     "key": "character_image",
     "resource_type": "image",
-    "url": "https://cdn.example.com/assets/player/character.png"
+    "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=image"
   }
 }
 ```
@@ -395,7 +465,7 @@ localResources.forEach(resource => {
         {
           "remote": {
             "key": "background_music",
-            "url": "https://cdn.example.com/audio/bgm.mp3"
+            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=audio&asset_id=201"
           }
         }
       ]

@@ -9,42 +9,42 @@
                     "remote": {
                         "key": "terrain_grass_block_center",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/tilemap/tiles/terrain_grass_block_center.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png"
                     }
                 },
                 {
                     "remote": {
                         "key": "terrain_grass_block_top",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/tilemap/tiles/terrain_grass_block_top.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_top.png"
                     }
                 }
             ]
         },
         {
             "type": "sprite",
-            "id": 3,
+            "id": 10,
             "name": "character_purple",
             "resources": [
                 {
                     "remote": {
                         "key": "character_purple_image",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/player/character_purple.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=10&key=image"
                     }
                 },
                 {
                     "remote": {
                         "key": "character_purple_json",
                         "resource_type": "json",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/player/character_purple.json"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=10&key=atlas_json"
                     }
                 },
                 {
                     "remote": {
                         "key": "character_purple_animators",
                         "resource_type": "json",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/player/character_purple_animators.json"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=10&key=animation_json"
                     }
                 }
             ]
@@ -58,21 +58,21 @@
                     "remote": {
                         "key": "frog_image",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/enemy/frog.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=20&key=image"
                     }
                 },
                 {
                     "remote": {
                         "key": "frog_json",
                         "resource_type": "json",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/enemy/frog.json"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=20&key=atlas_json"
                     }
                 },
                 {
                     "remote": {
                         "key": "frog_animators",
                         "resource_type": "json",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/enemy/frog_animators.json"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=20&key=animation_json"
                     }
                 }
             ]
@@ -86,7 +86,7 @@
                     "remote": {
                         "key": "coin_gold",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/collectible/coin_gold.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=76"
                     }
                 }
             ]
@@ -100,7 +100,7 @@
                     "remote": {
                         "key": "hud_key_green",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/collectible/coin_gold.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=31"
                     }
                 }
             ]
@@ -114,7 +114,7 @@
                     "remote": {
                         "key": "spikes",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/hazards/spikes.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=69"
                     }
                 }
             ]
@@ -128,7 +128,7 @@
                     "remote": {
                         "key": "flag_green_a",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/goal/flag_green_a.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=161"
                     }
                 }
             ]
@@ -142,7 +142,7 @@
                     "remote": {
                         "key": "block_empty",
                         "resource_type": "image",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/obstacle/block_empty.png"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=104"
                     }
                 }
             ]
