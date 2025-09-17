@@ -10,12 +10,12 @@ export class HealthUI {
     private x: number;
     private y: number;
 
-    constructor(scene: Scene, x: number = 50, y: number = 50) {
+    constructor(scene: Scene, x: number = 50, y: number = 50, maxHealth: number = 3) {
         this.scene = scene;
         this.x = x;
         this.y = y;
-        this.maxHealth = 3;
-        this.currentHealth = 3;
+        this.maxHealth = maxHealth;
+        this.currentHealth = maxHealth;
         
         this.createHearts();
     }

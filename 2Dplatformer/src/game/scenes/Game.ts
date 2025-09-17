@@ -110,9 +110,12 @@ export class Game extends Scene
         this.restartKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         
         // Create health UI
-        this.healthUI = new HealthUI(this, 50, 50);
         if (this.player) {
+            this.healthUI = new HealthUI(this, 50, 50, this.player.getMaxHealth());
             this.healthUI.updateHealth(this.player.getHealth());
+        } else {
+            // Fallback if player is not created yet
+            this.healthUI = new HealthUI(this, 50, 50);
         }
         
         // Create score UI
@@ -273,6 +276,12 @@ export class Game extends Scene
 
         // Set world bounds for physics
         this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+        
+        // Update health UI if it already exists
+        if (this.healthUI) {
+            this.healthUI.setMaxHealth(this.player.getMaxHealth());
+            this.healthUI.updateHealth(this.player.getHealth());
+        }
     }
 
     private createHazardFromTilemap(hazardObject: Phaser.Types.Tilemaps.TiledObject, uuid: string) {

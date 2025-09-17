@@ -59,7 +59,7 @@
             {
               "name": "max_health",
               "type": "int",
-              "value": 1
+              "value": 3
             },
             {
               "name": "can_jump",
