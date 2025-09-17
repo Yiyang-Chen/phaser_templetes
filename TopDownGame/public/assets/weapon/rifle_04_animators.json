@@ -1,0 +1,36 @@
+{
+    "name": "rifle_04",
+    "type": "Weapon",
+    "image_filename": "rifle_04.png",
+    "atlas_json_name": "rifle_04.json",
+    "frame_size": {
+        "width": 32,
+        "height": 32
+    },
+    "original_size": {
+        "width": 32,
+        "height": 32
+    },
+    "flipped": false,
+    "animations": [
+        {
+            "name": "idle",
+            "frames": [
+                "idle/frame0000"
+            ]
+        },
+        {
+            "name": "active",
+            "frames": [
+                "active/frame0000",
+                "active/frame0001"
+            ]
+        },
+        {
+            "name": "disabled",
+            "frames": [
+                "disabled/frame0000"
+            ]
+        }
+    ]
+}

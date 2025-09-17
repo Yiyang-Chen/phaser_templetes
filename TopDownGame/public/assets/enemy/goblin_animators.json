@@ -1,0 +1,47 @@
+{
+    "name": "goblin",
+    "type": "Enemy",
+    "image_filename": "goblin.png",
+    "atlas_json_name": "goblin.json",
+    "frame_size": {
+        "width": 16,
+        "height": 16
+    },
+    "original_size": {
+        "width": 16,
+        "height": 16
+    },
+    "flipped": false,
+    "animations": [
+        {
+            "name": "idle",
+            "frames": [
+                "idle/frame0000",
+                "idle/frame0001",
+                "idle/frame0002",
+                "idle/frame0003"
+            ]
+        },
+        {
+            "name": "walk",
+            "frames": [
+                "walk/frame0000",
+                "walk/frame0001",
+                "walk/frame0002",
+                "walk/frame0003"
+            ]
+        },
+        {
+            "name": "jump",
+            "frames": [
+                "jump/frame0000"
+            ]
+        },
+        {
+            "name": "rest",
+            "frames": [
+                "rest/frame0000"
+            ]
+        }
+    ]
+}

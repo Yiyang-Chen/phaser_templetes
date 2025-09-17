@@ -1,0 +1,66 @@
+{
+    "name": "knight",
+    "type": "Player",
+    "image_filename": "knight.png",
+    "atlas_json_name": "knight.json",
+    "frame_size": {
+        "width": 16,
+        "height": 16
+    },
+    "original_size": {
+        "width": 16,
+        "height": 16
+    },
+    "flipped": false,
+    "animations": [
+        {
+            "name": "idle",
+            "frames": [
+                "idle/frame0000",
+                "idle/frame0001",
+                "idle/frame0002",
+                "idle/frame0003"
+            ]
+        },
+        {
+            "name": "walk",
+            "frames": [
+                "walk/frame0000",
+                "walk/frame0001",
+                "walk/frame0002",
+                "walk/frame0003"
+            ]
+        },
+        {
+            "name": "duck",
+            "frames": [
+                "duck/frame0000"
+            ]
+        },
+        {
+            "name": "jump",
+            "frames": [
+                "jump/frame0000"
+            ]
+        },
+        {
+            "name": "climb",
+            "frames": [
+                "climb/frame0000",
+                "climb/frame0001"
+            ]
+        },
+        {
+            "name": "hit",
+            "frames": [
+                "hit/frame0000"
+            ]
+        },
+        {
+            "name": "front",
+            "frames": [
+                "front/frame0000"
+            ]
+        }
+    ]
+}

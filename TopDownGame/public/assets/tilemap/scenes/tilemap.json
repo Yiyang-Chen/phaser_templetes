@@ -1,0 +1,238 @@
+{
+  "height": 12,
+  "infinite": false,
+  "layers": [
+    {
+      "data": [
+        2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+        2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+        2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+        2,1,1,2,2,1,1,1,1,1,1,2,2,1,1,2,
+        2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+        2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+        2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+        2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+        2,1,1,2,2,1,1,1,1,1,1,2,2,1,1,2,
+        2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+        2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,
+        2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+      ],
+      "height": 12,
+      "id": 3,
+      "name": "Level1",
+      "opacity": 1,
+      "type": "tilelayer",
+      "visible": true,
+      "width": 16,
+      "x": 0,
+      "y": 0
+    },
+    {
+      "draworder": "topdown",
+      "id": 5,
+      "name": "Objects",
+      "objects": [
+        {
+          "gid": 3,
+          "height": 64,
+          "id": 1,
+          "name": "knight",
+          "rotation": 0,
+          "type": "player",
+          "visible": true,
+          "width": 64,
+          "x": 512,
+          "y": 384
+        },
+        {
+          "gid": 4,
+          "height": 64,
+          "id": 2,
+          "name": "spikes",
+          "rotation": 0,
+          "type": "hazard",
+          "visible": true,
+          "width": 64,
+          "x": 192,
+          "y": 192
+        },
+        {
+          "gid": 4,
+          "height": 64,
+          "id": 3,
+          "name": "spikes",
+          "rotation": 0,
+          "type": "hazard",
+          "visible": true,
+          "width": 64,
+          "x": 832,
+          "y": 320
+        },
+        {
+          "gid": 4,
+          "height": 64,
+          "id": 4,
+          "name": "spikes",
+          "rotation": 0,
+          "type": "hazard",
+          "visible": true,
+          "width": 64,
+          "x": 384,
+          "y": 448
+        },
+        {
+          "gid": 4,
+          "height": 64,
+          "id": 5,
+          "name": "spikes",
+          "rotation": 0,
+          "type": "hazard",
+          "visible": true,
+          "width": 64,
+          "x": 640,
+          "y": 640
+        },
+        {
+          "gid": 5,
+          "height": 64,
+          "id": 6,
+          "name": "flag_green_a",
+          "rotation": 0,
+          "type": "goal",
+          "visible": true,
+          "width": 64,
+          "x": 512,
+          "y": 128
+        }
+      ],
+      "opacity": 1,
+      "type": "objectgroup",
+      "visible": true,
+      "x": 0,
+      "y": 0
+    }
+  ],
+  "nextlayerid": 6,
+  "nextobjectid": 39,
+  "orientation": "orthogonal",
+  "renderorder": "right-down",
+  "tiledversion": "1.2.2",
+  "tileheight": 16,
+  "tilesets": [
+    {
+      "firstgid": 1,
+      "image": "assets/tilemap/tiles/floor_1.png",
+      "imageheight": 16,
+      "imagewidth": 16,
+      "margin": 0,
+      "name": "floor_1",
+      "spacing": 0,
+      "tilecount": 1,
+      "tileheight": 16,
+      "tilewidth": 16,
+      "tiles":[
+        {
+         "id":0,
+         "properties":[
+                {
+                 "name":"collides",
+                 "type":"bool",
+                 "value":false
+                }]
+        }]
+    },
+    {
+      "firstgid": 2,
+      "image": "assets/tilemap/tiles/wall_1.png",
+      "imageheight": 16,
+      "imagewidth": 16,
+      "margin": 0,
+      "name": "wall_1",
+      "spacing": 0,
+      "tilecount": 1,
+      "tileheight": 16,
+      "tilewidth": 16,
+      "tiles":[
+        {
+         "id":0,
+         "properties":[
+                {
+                 "name":"collides",
+                 "type":"bool",
+                 "value":true
+                }]
+        }]
+    },
+    {
+      "firstgid": 3,
+      "image": "assets/player/knight.png",
+      "imageheight": 64,
+      "imagewidth": 64,
+      "margin": 0,
+      "name": "knight",
+      "spacing": 0,
+      "tilecount": 1,
+      "tileheight": 64,
+      "tilewidth": 64,
+      "tiles":[
+        {
+         "id":0,
+         "properties":[
+                {
+                 "name":"atlas",
+                 "type":"bool",
+                 "value":true
+                }
+            ]
+        }]
+    },
+    {
+      "firstgid": 4,
+      "image": "assets/hazards/spikes.png",
+      "imageheight": 16,
+      "imagewidth": 160,
+      "margin": 0,
+      "name": "spikes",
+      "spacing": 0,
+      "tilecount": 1,
+      "tileheight": 16,
+      "tilewidth": 16,
+      "tiles":[
+        {
+         "id":0,
+         "properties":[
+                {
+                 "name":"atlas",
+                 "type":"bool",
+                 "value":false
+                },
+                {
+                 "name":"damage",
+                 "type":"int",
+                 "value":1
+                }]
+        }]
+    },
+    {
+      "firstgid": 5,
+      "image": "assets/goal/flag_green_a.png",
+      "imageheight": 64,
+      "imagewidth": 64,
+      "margin": 0,
+      "name": "flag_green_a",
+      "spacing": 0,
+      "tilecount": 1,
+      "tileheight": 64,
+      "tilewidth": 64,
+      "tiles":[
+        {
+         "id":0,
+         "properties":[]
+        }]
+    }
+  ],
+  "tilewidth":16,
+  "type": "map",
+  "version": 1.2,
+  "width": 16
+}

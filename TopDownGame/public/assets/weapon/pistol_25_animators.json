@@ -1,0 +1,41 @@
+{
+    "name": "pistol_25",
+    "type": "Weapon",
+    "image_filename": "pistol_25.png",
+    "atlas_json_name": "pistol_25.json",
+    "frame_size": {
+        "width": 32,
+        "height": 32
+    },
+    "original_size": {
+        "width": 32,
+        "height": 32
+    },
+    "flipped": false,
+    "animations": [
+        {
+            "name": "idle",
+            "frames": [
+                "idle/frame0000"
+            ]
+        },
+        {
+            "name": "active",
+            "frames": [
+                "active/frame0000",
+                "active/frame0001",
+                "active/frame0002",
+                "active/frame0003",
+                "active/frame0004",
+                "active/frame0005",
+                "active/frame0006"
+            ]
+        },
+        {
+            "name": "disabled",
+            "frames": [
+                "disabled/frame0000"
+            ]
+        }
+    ]
+}

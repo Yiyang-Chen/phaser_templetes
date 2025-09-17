@@ -1,0 +1,170 @@
+{
+    "textures": [
+        {
+            "image": "fly.png",
+            "format": "RGBA8888",
+            "size": {
+                "w": 64,
+                "h": 16
+            },
+            "scale": 1,
+            "frames": [
+                {
+                    "filename": "idle/frame0000",
+                    "frame": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "sourceSize": {
+                        "w": 16,
+                        "h": 16
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "idle/frame0001",
+                    "frame": {
+                        "x": 16,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "sourceSize": {
+                        "w": 16,
+                        "h": 16
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "idle/frame0002",
+                    "frame": {
+                        "x": 32,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "sourceSize": {
+                        "w": 16,
+                        "h": 16
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "idle/frame0003",
+                    "frame": {
+                        "x": 48,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "sourceSize": {
+                        "w": 16,
+                        "h": 16
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "jump/frame0000",
+                    "frame": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "sourceSize": {
+                        "w": 16,
+                        "h": 16
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                },
+                {
+                    "filename": "rest/frame0000",
+                    "frame": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "rotated": false,
+                    "trimmed": true,
+                    "spriteSourceSize": {
+                        "x": 0,
+                        "y": 0,
+                        "w": 16,
+                        "h": 16
+                    },
+                    "sourceSize": {
+                        "w": 16,
+                        "h": 16
+                    },
+                    "pivot": {
+                        "x": 0.5,
+                        "y": 0.5
+                    }
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "app": "AtlasGenerator",
+        "version": "1.0",
+        "smartupdate": "$AtlasGenerator:SmartUpdate:1.0$"
+    }
+}
