@@ -1,3 +1,16 @@
+<game_config>
+
+`RESOURCE_MANAGEMENT_GUIDE.md`: this test feature is only available for 2d templete for now
+You must modify game_config.json to manage resource and use url instead of local path as much as possible. For the url, you need to use HTTPS url as mentioned in the `RESOURCE_MANAGEMENT_GUIDE.md` file.
+
+<must_follow>
+
+Never use http url in the code, you must use https url.
+
+</must_follow>
+
+</game_config>
+
 <tilemap_design>
 
 Most players prefer to play more "full" maps, so don't make your map look too empty
