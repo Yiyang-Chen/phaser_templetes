@@ -164,7 +164,7 @@ public/assets/
           "remote": {
             "key": "character_purple_json",
             "resource_type": "json",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
           }
         }
       ]
@@ -208,14 +208,14 @@ public/assets/
   "remote": {
     "key": "resource_key", 
     "resource_type": "image|json|audio|tilemap",
-    "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=...&asset_id=...&key=..."
+    "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=...&asset_id=...&key=..."
   }
 }
 ```
 
 **API下载规则**：
 - **固定host**: `https://game-api.dev.knoffice.tech`
-- **路径**: `/game/api/v1/assets/download`
+- **路径**: `/game/api/public/assets/download`
 - **查询参数**：
   - `asset_type`（必填）：不区分大小写，接受 `static_image`、`atlas`、`sprite/sprites`、`ground_asset_package`、`audio` 或 `ASSET_TYPE_*` 枚举字符串
   - `asset_id`（必填）：目标素材或素材包的数字ID
@@ -229,7 +229,7 @@ public/assets/
 ### 基础URL构成
 所有远程资源的下载链接由以下部分组成：
 - **固定host**: `https://game-api.dev.knoffice.tech`
-- **固定路径**: `/game/api/v1/assets/download`
+- **固定路径**: `/game/api/public/assets/download`
 - **查询参数**: 根据资源类型动态构建
 
 ### 查询参数规则
@@ -265,22 +265,22 @@ public/assets/
 
 ```bash
 # 精灵图片
-https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=image
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=image
 
 # 精灵图集配置
-https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=atlas_json
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=atlas_json
 
 # 精灵动画配置
-https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=animation_json
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=animation_json
 
 # 地形资源包中的具体文件
-https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png
 
 # 静态图片（无需key参数）
-https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=static_image&asset_id=76
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=76
 
 # 音频文件（无需key参数）
-https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=audio&asset_id=201
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=audio&asset_id=201
 ```
 
 ## 🔧 使用方式
@@ -345,7 +345,7 @@ const resourceManager = GlobalResourceManager.getInstance();
 
 // 获取资源实际路径（优先返回远程资源）
 const imagePath = resourceManager.getResourcePath('character_purple_image');
-// 返回: 优先 "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?..." 
+// 返回: 优先 "https://game-api.dev.knoffice.tech/game/api/public/assets/download?..." 
 
 // 获取资源配置
 const resource = resourceManager.getResource('character_purple_image');
@@ -402,7 +402,7 @@ export class Preloader extends Scene {
   "remote": {
     "key": "character_image",
     "resource_type": "image",
-    "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=image"
+    "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=image"
   }
 }
 ```
@@ -465,7 +465,7 @@ localResources.forEach(resource => {
         {
           "remote": {
             "key": "background_music",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=audio&asset_id=201"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=audio&asset_id=201"
           }
         }
       ]

@@ -19,7 +19,7 @@ This guide documents how to configure `public/assets/tilemap/scenes/tilemap.json
 - **game_config.json**: Central resource configuration defining asset paths
 - **GlobalResourceManager**: Resolves resource keys to local/remote paths (优先远程资源)
 - **LevelSceneConfigLoader**: 关卡场景配置加载器，根据关卡编号加载对应资源
-- **API下载系统**: 统一的远程资源下载接口 `https://game-api.dev.knoffice.tech/game/api/v1/assets/download`
+- **API下载系统**: 统一的远程资源下载接口 `https://game-api.dev.knoffice.tech/game/api/public/assets/download`
 - **Tilemap**: JSON file defining level structure using resource keys
 - **Layers**: Tile layers (terrain) and Object layers (entities)
 - **Tilesets**: Asset definitions using resource keys instead of hardcoded paths
@@ -435,7 +435,7 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
           "remote": {
             "key": "terrain_grass_block_center",
             "resource_type": "image",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png"
           }
         }
       ]
@@ -501,21 +501,21 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
           "remote": {
             "key": "character_purple_image",
             "resource_type": "image",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=image"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=image"
           }
         },
         {
           "remote": {
             "key": "character_purple_json",
             "resource_type": "json",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
           }
         },
         {
           "remote": {
             "key": "character_purple_animators",
             "resource_type": "json",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=animation_json"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=animation_json"
           }
         }
       ]
@@ -911,14 +911,14 @@ The tilemap system now integrates with the unified resource management system:
           "remote": {
             "key": "terrain_grass_block_center",
             "resource_type": "image",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png"
           }
         },
         {
           "remote": {
             "key": "terrain_grass_block_top",
             "resource_type": "image",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_top.png"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_top.png"
           }
         }
       ]
@@ -932,21 +932,21 @@ The tilemap system now integrates with the unified resource management system:
           "remote": {
             "key": "character_purple_image",
             "resource_type": "image",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=image"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=image"
           }
         },
         {
           "remote": {
             "key": "character_purple_json",
             "resource_type": "json",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
           }
         },
         {
           "remote": {
             "key": "character_purple_animators",
             "resource_type": "json",
-            "url": "https://game-api.dev.knoffice.tech/game/api/v1/assets/download?asset_type=sprite&asset_id=3&key=animation_json"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=animation_json"
           }
         }
       ]
