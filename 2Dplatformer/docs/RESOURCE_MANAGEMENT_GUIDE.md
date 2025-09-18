@@ -220,7 +220,7 @@ public/assets/
 - **固定host**: `https://game-api.dev.knoffice.tech`
 - **路径**: `/game/api/public/assets/download`
 - **查询参数**：
-  - `asset_type`（必填）：不区分大小写，接受 `static_image`、`atlas`、`sprite/sprites`、`ground_asset_package`、`audio` 或 `ASSET_TYPE_*` 枚举字符串
+  - `asset_type`（必填）：不区分大小写，接受 `static_image`、`sprite/sprites`、`ground_asset_package`、`audio` 或 `ASSET_TYPE_*` 枚举字符串
   - `asset_id`（必填）：目标素材或素材包的数字ID
   - `key`（选填）：
     - Atlas 可用 `image` / `atlas_json` / `animation_json`
