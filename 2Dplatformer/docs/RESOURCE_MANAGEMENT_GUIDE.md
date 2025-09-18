@@ -3,6 +3,7 @@
 ## 概述
 
 本项目使用统一的资源管理系统，支持本地和远程资源的动态加载。通过 `game_config.json` 配置文件，可以灵活控制资源的加载方式，实现渐进式部署和CDN优化。
+所有游戏中被使用到的资源都需要在`game_config.json`中按照格式配置。
 
 ## 🏗️ 系统架构
 
@@ -10,7 +11,7 @@
 
 - **GlobalResourceManager**: 全局资源管理器，单例模式
 - **GameConfigLoader**: 游戏配置加载器
-- **LevelSceneConfigLoader**: 关卡场景配置加载器（新增）
+- **LevelSceneConfigLoader**: 关卡场景配置加载器
 - **CustomLoaders**: 自定义资源加载器集合
 - **game_config.json**: 中央资源配置文件
 
@@ -237,8 +238,7 @@ public/assets/
 #### asset_type（必填）
 资源类型参数，不区分大小写，支持以下值：
 - `static_image` - 静态图片资源
-- `atlas` - 图集资源（已废弃，建议使用sprite）
-- `sprite` 或 `sprites` - 精灵资源（包含图片、图集配置、动画配置）
+- `sprite` 或 `sprites` - 精灵资源（包含图片、图集配置、动画配置、atlas在sprite中配置atlas为true）
 - `ground_asset_package` - 地形资源包
 - `audio` - 音频资源
 - `ASSET_TYPE_*` - 枚举字符串格式
@@ -288,6 +288,12 @@ https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=au
 ### 1. 配置资源
 
 在 `game_config.json` 中添加新资源：
+资源类型只支持
+- `static_image` - 静态图片资源
+- `sprite` 或 `sprites` - 精灵资源（包含图片、图集配置、动画配置、atlas在sprite中配置atlas为true）
+- `ground_asset_package` - 地形资源包
+- `audio` - 音频资源
+- `ASSET_TYPE_*` - 枚举字符串格式
 
 ```json
 {
@@ -599,9 +605,10 @@ export function extendLoader() {
 ```
 
 **解决方案**：
-- 检查 `game_config.json` 中是否定义了对应的key
+- 检查 `audio_config.json` 中是否定义了对应的key
+- 检查 `game_config.json` 中是否定义了 `audio_config.json` 需要的key
 - 确认key名称拼写正确
-- 验证资源路径是否存在
+- 验证资源路径是否存在，url是否正确
 
 #### 2. 路径解析错误
 ```

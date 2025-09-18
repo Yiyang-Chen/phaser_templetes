@@ -21,6 +21,8 @@ Never use http url in the code, you must use https url.
 <audio_design>
 <must_follow>
 
+All the audio used in game should be listed in `audio_config.json`.
+
 You must follow `docs/AUDIO_CONFIGURETION_GUIDE.md` to understand how to correctly use `audio_config.json`.
 
 All the audio assets listed in the `audio_config.json` should be able to find the keys in `game_config.json`.
