@@ -1,107 +1,43 @@
-# 🎵 音频系统文档
+# 🎵 音频配置指南
 
 ## 概述
 
-本项目使用统一的 `AudioManager` 来管理所有音频功能，包括背景音乐(BGM)和音效(SFX)。系统支持自动音频解锁、场景音乐切换、动画音效绑定等功能。
+本项目使用统一的音频管理系统，通过两个配置文件协同工作，必须保证audio_config中的key全都可以在game_config中被找到：
+- **`game_config.json`**: 定义音频资源的实际文件路径
+- **`audio-config.json`**: 定义音频的播放逻辑和映射关系
 
-## 🏗️ 架构设计
+## 📋 配置文件关系
 
-### 核心组件
+### 1. 资源定义 (`game_config.json`)
 
-- **AudioManager**: 统一音频管理器，单例模式（`src/game/audio/AudioManager.ts`）
-- **GlobalResourceManager**: 全局资源管理器，解析音频资源路径（`src/game/resourceManager/GlobalResourceManager.ts`）
-- **AudioConfigLoader**: 音频配置加载器（`src/game/resourceManager/CustomLoader/AudioConfigLoader.ts`）
-- **音频配置文件**: `public/assets/audio/audio-config.json` - 使用资源键引用音频文件
-- **游戏配置文件**: `public/assets/game_config.json` - 定义音频资源的实际路径
-- **音频资源**: 存放在 `public/assets/audio/` 目录下
-
-### 特性
-
-- ✅ **自动音频解锁**: 检测用户交互后自动解锁音频上下文
-- ✅ **场景音乐映射**: 自动根据场景切换BGM
-- ✅ **动画音效绑定**: 支持动画与音效的自动关联
-- ✅ **懒加载支持**: 支持预加载和按需加载策略
-- ✅ **音量控制**: 独立的BGM和SFX音量控制
-- ✅ **事件驱动**: 基于EventBus的音频事件系统
-- ✅ **统一资源管理**: 通过GlobalResourceManager支持本地/远程音频资源
-
-## 📁 文件结构
-
-```
-src/game/audio/
-├── AudioManager.ts           # 统一音频管理器
-└── docs/
-    └── AUDIO.md             # 本文档
-
-src/game/resourceManager/     # 🆕 资源管理系统
-├── GlobalResourceManager.ts  # 全局资源管理器
-├── LoaderExtensions.ts      # 加载器扩展注册
-└── CustomLoader/
-    └── AudioConfigLoader.ts # 音频配置加载器
-
-public/assets/
-├── game_config.json         # 🎯 统一资源配置（定义音频文件路径）
-└── audio/
-    ├── audio-config.json    # 音频配置文件（使用资源键引用）
-    ├── bgm/                 # 背景音乐文件
-    │   ├── Alls Fair In Love.mp3
-    │   ├── Attic Secrets.mp3
-    │   └── Baltic Levity.mp3
-    └── sfx/                 # 音效文件
-        ├── sfx_bump.mp3
-        ├── sfx_coin.mp3
-        ├── sfx_disappear.mp3
-        ├── sfx_gem.mp3
-        ├── sfx_hurt.mp3
-        ├── sfx_jump-high.mp3
-        ├── sfx_jump.mp3
-        ├── sfx_magic.mp3
-        ├── sfx_select.mp3
-        └── sfx_throw.mp3
-```
-
-## ⚙️ 配置文件
-
-### 🆕 资源管理系统
-
-从版本2.0开始，音频系统采用统一的资源管理方式：
-
-#### 1. 游戏配置文件 (`game_config.json`)
-定义音频资源的实际路径：
+定义音频文件的实际位置，支持本地和远程资源，详见RESOURCE_MANAGEMENT_GUIDE：
 
 ```json
 {
   "assets": [
     {
-      "type": "audio_bgm",
+      "type": "ASSET_TYPE_AUDIO",
       "id": 201,
-      "name": "bgm_files",
+      "name": "bgm_baltic_levity",
       "resources": [
         {
           "local": {
             "key": "bgm_baltic_levity",
-            "resource_type": "audio",
+            "resource_type": "RESOURCE_TYPE_AUDIO",
             "public_path": "assets/audio/bgm/Baltic Levity.mp3"
-          }
-        },
-        {
-          "remote": {
-            "key": "bgm_alls_fair_in_love", 
-            "resource_type": "audio",
-            "url": "https://cdn.example.com/audio/bgm/Alls Fair In Love.mp3"
           }
         }
       ]
     },
     {
-      "type": "audio_sfx",
-      "id": 202,
-      "name": "sfx_files", 
+      "type": "ASSET_TYPE_AUDIO", 
+      "id": 204,
+      "name": "sfx_jump",
       "resources": [
         {
           "local": {
             "key": "sfx_jump",
-            "resource_type": "audio",
+            "resource_type": "RESOURCE_TYPE_AUDIO",
             "public_path": "assets/audio/sfx/sfx_jump.mp3"
           }
         }
@@ -111,39 +47,9 @@ public/assets/
 }
 ```
 
-#### 2. 音频配置文件 (`audio-config.json`)
-使用key引用资源，而不是硬编码路径：
+### 2. 音频配置 (`audio-config.json`)
 
-```json
-{
-  "assets": {
-    "bgm": {
-      "menu_theme": {
-        "url": "bgm_baltic_levity",     // 🆕 使用key引用
-        "preload": true,
-        "volume": 0.7,
-        "loop": true
-      },
-      "game_theme": {
-        "url": "bgm_alls_fair_in_love", // 🆕 使用key引用
-        "preload": false,
-        "volume": 0.5,
-        "loop": true
-      }
-    },
-    "sfx": {
-      "player_jump": {
-        "url": "sfx_jump",              // 🆕 使用key引用
-        "preload": true,
-        "volume": 0.8,
-        "loop": false
-      }
-    }
-  }
-}
-```
-
-### 主配置文件 (`audio-config.json`) - 完整结构
+通过资源键引用音频，定义播放逻辑：
 
 ```json
 {
@@ -154,9 +60,7 @@ public/assets/
       "loop": true,
       "sceneMapping": {
         "MainMenu": "menu_theme",
-        "Game": "game_theme",
-        "Victory": "victory_theme",
-        "GameOver": "gameover_theme"
+        "Game": "game_theme"
       }
     },
     "sfx": {
@@ -164,10 +68,8 @@ public/assets/
       "loop": false,
       "animationMapping": {
         "main_player": {
-          "walk": ["player_walk_1", "player_walk_2"],
-          "jump": ["player_jump", "player_jump_high"],
-          "attack": ["player_attack"],
-          "hit": ["player_hurt"]
+          "jump": ["player_jump"],
+          "walk": ["player_walk_1", "player_walk_2"]
         }
       }
     }
@@ -175,206 +77,89 @@ public/assets/
   "assets": {
     "bgm": {
       "menu_theme": {
-        "url": "bgm_baltic_levity",
+        "url": "bgm_baltic_levity",  // 引用 game_config.json 中的 key
         "preload": true,
-        "volume": 0.6,
-        "loop": true
-      },
-      "game_theme": {
-        "url": "bgm_alls_fair_in_love",
-        "preload": false,
-        "volume": 0.5,
+        "volume": 0.7,
         "loop": true
       }
     },
     "sfx": {
       "player_jump": {
-        "url": "sfx_jump",
-        "preload": true,
-        "volume": 0.8
+        "url": "sfx_jump",  // 引用 game_config.json 中的 key
+        "preload": true
       }
     }
   }
 }
 ```
 
-**🔗 资源键引用说明**：
-- `url` 字段现在使用 **ResourceManager 中定义的资源键**，而不是直接的文件路径
-- AudioManager 会自动通过 `GlobalResourceManager.getResourcePath()` 解析实际的文件路径
-- 支持本地文件和远程CDN资源的统一管理
-- 资源键在 `game_config.json` 中定义，如 `bgm_baltic_levity` → `assets/audio/bgm/Baltic Levity.mp3`
+## 🔄 AudioManager 加载流程
 
-### 配置项说明
+### 初始化阶段
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `loadStrategy` | string | 加载策略: `preload_all`, `lazy_load`, `scene_based` |
-| `audioTypes.bgm.sceneMapping` | object | 场景到BGM的映射关系 |
-| `audioTypes.sfx.animationMapping` | object | 动画到音效的映射关系 |
-| `assets.bgm/sfx` | object | 具体的音频资源配置 |
+1. **场景初始化**: 在 `Preloader` 场景中初始化 AudioManager
+2. **配置加载**: AudioManager 通过 `setConfig()` 接收音频配置
+3. **资源解析**: 通过 `GlobalResourceManager` 将资源键解析为实际文件路径
+4. **音频预加载**: 根据配置策略预加载音频文件
 
-## 🚀 使用方法
-
-### 1. 初始化
-
-在 `Preloader` 场景中初始化AudioManager：
+### 播放流程
 
 ```typescript
-import { AudioManager } from '../audio/AudioManager';
+// 1. BGM 播放 - 通过场景映射自动触发
+scene.start('Game') 
+→ AudioManager 检测场景变化
+→ 查找 sceneMapping["Game"] = "game_theme"
+→ 播放 assets.bgm["game_theme"]
+→ 解析 url: "bgm_alls_fair_in_love"
+→ GlobalResourceManager 返回实际路径
+→ 播放音频文件
 
-export class Preloader extends Scene {
-    private audioManager: AudioManager;
-    
-    constructor() {
-        super('Preloader');
-        this.audioManager = AudioManager.getInstance();
-    }
-    
-    init() {
-        // 在资源加载之前初始化AudioManager
-        this.audioManager.initialize(this, this.game);
-    }
-    
-    preload() {
-        // 使用自定义音频配置加载器
-        this.load.audioConfig('audio-config', '/assets/audio/audio-config.json');
-    }
-    
-    create() {
-        // 处理已加载的音频资源
-        this.audioManager.processLoadedAudio();
-    }
-}
+// 2. SFX 播放 - 通过动画映射自动触发  
+player.anims.play('jump')
+→ 触发 ANIMATION_PLAY 事件
+→ AudioManager 查找 animationMapping["main_player"]["jump"]
+→ 随机选择 ["player_jump"] 中的音效
+→ 播放对应的音频文件
 ```
 
-#### 初始化顺序说明
+## 📝 配置示例
 
-**最佳实践**：
-1. **init()阶段**: 初始化管理器实例，设置基础配置
-2. **preload()阶段**: 加载音频配置和资源文件
-3. **create()阶段**: 处理已加载的资源，创建音频对象
+### 例子 1: 添加新的背景音乐
 
-这样的顺序确保了：
-- 管理器在资源加载前就已准备好
-- 可以监听加载过程中的事件
-- 避免重复初始化和资源竞争
-
-### 2. 播放BGM
-
-```typescript
-// 手动播放BGM
-AudioManager.getInstance().playBGM('menu_theme');
-
-// 场景切换时自动播放（通过配置文件映射）
-// 当场景切换到 'MainMenu' 时，会自动播放 'menu_theme'
-```
-
-### 3. 播放音效
-
-```typescript
-// 播放单个音效
-AudioManager.getInstance().playSFX('player_jump');
-
-// 播放动画音效（自动根据配置选择）
-AudioManager.getInstance().playAnimationSound('main_player', 'jump');
-```
-
-### 4. 音量控制
-
-```typescript
-// 设置BGM音量
-AudioManager.getInstance().setBGMVolume(0.5);
-
-// 设置SFX音量
-AudioManager.getInstance().setSFXVolume(0.8);
-```
-
-### 5. 事件监听
-
-```typescript
-import { eventBus, GameEvent } from '../events/EventBus';
-
-// 监听音频事件
-eventBus.on(GameEvent.BGM_PLAY, (data) => {
-    console.log('BGM开始播放:', data.bgmKey);
-});
-
-eventBus.on(GameEvent.SFX_PLAY, (data) => {
-    console.log('音效播放:', data.sfxKey);
-});
-```
-
-## 🎮 游戏集成
-
-### 场景音乐
-
-AudioManager会自动监听场景变化，根据配置文件中的 `sceneMapping` 自动播放对应的BGM：
-
-```typescript
-// 配置文件中的映射
-"sceneMapping": {
-    "MainMenu": "menu_theme",
-    "Game": "game_theme",
-    "Victory": "victory_theme"
-}
-
-// 当场景切换时，AudioManager会自动处理
-this.scene.start('Game'); // 自动播放 game_theme
-```
-
-### 动画音效
-
-在精灵动画播放时自动触发音效：
-
-```typescript
-// 在Player类中
-this.anims.play('walk');
-// AudioManager会自动根据配置播放对应的走路音效
-```
-
-### 用户交互解锁
-
-AudioManager会自动监听用户交互（点击、触摸、按键）来解锁音频上下文，无需手动处理。
-
-## 🔧 开发指南
-
-### 添加新的BGM
-
-#### 步骤1: 添加资源到ResourceManager
-在 `game_config.json` 中定义音频资源：
-
+**步骤 1**: 在 `game_config.json` 中定义资源
 ```json
 {
-  "assets": [
+  "type": "ASSET_TYPE_AUDIO",
+  "id": 220,
+  "name": "bgm_boss_battle",
+  "resources": [
     {
-      "type": "audio_bgm",
-      "id": 203,
-      "name": "new_bgm_files",
-      "resources": [
-        {
-          "local": {
-            "key": "bgm_new_theme",
-            "resource_type": "audio",
-            "public_path": "assets/audio/bgm/new_theme.mp3"
-          }
-        }
-      ]
+      "local": {
+        "key": "bgm_boss_battle",
+        "resource_type": "RESOURCE_TYPE_AUDIO", 
+        "public_path": "assets/audio/bgm/boss_battle.mp3"
+      }
     }
   ]
 }
 ```
 
-#### 步骤2: 在音频配置中引用资源键
-在 `audio-config.json` 中添加配置：
-
+**步骤 2**: 在 `audio-config.json` 中配置使用
 ```json
 {
+  "audioTypes": {
+    "bgm": {
+      "sceneMapping": {
+        "BossLevel": "boss_theme"  // 场景映射
+      }
+    }
+  },
   "assets": {
     "bgm": {
-      "new_theme": {
-        "url": "bgm_new_theme",
-        "preload": true,
-        "volume": 0.7,
+      "boss_theme": {
+        "url": "bgm_boss_battle",  // 引用资源键
+        "preload": false,
+        "volume": 0.8,
         "loop": true
       }
     }
@@ -382,126 +167,99 @@ AudioManager会自动监听用户交互（点击、触摸、按键）来解锁�
 }
 ```
 
-#### 步骤3: 配置场景映射
-在场景映射中关联：
+**结果**: 当切换到 `BossLevel` 场景时，自动播放 boss 战斗音乐
 
+### 例子 2: 为敌人添加音效
+
+**步骤 1**: 在 `game_config.json` 中定义音效资源
 ```json
 {
-  "audioTypes": {
-    "bgm": {
-      "sceneMapping": {
-        "NewScene": "new_theme"
-      }
-    }
-  }
-}
-```
-
-### 添加新的音效
-
-#### 步骤1: 添加资源到ResourceManager
-在 `game_config.json` 中定义音效资源：
-
-```json
-{
-  "assets": [
+  "type": "ASSET_TYPE_AUDIO",
+  "id": 230,
+  "name": "sfx_enemy_roar",
+  "resources": [
     {
-      "type": "audio_sfx",
-      "id": 204,
-      "name": "new_sfx_files",
-      "resources": [
-        {
-          "local": {
-            "key": "sfx_new_sound",
-            "resource_type": "audio",
-            "public_path": "assets/audio/sfx/new_sound.mp3"
-          }
-        }
-      ]
+      "local": {
+        "key": "sfx_enemy_roar",
+        "resource_type": "RESOURCE_TYPE_AUDIO",
+        "public_path": "assets/audio/sfx/enemy_roar.mp3"
+      }
     }
   ]
 }
 ```
 
-#### 步骤2: 在音频配置中引用资源键
-在 `audio-config.json` 中添加配置：
-
-```json
-{
-  "assets": {
-    "sfx": {
-      "new_sound": {
-        "url": "sfx_new_sound",
-        "preload": true,
-        "volume": 0.6
-      }
-    }
-  }
-}
-```
-
-#### 步骤3: 可选 - 绑定到动画
-在动画映射中关联：
-
+**步骤 2**: 在 `audio-config.json` 中配置动画映射
 ```json
 {
   "audioTypes": {
     "sfx": {
       "animationMapping": {
-        "player_sprite": {
-          "new_animation": ["new_sound"]
+        "dragon_enemy": {
+          "attack": ["enemy_roar"],
+          "die": ["enemy_death"]
         }
+      }
+    }
+  },
+  "assets": {
+    "sfx": {
+      "enemy_roar": {
+        "url": "sfx_enemy_roar",
+        "preload": true,
+        "volume": 0.9
       }
     }
   }
 }
 ```
 
-### 性能优化建议
+**步骤 3**: 在敌人代码中触发
+```typescript
+// 在 Dragon 敌人类中
+this.anims.play('attack');  // 自动播放 enemy_roar 音效
 
-1. **合理使用预加载**: 只预加载必要的音频文件
-2. **音频格式**: 推荐使用MP3格式，平衡文件大小和兼容性
-3. **文件大小**: BGM控制在2-5MB以内，SFX控制在100KB以内
-4. **加载策略**: 根据项目需求选择合适的加载策略
+// 或手动触发
+AudioManager.getInstance().playAnimationSound('dragon_enemy', 'attack');
+```
 
-### 调试技巧
+## 🎛️ 主要配置选项
 
-1. **控制台日志**: AudioManager提供详细的控制台日志
-2. **事件监听**: 使用EventBus监听音频事件进行调试
-3. **音频状态**: 可以通过AudioManager的公共方法查询当前状态
+| 配置项 | 说明 | 示例值 |
+|--------|------|--------|
+| `loadStrategy` | 加载策略 | `"preload_all"`, `"lazy_load"` |
+| `sceneMapping` | 场景到BGM的映射 | `{"Game": "game_theme"}` |
+| `animationMapping` | 动画到音效的映射 | `{"player": {"jump": ["sfx1"]}}` |
+| `preload` | 是否预加载 | `true`, `false` |
+| `volume` | 音量 (0-1) | `0.7` |
+| `loop` | 是否循环 | `true`, `false` |
 
-## 🐛 常见问题
+## 🔧 常用 API
 
-### Q: 音频无法播放？
-A: 检查浏览器控制台是否有AudioContext错误，确保用户有交互操作。
+```typescript
+const audioManager = AudioManager.getInstance();
 
-### Q: 场景切换时音乐没有自动切换？
-A: 检查 `audio-config.json` 中的 `sceneMapping` 配置是否正确。
+// 手动播放
+audioManager.playBGM('menu_theme');
+audioManager.playSFX('player_jump');
+audioManager.playAnimationSound('main_player', 'jump');
 
-### Q: 音效播放延迟？
-A: 确保音效文件已预加载，或考虑使用 `preload_all` 策略。
+// 音量控制
+audioManager.setBGMVolume(0.5);
+audioManager.setSFXVolume(0.8);
 
-### Q: 如何禁用某个场景的BGM？
-A: 在 `sceneMapping` 中不配置该场景，或设置为空字符串。
+// 状态查询
+audioManager.getCurrentBGM();
+audioManager.isReady();
+```
 
-## 📝 更新日志
+## ⚠️ 注意事项
 
-### v2.0.0 (当前版本)
-- ✅ 重构为统一的AudioManager
-- ✅ 添加自动音频解锁机制
-- ✅ 支持场景音乐自动切换
-- ✅ 支持动画音效自动绑定
-- ✅ 移除旧的BGMPlayer和SoundEffectPlayer
-- ✅ 清理旧的配置文件(bgm-config.json, sound_effect/config.json)
-- ✅ 重组音频目录结构(sound_effect → sfx)
-- ✅ 集成GlobalResourceManager，支持资源键引用
-- ✅ 支持本地和远程音频资源的统一管理
-
-### v1.0.0 (已废弃)
-- ❌ 分离的BGMPlayer和SoundEffectPlayer
-- ❌ 手动音频解锁
-- ❌ 复杂的音频管理逻辑
+1. **资源键一致性**: `audio-config.json` 中的 `url` 必须与 `game_config.json` 中的 `key` 完全匹配
+2. **用户交互**: 现代浏览器需要用户交互后才能播放音频，AudioManager 会自动处理
+3. **文件格式**: 推荐使用 MP3 格式以获得最佳兼容性
+4. **预加载策略**: 合理配置 `preload` 以平衡加载时间和内存使用
 
 ---
 
-💡 **提示**: 如果需要更复杂的音频功能，可以扩展AudioManager类或通过EventBus添加自定义音频事件。
+💡 **提示**: 配置文件修改后需要重新加载页面才能生效。开发时可以通过浏览器控制台查看 AudioManager 的详细日志。
