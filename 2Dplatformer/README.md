@@ -46,7 +46,7 @@ npm run build
 ### 4. 开发者选项
 ```bash
 # 使用远程配置文件进行开发
-http://localhost:5173/?dev_game_config_token=https://your-server.com/game_config.json
+http://localhost:5173/?project_id=160&api_host=game-api.dev.knoffice.tech
 
 # 启用调试模式
 http://localhost:5173/?debug=true

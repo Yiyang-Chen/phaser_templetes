@@ -30,8 +30,8 @@ Preloader Scene → 使用自定义加载器 →
 #### 详细流程说明
 
 1. **Boot Scene - preload()阶段**
-   - 处理URL参数（`debug`, `level`, `dev_game_config_token`）
-   - 根据`dev_game_config_token`参数决定加载本地或远程配置
+   - 处理URL参数（`debug`, `level`, `project_id`, `api_host`）
+   - 根据`project_id`和`api_host`参数决定加载本地或远程配置
    - 使用`GameConfigLoader`加载`game_config.json`
    - Phaser自动管理加载队列，无需手动调用`start()`
 
@@ -77,11 +77,13 @@ export class Boot extends Scene {
     }
 
     private loadGameConfig(): void {
-        const devConfigUrl = this.urlParams.getParameter('dev_game_config_token');
+        const projectId = this.urlParams.getParameter('project_id');
+        const apiHost = this.urlParams.getParameter('api_host');
         
-        if (devConfigUrl) {
-            console.log('[Boot] 检测到dev_game_config_token参数，尝试从远程加载配置');
-            this.loadRemoteGameConfig(devConfigUrl);
+        if (projectId && apiHost) {
+            const remoteConfigUrl = `https://${apiHost}/game/api/public/projects/${projectId}/game_config?env=dev`;
+            console.log('[Boot] 检测到project_id和api_host参数，尝试从远程加载配置:', remoteConfigUrl);
+            this.loadRemoteGameConfig(remoteConfigUrl);
         } else {
             console.log('[Boot] 使用本地游戏配置文件');
             this.loadLocalGameConfig();

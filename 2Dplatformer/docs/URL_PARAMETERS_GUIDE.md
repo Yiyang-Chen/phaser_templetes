@@ -36,20 +36,24 @@ https://yourgame.com/?level=3
 - 参数必须是正整数（1, 2, 3...）
 - 无效参数会显示警告并使用默认流程
 
-### 🆕 dev_game_config_token (开发配置参数)
+### 🆕 project_id & api_host (远程配置参数)
 
-用于开发和测试环境，允许从远程URL加载游戏配置文件。
+用于开发和测试环境，允许从远程API加载游戏配置文件。
 
 **使用方法：**
 ```
-https://yourgame.com/?dev_game_config_token=https://example.com/config/game_config.json
+https://yourgame.com/?project_id=160&api_host=game-api.dev.knoffice.tech
 ```
 
 **效果：**
-- 优先从指定URL下载game_config.json
+- 通过API接口动态获取game_config.json：`https://{{api_host}}/game/api/public/projects/{{project_id}}/game_config?env=dev`
 - 下载失败时自动回退到本地配置文件
 - 支持动态配置切换，便于开发测试
-- URL必须是有效的HTTP/HTTPS地址
+- project_id必须是数字，api_host必须是有效的域名格式
+
+**参数说明：**
+- `project_id`: 项目ID，必须是正整数
+- `api_host`: API服务器域名，如 `game-api.dev.knoffice.tech`
 
 **安全说明：**
 - 仅建议在开发和测试环境中使用
@@ -150,12 +154,23 @@ export class Boot extends Scene {
     }
 
     private loadGameConfig(): void {
-        // 检查远程配置参数
-        const devConfigUrl = this.urlParams.getParameter('dev_game_config_token');
+        // 检查project_id和api_host参数
+        const projectId = this.urlParams.getParameter('project_id');
+        const apiHost = this.urlParams.getParameter('api_host');
         
-        if (devConfigUrl) {
-            console.log('[Boot] 🌐 检测到dev_game_config_token参数，尝试从远程加载配置');
-            this.loadRemoteGameConfig(devConfigUrl);
+        if (projectId && apiHost) {
+            // 构建远程配置URL
+            const remoteConfigUrl = `https://${apiHost}/game/api/public/projects/${projectId}/game_config?env=dev`;
+            console.log('[Boot] 🌐 检测到project_id和api_host参数，尝试从远程加载配置:', remoteConfigUrl);
+            
+            // 验证参数格式
+            if (!this.isValidProjectId(projectId) || !this.isValidApiHost(apiHost)) {
+                console.warn('[Boot] ❌ 无效的project_id或api_host参数，使用本地配置');
+                this.loadLocalGameConfig();
+                return;
+            }
+            
+            this.loadRemoteGameConfig(remoteConfigUrl);
         } else {
             console.log('[Boot] 📁 使用本地游戏配置文件');
             this.loadLocalGameConfig();
@@ -163,15 +178,6 @@ export class Boot extends Scene {
     }
 
     private loadRemoteGameConfig(url: string): void {
-        // 验证URL格式
-        try {
-            new URL(url);
-        } catch (urlError) {
-            console.warn('[Boot] ❌ 无效的URL格式，使用本地配置:', url);
-            this.loadLocalGameConfig();
-            return;
-        }
-
         // 使用GameConfigLoader加载远程配置
         this.load.gameConfig('remote-game-config', url);
         
@@ -182,6 +188,17 @@ export class Boot extends Scene {
                 this.loadLocalGameConfig();
             }
         });
+    }
+
+    private isValidProjectId(projectId: string): boolean {
+        // project_id应该是数字
+        return /^\d+$/.test(projectId);
+    }
+
+    private isValidApiHost(apiHost: string): boolean {
+        // api_host应该是有效的域名格式
+        const hostPattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        return hostPattern.test(apiHost);
     }
 
     private loadLocalGameConfig(): void {
@@ -216,7 +233,7 @@ console.log('当前关卡:', levelFromManager);
 
 ```
 # 使用远程配置 + 调试模式 + 指定关卡
-https://yourgame.com/?dev_game_config_token=https://dev-server.com/configs/test_config.json&debug=true&level=2
+https://yourgame.com/?project_id=160&api_host=game-api.dev.knoffice.tech&debug=true&level=2
 
 # 仅调试模式 + 指定关卡
 https://yourgame.com/?debug=true&level=1
@@ -226,7 +243,7 @@ https://yourgame.com/?debug=true&level=1
 
 ```
 # 测试新资源配置
-https://yourgame.com/?dev_game_config_token=https://cdn.example.com/test/game_config_v2.json
+https://yourgame.com/?project_id=160&api_host=game-api.dev.knoffice.tech
 
 # 快速测试特定关卡
 https://yourgame.com/?level=3&debug=true

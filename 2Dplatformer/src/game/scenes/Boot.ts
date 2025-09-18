@@ -57,23 +57,24 @@ export class Boot extends Scene
      * 加载游戏配置文件（支持远程配置）
      */
     private loadGameConfig(): void {
-        // 检查是否有dev_game_config_token参数
-        const devConfigUrl = this.urlParams.getParameter('dev_game_config_token');
+        // 检查是否有project_id和api_host参数
+        const projectId = this.urlParams.getParameter('project_id');
+        const apiHost = this.urlParams.getParameter('api_host');
         
-        if (devConfigUrl) {
-            console.log('[Boot] 检测到dev_game_config_token参数，尝试从远程加载配置:', devConfigUrl);
+        if (projectId && apiHost) {
+            // 构建远程配置URL
+            const remoteConfigUrl = `https://${apiHost}/game/api/public/projects/${projectId}/game_config?env=dev`;
+            console.log('[Boot] 检测到project_id和api_host参数，尝试从远程加载配置:', remoteConfigUrl);
             
-            // 验证URL格式
-            try {
-                new URL(devConfigUrl);
-            } catch (urlError) {
-                console.warn('[Boot] 无效的URL格式，使用本地配置:', devConfigUrl);
+            // 验证参数格式
+            if (!this.isValidProjectId(projectId) || !this.isValidApiHost(apiHost)) {
+                console.warn('[Boot] 无效的project_id或api_host参数，使用本地配置');
                 this.loadLocalGameConfig();
                 return;
             }
             
             // 尝试加载远程配置，失败时回退到本地
-            this.loadRemoteGameConfig(devConfigUrl);
+            this.loadRemoteGameConfig(remoteConfigUrl);
         } else {
             // 使用本地配置文件
             console.log('[Boot] 使用本地游戏配置文件...');
@@ -106,5 +107,22 @@ export class Boot extends Scene
     private loadLocalGameConfig(): void {
         console.log('[Boot] 加载本地游戏配置文件');
         this.load.gameConfig('game-config', 'assets/game_config.json');
+    }
+
+    /**
+     * 验证project_id参数格式
+     */
+    private isValidProjectId(projectId: string): boolean {
+        // project_id应该是数字
+        return /^\d+$/.test(projectId);
+    }
+
+    /**
+     * 验证api_host参数格式
+     */
+    private isValidApiHost(apiHost: string): boolean {
+        // api_host应该是有效的域名格式
+        const hostPattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        return hostPattern.test(apiHost);
     }
 }
