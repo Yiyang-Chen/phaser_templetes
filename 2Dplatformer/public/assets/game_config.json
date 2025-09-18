@@ -1,329 +1,329 @@
 {
     "assets": [
         {
-            "type": "ground_asset_package",
+            "type": "ASSET_TYPE_GROUND_ASSET_PACKAGE",
             "id": 1,
             "name": "terrain_grass",
             "resources": [
                 {
                     "remote": {
                         "key": "terrain_grass_block_center",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=1&asset_type=ASSET_TYPE_GROUND_ASSET_PACKAGE&key=terrain_grass_block_center.png"
                     }
                 },
                 {
                     "remote": {
                         "key": "terrain_grass_block_top",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_top.png"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=1&asset_type=ASSET_TYPE_GROUND_ASSET_PACKAGE&key=terrain_grass_block_top.png"
                     }
                 }
             ]
         },
         {
-            "type": "sprite",
+            "type": "ASSET_TYPE_ATLAS",
             "id": 10,
             "name": "character_purple",
             "resources": [
                 {
                     "remote": {
                         "key": "character_purple_image",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=10&key=image"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=10&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE"
                     }
                 },
                 {
                     "remote": {
                         "key": "character_purple_json",
-                        "resource_type": "json",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=10&key=atlas_json"
+                        "resource_type": "RESOURCE_TYPE_ATLAS_JSON",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=10&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON"
                     }
                 },
                 {
                     "remote": {
                         "key": "character_purple_animators",
-                        "resource_type": "json",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=10&key=animation_json"
+                        "resource_type": "RESOURCE_TYPE_ANIMATION_JSON",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=10&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ANIMATION_JSON"
                     }
                 }
             ]
         },
         {
-            "type": "sprite",
+            "type": "ASSET_TYPE_ATLAS",
             "id": 20,
             "name": "frog",
             "resources": [
                 {
                     "remote": {
                         "key": "frog_image",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=20&key=image"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE"
                     }
                 },
                 {
                     "remote": {
                         "key": "frog_json",
-                        "resource_type": "json",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=20&key=atlas_json"
+                        "resource_type": "RESOURCE_TYPE_ATLAS_JSON",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON"
                     }
                 },
                 {
                     "remote": {
                         "key": "frog_animators",
-                        "resource_type": "json",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=20&key=animation_json"
+                        "resource_type": "RESOURCE_TYPE_ANIMATION_JSON",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ANIMATION_JSON"
                     }
                 }
             ]
         },
         {
-            "type": "static_image",
+            "type": "ASSET_TYPE_STATIC_IMAGE",
             "id": 76,
             "name": "coin_gold",
             "resources": [
                 {
                     "remote": {
                         "key": "coin_gold",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=76"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=76&asset_type=ASSET_TYPE_STATIC_IMAGE"
                     }
                 }
             ]
         },
         {
-            "type": "static_image",
+            "type": "ASSET_TYPE_STATIC_IMAGE",
             "id": 31,
             "name": "hud_key_green",
             "resources": [
                 {
                     "remote": {
                         "key": "hud_key_green",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=31"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=31&asset_type=ASSET_TYPE_STATIC_IMAGE"
                     }
                 }
             ]
         },
         {
-            "type": "static_image",
+            "type": "ASSET_TYPE_STATIC_IMAGE",
             "id": 69,
             "name": "spikes",
             "resources": [
                 {
                     "remote": {
                         "key": "spikes",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=69"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=69&asset_type=ASSET_TYPE_STATIC_IMAGE"
                     }
                 }
             ]
         },
         {
-            "type": "static_image",
+            "type": "ASSET_TYPE_STATIC_IMAGE",
             "id": 161,
             "name": "flag_green_a",
             "resources": [
                 {
                     "remote": {
                         "key": "flag_green_a",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=161"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=161&asset_type=ASSET_TYPE_STATIC_IMAGE"
                     }
                 }
             ]
         },
         {
-            "type": "static_image",
+            "type": "ASSET_TYPE_STATIC_IMAGE",
             "id": 104,
             "name": "block_empty",
             "resources": [
                 {
                     "remote": {
                         "key": "block_empty",
-                        "resource_type": "image",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=104"
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=104&asset_type=ASSET_TYPE_STATIC_IMAGE"
                     }
                 }
             ]
         },
         {
-            "type": "audio_bgm",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 201,
             "name": "bgm_baltic_levity",
             "resources": [
                 {
                     "local": {
                         "key": "bgm_baltic_levity",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/bgm/Baltic Levity.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_bgm",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 202,
             "name": "bgm_alls_fair_in_love",
             "resources": [
                 {
                     "local": {
                         "key": "bgm_alls_fair_in_love",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/bgm/Alls Fair In Love.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_bgm",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 203,
             "name": "bgm_attic_secrets",
             "resources": [
                 {
                     "local": {
                         "key": "bgm_attic_secrets",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/bgm/Attic Secrets.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 204,
             "name": "sfx_bump",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_bump",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_bump.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 205,
             "name": "sfx_select",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_select",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_select.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 206,
             "name": "sfx_jump",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_jump",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_jump.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 207,
             "name": "sfx_jump_high",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_jump_high",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_jump-high.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 208,
             "name": "sfx_throw",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_throw",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_throw.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 209,
             "name": "sfx_hurt",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_hurt",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_hurt.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 210,
             "name": "sfx_disappear",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_disappear",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_disappear.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 211,
             "name": "sfx_coin",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_coin",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_coin.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 212,
             "name": "sfx_gem",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_gem",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_gem.mp3"
                     }
                 }
             ]
         },
         {
-            "type": "audio_sfx",
+            "type": "ASSET_TYPE_AUDIO",
             "id": 213,
             "name": "sfx_magic",
             "resources": [
                 {
                     "local": {
                         "key": "sfx_magic",
-                        "resource_type": "audio",
+                        "resource_type": "RESOURCE_TYPE_AUDIO",
                         "public_path": "assets/audio/sfx/sfx_magic.mp3"
                     }
                 }
@@ -339,7 +339,7 @@
                 {
                     "local": {
                         "key": "level1_tilemap",
-                        "resource_type": "tilemap",
+                        "resource_type": "RESOURCE_TYPE_TILEMAP",
                         "public_path": "assets/tilemap/scenes/tilemap.json"
                     }
                 }

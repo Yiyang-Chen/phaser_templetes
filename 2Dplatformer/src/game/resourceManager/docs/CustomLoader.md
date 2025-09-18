@@ -329,7 +329,7 @@ export class CustomPreloader extends Scene {
           "remote": {
             "key": "ui_button",
             "resource_type": "image",
-            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=100"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=100&asset_type=ASSET_TYPE_STATIC_IMAGE"
           }
         }
       ]
@@ -343,14 +343,14 @@ export class CustomPreloader extends Scene {
           "remote": {
             "key": "ui_elements_image",
             "resource_type": "image",
-            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=101&key=image"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=101&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE"
           }
         },
         {
           "remote": {
             "key": "ui_elements_json",
             "resource_type": "json",
-            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=101&key=atlas_json"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=101&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON"
           }
         }
       ]
@@ -364,7 +364,7 @@ export class CustomPreloader extends Scene {
           "remote": {
             "key": "click_sound",
             "resource_type": "audio",
-            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=audio&asset_id=102"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=102&asset_type=ASSET_TYPE_AUDIO"
           }
         }
       ]
@@ -385,31 +385,31 @@ export class CustomPreloader extends Scene {
 ```json
 {
   "name": "草原关卡",
-  "tilemap": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=tilemap&asset_id=1",
-  "background": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=200",
-  "bgm": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=audio&asset_id=201",
+  "tilemap": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=1&asset_type=ASSET_TYPE_TILEMAP",
+  "background": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=200&asset_type=ASSET_TYPE_STATIC_IMAGE",
+  "bgm": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&asset_type=ASSET_TYPE_AUDIO",
   "sprites": [
     {
       "type": "atlas",
       "key": "player",
-      "image": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=image",
-      "atlas": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
+      "image": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=3&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE",
+      "atlas": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=3&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON"
     },
     {
       "type": "atlas", 
       "key": "enemies",
-      "image": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=20&key=image",
-      "atlas": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=20&key=atlas_json"
+      "image": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE",
+      "atlas": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON"
     }
   ],
   "sounds": [
     {
       "key": "jump",
-      "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=audio&asset_id=206"
+      "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=206&asset_type=ASSET_TYPE_AUDIO"
     },
     {
       "key": "collect",
-      "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=audio&asset_id=211"
+      "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=211&asset_type=ASSET_TYPE_AUDIO"
     }
   ]
 }

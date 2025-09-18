@@ -98,18 +98,19 @@ export function registerLevelSceneConfigLoader(): void {
         
         // 根据资源类型调用相应的加载方法
         switch (resourceType) {
-            case 'tilemap':
+            case 'RESOURCE_TYPE_TILEMAP':
                 // 对于 tilemap 资源，统一使用 'tilemap' 作为 key，确保与 Game.ts 中的使用一致
                 console.log(`[LevelSceneConfigLoader] 加载${sourceType}tilemap资源: ${resourceKey} -> 'tilemap' (统一key)`);
                 this.customTilemap('tilemap', resourcePath);
                 break;
-            case 'image':
+            case 'RESOURCE_TYPE_IMAGE':
                 this.image(resourceKey, resourcePath);
                 break;
-            case 'json':
+            case 'RESOURCE_TYPE_ATLAS_JSON':
+            case 'RESOURCE_TYPE_ANIMATION_JSON':
                 this.json(resourceKey, resourcePath);
                 break;
-            case 'audio':
+            case 'RESOURCE_TYPE_AUDIO':
                 this.audio(resourceKey, resourcePath);
                 break;
             default:

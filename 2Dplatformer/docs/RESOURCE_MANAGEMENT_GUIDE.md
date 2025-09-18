@@ -152,22 +152,29 @@ public/assets/
 {
   "assets": [
     {
-      "type": "sprite",
+      "type": "ASSET_TYPE_ATLAS",
       "id": 3,
       "name": "character_purple",
       "resources": [
         {
           "local": {
             "key": "character_purple_image",
-            "resource_type": "image",
+            "resource_type": "RESOURCE_TYPE_IMAGE",
             "public_path": "assets/player/character_purple.png"
           }
         },
         {
           "remote": {
             "key": "character_purple_json",
-            "resource_type": "json",
-            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=atlas_json"
+            "resource_type": "RESOURCE_TYPE_ATLAS_JSON",
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=3&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON"
+          }
+        },
+        {
+          "remote": {
+            "key": "character_purple_animators",
+            "resource_type": "RESOURCE_TYPE_ATLAS_JSON",
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=3&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ANIMATION_JSON"
           }
         }
       ]
@@ -182,7 +189,7 @@ public/assets/
         {
           "local": {
             "key": "level1_tilemap",
-            "resource_type": "tilemap",
+            "resource_type": "RESOURCE_TYPE_TILEMAP",
             "public_path": "assets/tilemap/scenes/tilemap.json"
           }
         }
@@ -199,7 +206,7 @@ public/assets/
 {
   "local": {
     "key": "resource_key",
-    "resource_type": "image|json|audio|tilemap",
+    "resource_type": "RESOURCE_TYPE_IMAGE|RESOURCE_TYPE_ATLAS_JSON|RESOURCE_TYPE_ANIMATION_JSON|RESOURCE_TYPE_AUDIO|RESOURCE_TYPE_TILEMAP",
     "public_path": "assets/path/to/file.ext"
   }
 }
@@ -210,7 +217,7 @@ public/assets/
 {
   "remote": {
     "key": "resource_key", 
-    "resource_type": "image|json|audio|tilemap",
+    "resource_type": "RESOURCE_TYPE_IMAGE|RESOURCE_TYPE_ATLAS_JSON|RESOURCE_TYPE_ANIMATION_JSON|RESOURCE_TYPE_AUDIO|RESOURCE_TYPE_TILEMAP",
     "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=...&asset_id=...&key=..."
   }
 }
@@ -220,10 +227,10 @@ public/assets/
 - **固定host**: `https://game-api.dev.knoffice.tech`
 - **路径**: `/game/api/public/assets/download`
 - **查询参数**：
-  - `asset_type`（必填）：不区分大小写，接受 `static_image`、`sprite/sprites`、`ground_asset_package`、`audio` 或 `ASSET_TYPE_*` 枚举字符串
+  - `asset_type`（必填）：使用枚举格式 `ASSET_TYPE_STATIC_IMAGE`、`ASSET_TYPE_ATLAS`、`ASSET_TYPE_GROUND_ASSET_PACKAGE`、`ASSET_TYPE_AUDIO`
   - `asset_id`（必填）：目标素材或素材包的数字ID
   - `key`（选填）：
-    - Atlas 可用 `image` / `atlas_json` / `animation_json`
+    - Atlas 可用 `RESOURCE_TYPE_IMAGE` / `RESOURCE_TYPE_ATLAS_JSON` / `RESOURCE_TYPE_ANIMATION_JSON`
     - ground_asset_package 需传资源项的名称，并拼接文件类型如`.png`
     - image/audio 类型忽略该参数
 
@@ -238,12 +245,11 @@ public/assets/
 ### 查询参数规则
 
 #### asset_type（必填）
-资源类型参数，不区分大小写，支持以下值：
-- `static_image` - 静态图片资源
-- `sprite` 或 `sprites` - 精灵资源（包含图片、图集配置、动画配置、atlas在sprite中配置atlas为true）
-- `ground_asset_package` - 地形资源包
-- `audio` - 音频资源
-- `ASSET_TYPE_*` - 枚举字符串格式
+资源类型参数，使用枚举格式，支持以下值：
+- `ASSET_TYPE_STATIC_IMAGE` - 静态图片资源
+- `ASSET_TYPE_ATLAS` - 精灵资源（包含图片、图集配置、动画配置）
+- `ASSET_TYPE_GROUND_ASSET_PACKAGE` - 地形资源包
+- `ASSET_TYPE_AUDIO` - 音频资源
 
 #### asset_id（必填）
 目标素材或素材包的数字ID，对应`game_config.json`中定义的资源ID。
@@ -267,22 +273,22 @@ public/assets/
 
 ```bash
 # 精灵图片
-https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=image
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=3&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE
 
 # 精灵图集配置
-https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=atlas_json
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=3&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON
 
 # 精灵动画配置
-https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=animation_json
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=3&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ANIMATION_JSON
 
 # 地形资源包中的具体文件
-https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=ground_asset_package&asset_id=1&key=terrain_grass_block_center.png
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=1&asset_type=ASSET_TYPE_GROUND_ASSET_PACKAGE&key=terrain_grass_block_center.png
 
 # 静态图片（无需key参数）
-https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=static_image&asset_id=76
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=76&asset_type=ASSET_TYPE_STATIC_IMAGE
 
 # 音频文件（无需key参数）
-https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=audio&asset_id=201
+https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&asset_type=ASSET_TYPE_AUDIO
 ```
 
 ## 🔧 使用方式
@@ -291,27 +297,56 @@ https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=au
 
 在 `game_config.json` 中添加新资源：
 资源类型只支持
-- `static_image` - 静态图片资源
-- `sprite` 或 `sprites` - 精灵资源（包含图片、图集配置、动画配置、atlas在sprite中配置atlas为true）
-- `ground_asset_package` - 地形资源包
-- `audio` - 音频资源
-- `ASSET_TYPE_*` - 枚举字符串格式
+- `ASSET_TYPE_STATIC_IMAGE` - 静态图片资源
+- `ASSET_TYPE_ATLAS` - 精灵资源（包含图片、图集配置、动画配置）
+- `ASSET_TYPE_GROUND_ASSET_PACKAGE` - 地形资源包
+- `ASSET_TYPE_AUDIO` - 音频资源
 
 ```json
 {
-  "type": "static_image",
+  "type": "ASSET_TYPE_STATIC_IMAGE",
   "id": 105,
   "name": "new_sprite",
   "resources": [
     {
       "local": {
         "key": "new_sprite_key",
-        "resource_type": "image",
+        "resource_type": "RESOURCE_TYPE_IMAGE",
         "public_path": "assets/sprites/new_sprite.png"
       }
     }
   ]
 }
+
+//对于atlas类型，使用 XXX_image 拼接字符串获取 _json，_animators
+{
+            "type": "ASSET_TYPE_ATLAS",
+            "id": 20,
+            "name": "frog",
+            "resources": [
+                {
+                    "remote": {
+                        "key": "frog_image",
+                        "resource_type": "RESOURCE_TYPE_IMAGE",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE"
+                    }
+                },
+                {
+                    "remote": {
+                        "key": "frog_json",
+                        "resource_type": "RESOURCE_TYPE_ATLAS_JSON",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON"
+                    }
+                },
+                {
+                    "remote": {
+                        "key": "frog_animators",
+                        "resource_type": "RESOURCE_TYPE_ANIMATION_JSON",
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ANIMATION_JSON"
+                    }
+                }
+            ]
+        },
 ```
 
 ### 2. 在其他配置文件中引用
@@ -410,7 +445,7 @@ export class Preloader extends Scene {
   "remote": {
     "key": "character_image",
     "resource_type": "image",
-    "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=sprite&asset_id=3&key=image"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=3&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE"
   }
 }
 ```
@@ -473,7 +508,7 @@ localResources.forEach(resource => {
         {
           "remote": {
             "key": "background_music",
-            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=audio&asset_id=201"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&asset_type=ASSET_TYPE_AUDIO"
           }
         }
       ]
