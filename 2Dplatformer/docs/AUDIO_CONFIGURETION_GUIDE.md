@@ -81,7 +81,7 @@ public/assets/
           "local": {
             "key": "bgm_baltic_levity",
             "resource_type": "audio",
-            "full_path": "assets/audio/bgm/Baltic Levity.mp3"
+            "public_path": "assets/audio/bgm/Baltic Levity.mp3"
           }
         },
         {
@@ -102,7 +102,7 @@ public/assets/
           "local": {
             "key": "sfx_jump",
             "resource_type": "audio",
-            "full_path": "assets/audio/sfx/sfx_jump.mp3"
+            "public_path": "assets/audio/sfx/sfx_jump.mp3"
           }
         }
       ]
@@ -355,7 +355,7 @@ AudioManager会自动监听用户交互（点击、触摸、按键）来解锁�
           "local": {
             "key": "bgm_new_theme",
             "resource_type": "audio",
-            "full_path": "assets/audio/bgm/new_theme.mp3"
+            "public_path": "assets/audio/bgm/new_theme.mp3"
           }
         }
       ]
@@ -414,7 +414,7 @@ AudioManager会自动监听用户交互（点击、触摸、按键）来解锁�
           "local": {
             "key": "sfx_new_sound",
             "resource_type": "audio",
-            "full_path": "assets/audio/sfx/new_sound.mp3"
+            "public_path": "assets/audio/sfx/new_sound.mp3"
           }
         }
       ]

@@ -9,7 +9,7 @@ interface ResourceConfig {
         key: string;
         resource_type: string;
         path?: string;
-        full_path?: string;
+        public_path?: string;
     };
     remote?: {
         key: string;
@@ -117,8 +117,8 @@ export class GlobalResourceManager {
 
         // 备用本地资源
         if (resource.local) {
-            console.log(`[GlobalResourceManager] 使用本地资源: ${key} -> ${resource.local.full_path || resource.local.path}`);
-            return resource.local.full_path || resource.local.path || '';
+            console.log(`[GlobalResourceManager] 使用本地资源: ${key} -> ${resource.local.public_path || resource.local.path}`);
+            return resource.local.public_path || resource.local.path || '';
         }
 
         return null;

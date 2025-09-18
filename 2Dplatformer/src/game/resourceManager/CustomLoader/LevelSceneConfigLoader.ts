@@ -77,7 +77,7 @@ export function registerLevelSceneConfigLoader(): void {
         localResources.forEach((resource) => {
             if (!resource.remote && resource.local) {
                 const resourceKey = resource.local.key;
-                const resourcePath = resource.local.full_path || resource.local.path || '';
+                const resourcePath = resource.local.public_path || resource.local.path || '';
                 const resourceType = resource.local.resource_type;
                 
                 console.log(`[LevelSceneConfigLoader] [备用] 加载本地资源: ${resourceKey} (${resourceType}) -> ${resourcePath}`);

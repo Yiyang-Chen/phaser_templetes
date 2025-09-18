@@ -158,7 +158,7 @@ public/assets/
           "local": {
             "key": "character_purple_image",
             "resource_type": "image",
-            "full_path": "assets/player/character_purple.png"
+            "public_path": "assets/player/character_purple.png"
           }
         },
         {
@@ -181,7 +181,7 @@ public/assets/
           "local": {
             "key": "level1_tilemap",
             "resource_type": "tilemap",
-            "full_path": "assets/tilemap/scenes/tilemap.json"
+            "public_path": "assets/tilemap/scenes/tilemap.json"
           }
         }
       ]
@@ -198,7 +198,7 @@ public/assets/
   "local": {
     "key": "resource_key",
     "resource_type": "image|json|audio|tilemap",
-    "full_path": "assets/path/to/file.ext"
+    "public_path": "assets/path/to/file.ext"
   }
 }
 ```
@@ -305,7 +305,7 @@ https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_type=au
       "local": {
         "key": "new_sprite_key",
         "resource_type": "image",
-        "full_path": "assets/sprites/new_sprite.png"
+        "public_path": "assets/sprites/new_sprite.png"
       }
     }
   ]
@@ -395,7 +395,7 @@ export class Preloader extends Scene {
   "local": {
     "key": "character_image",
     "resource_type": "image", 
-    "full_path": "assets/player/character.png"
+    "public_path": "assets/player/character.png"
   }
 }
 ```
@@ -460,7 +460,7 @@ localResources.forEach(resource => {
         {
           "local": {
             "key": "player_sprite",
-            "full_path": "assets/core/player.png"
+            "public_path": "assets/core/player.png"
           }
         }
       ]
@@ -507,13 +507,13 @@ localResources.forEach(resource => {
         {
           "local": {
             "key": "grass_tile",
-            "full_path": "assets/tilemap/tiles/grass.png"
+            "public_path": "assets/tilemap/tiles/grass.png"
           }
         },
         {
           "local": {
             "key": "background_music",
-            "full_path": "assets/audio/bgm/music.mp3"
+            "public_path": "assets/audio/bgm/music.mp3"
           }
         }
       ]

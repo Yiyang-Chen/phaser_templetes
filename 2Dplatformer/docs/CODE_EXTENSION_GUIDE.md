@@ -1463,7 +1463,7 @@ interface CustomResourceConfig extends ResourceConfig {
     local?: {
         key: string;
         resource_type: 'custom_type';
-        full_path: string;
+        public_path: string;
         custom_property?: any;
     };
     remote?: {
