@@ -47,6 +47,8 @@ You can design some more complex maps, which are very attractive to players
 
 You must read `docs/TILEMAP_CONFIGURATION_GUIDE.md` to understand how to make a valid tilemap file.
 
+The `name` key in `object` is a reference to a specific `tilesets`, must match one of the `name` key in `tilesets`.
+
 Player Starting Position Safety:
 - Unless users explicitly request, ensure the player can safely land when the game starts, even if they spawn slightly above ground
 - You can still design challenging areas with falling mechanics elsewhere in the map, but the spawn point must be safe

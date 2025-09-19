@@ -22,8 +22,8 @@ This guide documents how to configure `public/assets/tilemap/scenes/tilemap.json
 - **API下载系统**: 统一的远程资源下载接口 `https://game-api.dev.knoffice.tech/game/api/public/assets/download`
 - **Tilemap**: JSON file defining level structure using resource keys
 - **Layers**: Tile layers (terrain) and Object layers (entities)
-- **Tilesets**: Asset definitions using resource keys instead of hardcoded paths
-- **Objects**: Game entities with specific behaviors
+- **Tilesets**: Asset definitions using resource keys, use `name` as key
+- **Objects**: Game entities with specific behaviors, using `name` key to reference to a specific `tilesets`
 - **Properties**: Configuration parameters for customization
 
 ## JSON Structure
