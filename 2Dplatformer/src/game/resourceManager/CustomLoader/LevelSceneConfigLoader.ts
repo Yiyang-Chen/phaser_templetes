@@ -31,7 +31,7 @@ export function registerLevelSceneConfigLoader(): void {
         const sceneConfig = resourceManager.getScene(levelNumber);
         
         if (!sceneConfig) {
-            console.error(`[LevelSceneConfigLoader] 未找到关卡 ${levelNumber} 的场景配置`);
+            console.error(`[LevelSceneConfigLoader] 关卡 ${levelNumber} 不存在于 game_config.json 的 scenes 配置中，使用默认关卡 1`);
             // 如果没有找到指定关卡，尝试加载默认关卡
             const defaultLevelNumber = getDefaultLevelNumber();
             const defaultSceneConfig = resourceManager.getScene(defaultLevelNumber);
@@ -39,7 +39,7 @@ export function registerLevelSceneConfigLoader(): void {
                 console.log(`[LevelSceneConfigLoader] 使用默认关卡配置 (关卡${defaultLevelNumber})`);
                 this.loadSceneResources(key, defaultSceneConfig);
             } else {
-                console.error(`[LevelSceneConfigLoader] 连默认关卡配置都未找到 (关卡${defaultLevelNumber})`);
+                console.error(`[LevelSceneConfigLoader] 连默认关卡配置都未找到 (关卡${defaultLevelNumber})，请检查 game_config.json`);
             }
             return this;
         }

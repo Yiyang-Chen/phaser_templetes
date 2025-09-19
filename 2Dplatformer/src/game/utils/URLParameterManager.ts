@@ -39,7 +39,8 @@ export class URLParameterManager {
                 this.level = levelInt;
                 console.log('[URLParameterManager] 检测到URL参数: level=' + levelInt);
             } else {
-                console.warn('[URLParameterManager] 无效的level参数:', levelValue, '必须是正整数');
+                console.error('[URLParameterManager] 无效的level参数:', levelValue, '必须是正整数，使用默认关卡 1');
+                this.level = 1; // 默认关卡
             }
         }
     }

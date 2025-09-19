@@ -34,7 +34,8 @@ https://yourgame.com/?level=3
 **效果：**
 - 跳过主菜单，直接进入指定关卡
 - 参数必须是正整数（1, 2, 3...）
-- 无效参数会显示警告并使用默认流程
+- 参数要与`game_config.json`的`scenes`下面的每一个scene的`key`一致
+- 无效参数会显示报错并使用默认key `1`
 
 ### 🆕 project_id & api_host (远程配置参数)
 
