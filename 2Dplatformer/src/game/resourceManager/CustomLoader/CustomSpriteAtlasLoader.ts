@@ -70,8 +70,8 @@ export function registerCustomSpriteAtlasLoader() {
  *     const player = this.add.sprite(100, 100, 'player');
  *     
  *     // 使用动画配置（如果存在）
- *     if (this.cache.json.exists('player_animations')) {
- *         const animConfig = this.cache.json.get('player_animations');
+ *     if (this.cache.json.exists('player_animators')) {
+ *         const animConfig = this.cache.json.get('player_animators');
  *         // 处理动画配置...
  *     }
  * }

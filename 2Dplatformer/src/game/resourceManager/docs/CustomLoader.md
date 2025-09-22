@@ -226,7 +226,7 @@ class SpriteBundleFile extends Phaser.Loader.File {
                     
                     // 如果有动画配置，也一起加载
                     if (atlas.animations) {
-                        this.loader.json(`${atlas.key}_animations`, atlas.animations);
+                        this.loader.json(`${atlas.key}_animators`, atlas.animations);
                     }
                 });
             }

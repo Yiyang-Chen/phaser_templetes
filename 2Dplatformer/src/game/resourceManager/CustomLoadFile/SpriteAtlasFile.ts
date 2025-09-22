@@ -40,7 +40,7 @@ export class SpriteAtlasFile extends Phaser.Loader.File {
             this.loader.atlas(this.key, this.imageUrl, atlasJsonUrl);
             
             // 加载动画配置
-            this.loader.json(`${this.key}_animations`, animationConfigUrl);
+            this.loader.json(`${this.key}_animators`, animationConfigUrl);
             
             // 存储配置信息
             this.data = {

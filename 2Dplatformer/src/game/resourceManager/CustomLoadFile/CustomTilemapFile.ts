@@ -94,7 +94,7 @@ export class CustomTilemapFile extends Phaser.Loader.File {
                     this.loader.atlas(name, actualImagePath, atlasJsonPath);
                 }
                 if (animationConfigPath) {
-                    this.loader.json(`${name}_animations`, animationConfigPath);
+                    this.loader.json(`${name}_animators`, animationConfigPath);
                 }
             } else {
                 console.log(`🖼️ CustomTilemap: 加载图片 ${name} (${imageKey} -> ${actualImagePath})`);

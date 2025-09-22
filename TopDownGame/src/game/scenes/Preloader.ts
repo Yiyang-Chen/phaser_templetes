@@ -137,7 +137,7 @@ export class Preloader extends Scene
                 
                 // Load animation configuration if it exists
                 let animationConfigUri = imageUri.replace(/(\.[^/.]+)$/, '_animators.json');
-                this.load.json(`${name}_animations`, animationConfigUri);
+                this.load.json(`${name}_animators`, animationConfigUri);
             } else {
                 this.load.image(name, imageUri);
             }
@@ -484,7 +484,7 @@ export class Preloader extends Scene
             
             if (texture && texture.frameTotal > 1) {
                 // Check if we have animation config for this atlas
-                const animConfigKey = `${key}_animations`;
+                const animConfigKey = `${key}_animators`;
                 
                 if (this.cache.json.exists(animConfigKey)) {
                     const animConfig = this.cache.json.get(animConfigKey);

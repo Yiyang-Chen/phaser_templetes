@@ -112,7 +112,7 @@ export class Preloader extends Scene
             // Check if this texture is marked as atlas in tilemap
             if (this.isAtlasTexture(key)) {
                 // Check if we have animation config for this atlas
-                const animConfigKey = `${key}_animations`;
+                const animConfigKey = `${key}_animators`;
                 if (this.cache.json.exists(animConfigKey)) {
                     const animConfig = this.cache.json.get(animConfigKey);
                     if (animConfig) {
