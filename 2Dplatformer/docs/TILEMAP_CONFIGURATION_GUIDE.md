@@ -554,15 +554,34 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
 
 **Problem:** When AI generates tilemaps, character resources are often treated as regular images instead of sprite atlases, causing the entire sprite sheet to display instead of individual animation frames.
 
-**Solution:** Always add `atlas: true` property to character tilesets that use sprite sheets.
+**Common AI Generation Error:** Large language models sometimes incorrectly place the `atlas` property at the tileset level instead of in the `tiles[0].properties` array.
 
-**Correct Configuration:**
+**❌ Incorrect AI-Generated Format:**
+```json
+{
+  "firstgid": 3,
+  "image": "character_purple_image",
+  "name": "character_purple",
+  "tilecount": 1,
+  "tileheight": 102,
+  "tilewidth": 84,
+  "properties": [                    // ❌ WRONG: atlas property at tileset level
+    {
+      "name": "atlas",
+      "type": "bool",
+      "value": true
+    }
+  ]
+}
+```
+
+**✅ Correct Configuration:**
 ```json
 {
   "firstgid": 3,
   "image": "character_purple_image",  // 🆕 Use resource key
   "name": "character_purple",
-  "tiles": [
+  "tiles": [                         // ✅ CORRECT: atlas property in tiles array
     {
       "id": 0,
       "properties": [
@@ -576,6 +595,10 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
   ]
 }
 ```
+
+**Solution:** The system now supports both formats for compatibility:
+1. **Standard format**: `atlas` property in `tiles[0].properties` (recommended)
+2. **Compatibility mode**: `atlas` property in tileset `properties` (auto-detected and handled)
 
 **What happens without `atlas: true`:**
 - ❌ Displays entire sprite sheet as one image

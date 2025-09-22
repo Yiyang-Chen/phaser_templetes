@@ -65,6 +65,9 @@ export class CustomTilemapFile extends Phaser.Loader.File {
         const resourceManager = GlobalResourceManager.getInstance();
 
         tilesets.forEach((tileset: any) => {
+            // 自动修复大模型生成的错误格式
+            this.fixTilesetFormat(tileset);
+            
             const isAtlas = this.checkIfAtlas(tileset);
             const imageKey = tileset.image; // 现在这是一个key而不是路径
             const name = tileset.name;
@@ -104,17 +107,95 @@ export class CustomTilemapFile extends Phaser.Loader.File {
     }
 
     /**
+     * 自动修复大模型生成的错误tileset格式
+     * 将错误放置在tileset.properties中的atlas属性移动到正确的tiles[0].properties中
+     */
+    private fixTilesetFormat(tileset: any): void {
+        // 检查是否存在tileset级别的atlas属性（错误格式）
+        if (tileset.properties && Array.isArray(tileset.properties)) {
+            const atlasProperty = tileset.properties.find((prop: any) => 
+                prop.name === "atlas" && prop.value === true
+            );
+            
+            if (atlasProperty) {
+                console.log(`🔧 CustomTilemap: 检测到错误的atlas属性位置，正在自动修复 - ${tileset.name}`);
+                
+                // 确保tiles数组存在
+                if (!tileset.tiles) {
+                    tileset.tiles = [];
+                }
+                
+                // 确保第一个tile存在
+                if (tileset.tiles.length === 0) {
+                    tileset.tiles.push({ id: 0, properties: [] });
+                }
+                
+                // 确保第一个tile的properties数组存在
+                if (!tileset.tiles[0].properties) {
+                    tileset.tiles[0].properties = [];
+                }
+                
+                // 检查是否已经存在正确位置的atlas属性
+                const existingAtlasInTiles = tileset.tiles[0].properties.find((prop: any) => 
+                    prop.name === "atlas"
+                );
+                
+                if (!existingAtlasInTiles) {
+                    // 将atlas属性移动到正确位置
+                    tileset.tiles[0].properties.push({
+                        name: "atlas",
+                        type: "bool",
+                        value: true
+                    });
+                    console.log(`✅ CustomTilemap: atlas属性已移动到正确位置 - ${tileset.name}`);
+                }
+                
+                // 从错误位置移除atlas属性
+                tileset.properties = tileset.properties.filter((prop: any) => 
+                    !(prop.name === "atlas" && prop.value === true)
+                );
+                
+                // 如果properties数组为空，删除它
+                if (tileset.properties.length === 0) {
+                    delete tileset.properties;
+                }
+            }
+        }
+    }
+
+    /**
      * 检查tileset是否为图集类型
+     * 支持两种格式：
+     * 1. 标准格式：tileset.tiles[0].properties 中的 atlas 属性
+     * 2. 兼容格式：tileset.properties 中的 atlas 属性（大模型可能生成的错误格式）
      */
     private checkIfAtlas(tileset: any): boolean {
+        // 方法1：检查 tileset.properties 中的 atlas 属性（兼容大模型生成的格式）
+        if (tileset.properties && Array.isArray(tileset.properties)) {
+            const hasAtlasInTilesetProps = tileset.properties.some((prop: any) => 
+                prop.name === "atlas" && prop.value === true
+            );
+            if (hasAtlasInTilesetProps) {
+                console.log(`🔧 CustomTilemap: 检测到tileset级别的atlas属性 (兼容模式) - ${tileset.name}`);
+                return true;
+            }
+        }
+
+        // 方法2：检查标准的 tiles[0].properties 中的 atlas 属性
         const tiles = tileset.tiles;
         if (!tiles || !Array.isArray(tiles) || tiles.length === 0) return false;
 
         const properties = tiles[0].properties;
         if (!properties || !Array.isArray(properties)) return false;
 
-        return properties.some((prop: any) => 
+        const hasAtlasInTileProps = properties.some((prop: any) => 
             prop.name === "atlas" && prop.value === true
         );
+        
+        if (hasAtlasInTileProps) {
+            console.log(`✅ CustomTilemap: 检测到标准的tiles级别atlas属性 - ${tileset.name}`);
+        }
+
+        return hasAtlasInTileProps;
     }
 }
