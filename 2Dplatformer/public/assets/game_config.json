@@ -226,7 +226,7 @@
                     "remote": {
                         "key": "sfx_jump",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/audio/sound_effect/sfx_jump.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=206&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]

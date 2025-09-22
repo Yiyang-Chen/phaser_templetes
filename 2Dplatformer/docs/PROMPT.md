@@ -80,3 +80,4 @@ Make sure to correctly config Sprite Atlas Configuration
 </must_follow>
 
 </tilemap_design>
+
