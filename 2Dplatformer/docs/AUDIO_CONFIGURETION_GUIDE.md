@@ -10,7 +10,7 @@
 
 ### 1. 资源定义 (`game_config.json`)
 
-定义音频文件的实际位置，支持本地和远程资源，详见RESOURCE_MANAGEMENT_GUIDE：
+定义音频文件的实际位置，支持本地和远程资源，但是优先使用remote链接，详见RESOURCE_MANAGEMENT_GUIDE：
 
 ```json
 {

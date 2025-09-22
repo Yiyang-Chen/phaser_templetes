@@ -86,7 +86,7 @@ http://localhost:5173/?level=2
 | 🏃‍♂️ 快速运行游戏 | [HOW_TO_BUILD.md](./docs/HOW_TO_BUILD.md) |
 | 🗺️ 设计关卡 | [TILEMAP_CONFIGURATION_GUIDE.md](./docs/TILEMAP_CONFIGURATION_GUIDE.md) |
 | 🔧 配置资源加载 | [RESOURCE_MANAGEMENT_GUIDE.md](./docs/RESOURCE_MANAGEMENT_GUIDE.md) |
-| 🎵 设置音频系统 | [AUDIO.md](./src/game/audio/docs/AUDIO.md) |
+| 🎵 设置音频系统 | [AUDIO_CONFIGURETION_GUIDE.md](./docs/AUDIO_CONFIGURETION_GUIDE.md) |
 | 💻 扩展代码功能 | [CODE_EXTENSION_GUIDE.md](./docs/CODE_EXTENSION_GUIDE.md) |
 | 🌐 使用URL参数 | [URL_PARAMETERS_GUIDE.md](./docs/URL_PARAMETERS_GUIDE.md) |
 
@@ -107,10 +107,3 @@ http://localhost:5173/?level=2
 - **数据驱动**: JSON配置驱动的关卡设计
 - **可视化编辑**: 支持Tiled地图编辑器
 - **灵活扩展**: 易于添加新的游戏对象和机制
-
-<!-- Test sync trigger - $(date) - Retest after fixes -->
-# 测试同步功能 - Thu Sep 11 11:30:55 CST 2025
-# 2Dplatformer 测试同步功能 - Thu Sep 11 11:36:28 CST 2025
-# 验证同步功能 - Thu Sep 11 11:39:32 CST 2025
-# 测试路径修复 - Thu Sep 11 11:41:04 CST 2025
-# 测试重构后的工作流 - Thu Sep 11 11:42:18 CST 2025

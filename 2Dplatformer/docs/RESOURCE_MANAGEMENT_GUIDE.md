@@ -2,8 +2,7 @@
 
 ## 概述
 
-本项目使用统一的资源管理系统，支持本地和远程资源的动态加载。通过 `game_config.json` 配置文件，可以灵活控制资源的加载方式，实现渐进式部署和CDN优化。
-所有游戏中被使用到的资源都需要在`game_config.json`中按照格式配置。
+本项目使用统一的资源管理系统，支持本地和远程资源的动态加载。通过 `game_config.json` 配置文件，可以灵活控制资源的加载方式，实现渐进式部署和CDN优化。所有游戏中被使用到的资源都需要在`game_config.json`中有配置。不要直接修改`game_config.json`,阅读system_prompt中的`phase_3_collect_asset`了解如何使用工具配置`game_config.json`。
 
 ## 🏗️ 系统架构
 
@@ -295,61 +294,63 @@ https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&
 
 ### 1. 配置资源
 
-在 `game_config.json` 中添加新资源：
-资源类型只支持
-- `ASSET_TYPE_STATIC_IMAGE` - 静态图片资源
-- `ASSET_TYPE_ATLAS` - 精灵资源（包含图片、图集配置、动画配置）
-- `ASSET_TYPE_GROUND_ASSET_PACKAGE` - 地形资源包
-- `ASSET_TYPE_AUDIO` - 音频资源
+⚠️ **重要提醒**: **禁止直接修改 `game_config.json` 文件！**
 
-```json
-{
-  "type": "ASSET_TYPE_STATIC_IMAGE",
-  "id": 105,
-  "name": "new_sprite",
-  "resources": [
-    {
-      "local": {
-        "key": "new_sprite_key",
-        "resource_type": "RESOURCE_TYPE_IMAGE",
-        "public_path": "assets/sprites/new_sprite.png"
-      }
-    }
-  ]
-}
+系统提供了专门的工具来管理不同类型的资源，请使用对应的工具进行资源配置：
 
-//对于atlas类型，使用 XXX_image 拼接字符串获取 _json，_animators
-{
-            "type": "ASSET_TYPE_ATLAS",
-            "id": 20,
-            "name": "frog",
-            "resources": [
-                {
-                    "remote": {
-                        "key": "frog_image",
-                        "resource_type": "RESOURCE_TYPE_IMAGE",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_IMAGE"
-                    }
-                },
-                {
-                    "remote": {
-                        "key": "frog_json",
-                        "resource_type": "RESOURCE_TYPE_ATLAS_JSON",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ATLAS_JSON"
-                    }
-                },
-                {
-                    "remote": {
-                        "key": "frog_animators",
-                        "resource_type": "RESOURCE_TYPE_ANIMATION_JSON",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=20&asset_type=ASSET_TYPE_ATLAS&key=RESOURCE_TYPE_ANIMATION_JSON"
-                    }
-                }
-            ]
-        },
+#### 支持的资源类型及对应工具：
+
+**1. ASSET_TYPE_STATIC_IMAGE - 静态图片资源**
+- 使用工具: `register_static_image_asset`
+- 参数: asset_id, config_path, description, tileset_properties, object_type, object_properties, entry_type
+
+**2. ASSET_TYPE_ATLAS - 精灵资源（图集）**
+- 使用工具: `register_sprite_asset`
+- 参数: asset_id, config_path, description, tileset_properties, object_type, object_properties
+- 自动生成: {name}_image, {name}_json, {name}_animators
+
+**3. ASSET_TYPE_GROUND_ASSET_PACKAGE - 地形资源包**
+- 使用工具: `register_ground_asset_package`
+- 参数: asset_id, config_path, description, tileset_properties, purpose
+
+**4. ASSET_TYPE_AUDIO - 音频资源**
+- 使用工具: `register_audio_asset`
+- 参数: asset_id, config_path, description, purpose
+
+#### 工具使用示例：
+
+```typescript
+// 注册静态图片资源
+register_static_image_asset({
+  asset_id: 105,
+  config_path: "/absolute/path/to/game_config.json",
+  description: "Background image for level 1",
+  tileset_properties: '[{"key":"collision","type":"bool","value":false}]',
+  object_type: "background",
+  object_properties: '[{"key":"layer","type":"int","value":0}]',
+  entry_type: "object"
+});
+
+// 注册精灵图集资源
+register_sprite_asset({
+  asset_id: 20,
+  config_path: "/absolute/path/to/game_config.json", 
+  description: "Frog character with animations",
+  tileset_properties: '[{"key":"collision","type":"bool","value":true}]',
+  object_type: "enemy",
+  object_properties: '[{"key":"health","type":"int","value":100}]'
+});
 ```
 
+这些工具会自动：
+- 从远程API获取资源详情
+- 生成正确的下载URL
+- 更新 `game_config.json` 配置
+- 处理tilemap集成配置
+
 ### 2. 在其他配置文件中引用
+
+使用工具注册资源后，修改其他配置文件使用生成的resource key进行引用：
 
 #### tilemap.json 中使用key引用：
 ```json
@@ -357,7 +358,7 @@ https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&
   "tilesets": [
     {
       "name": "terrain_grass_block_center",
-      "image": "terrain_grass_block_center"  // 使用key而不是路径
+      "image": "terrain_grass_block_center"  // 工具自动生成的key
     }
   ]
 }
@@ -369,7 +370,7 @@ https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&
   "assets": {
     "bgm": {
       "menu_theme": {
-        "url": "bgm_baltic_levity",  // 使用key而不是路径
+        "url": "bgm_baltic_levity",  // 工具自动生成的key
         "preload": true,
         "volume": 0.7,
         "loop": true
@@ -378,6 +379,8 @@ https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&
   }
 }
 ```
+
+⚠️ **注意**: `game_config.json`中这些key是由对应的注册工具自动生成的，请不要手动修改`game_config.json`。修改`tilempa.json`以及`sudio_config.json`文件以匹配`game_config.json`的key
 
 ### 3. 程序中获取资源路径
 
@@ -521,53 +524,73 @@ localResources.forEach(resource => {
 
 ### 从硬编码路径迁移
 
-#### 1. 原有方式（已废弃）
+**步骤1**: 使用对应工具注册资源
+```typescript
+// 注册地形资源包
+register_ground_asset_package({
+  asset_id: 1,
+  config_path: "/path/to/game_config.json",
+  description: "Grass terrain tiles",
+  tileset_properties: '[{"key":"collision","type":"bool","value":true}]'
+});
+
+// 注册音频资源
+register_audio_asset({
+  asset_id: 201,
+  config_path: "/path/to/game_config.json",
+  description: "Background music for menu"
+});
+```
+
+**步骤2**: 更新其他配置文件
 ```json
-// tilemap.json
+// tilemap.json - 使用生成的key
 {
-  "image": "assets/tilemap/tiles/grass.png"  // ❌ 硬编码路径
+  "image": "grass_tile"  // ✅ 工具生成的key
 }
 
-// audio-config.json  
+// audio-config.json - 使用生成的key
 {
-  "url": "assets/audio/bgm/music.mp3"       // ❌ 硬编码路径
+  "url": "background_music"  // ✅ 工具生成的key  
 }
 ```
 
-#### 2. 新方式（推荐）
-```json
-// game_config.json - 定义资源
-{
-  "assets": [
-    {
-      "resources": [
-        {
-          "local": {
-            "key": "grass_tile",
-            "public_path": "assets/tilemap/tiles/grass.png"
-          }
-        },
-        {
-          "local": {
-            "key": "background_music",
-            "public_path": "assets/audio/bgm/music.mp3"
-          }
-        }
-      ]
-    }
-  ]
-}
+⚠️ **重要**: 不要手动编辑 `game_config.json`，必须使用提供的工具进行资源管理。
 
-// tilemap.json - 使用key引用
-{
-  "image": "grass_tile"  // ✅ 使用key引用
-}
+## 🛠️ 资源管理工具详解
 
-// audio-config.json - 使用key引用
-{
-  "url": "background_music"  // ✅ 使用key引用  
-}
-```
+### 工具使用规则
+
+1. **绝对路径**: 所有工具的 `config_path` 参数必须使用绝对路径
+2. **资源描述**: `description` 参数是必填的，用于说明资源用途
+3. **Tilemap集成**: 除音频外，所有工具都支持tilemap相关配置
+4. **自动URL生成**: 工具会自动生成正确的远程下载URL
+5. **配置验证**: 工具会验证asset_id的有效性和资源的存在性
+
+### 工具参数详解
+
+#### 通用参数
+- `asset_id`: 资源在系统中的唯一ID（必填）
+- `config_path`: game_config.json的绝对路径（必填）
+- `description`: 资源用途描述（必填）
+
+#### Tilemap相关参数（适用于视觉资源）
+- `tileset_properties`: JSON数组，定义tileset属性，格式：`[{"key":"属性名","type":"数据类型","value":"属性值"}]`
+- `object_type`: 对象层中的类型名称（用于sprite和static image）
+- `object_properties`: JSON数组，定义对象属性，格式同tileset_properties
+- `entry_type`: "tile"或"object"，指示在tilemap中的引用方式（仅static image）
+
+#### 可选参数
+- `purpose`: 资源用途的额外说明
+
+### 错误处理
+
+工具会进行以下验证：
+- asset_id必须为正数
+- config_path必须是绝对路径且文件存在
+- description不能为空
+- tileset_properties和object_properties必须是有效的JSON数组
+- 远程资源必须可访问
 
 ## 🛠️ 自定义加载器
 
@@ -617,21 +640,6 @@ export function extendLoader() {
 - 保持一致的命名模式：`{object}_{type}_{variant}`
 - 避免特殊字符和空格
 
-### 2. 配置组织
-- 按功能分组资源：`ui_assets`, `game_assets`, `audio_assets`
-- 使用有意义的ID：按功能区间分配（1-100: UI, 101-200: 游戏对象）
-- 保持配置文件的可读性
-
-### 3. 性能优化
-- 预加载关键资源，懒加载可选资源
-- 合理使用本地/远程混合策略
-- 监控资源加载性能和失败率
-
-### 4. 版本管理
-- 在远程URL中包含版本号或hash
-- 使用CDN的缓存控制策略
-- 保持本地fallback资源
-
 ## 🔍 调试和故障排除
 
 ### 常见问题
@@ -666,33 +674,6 @@ export function extendLoader() {
 - 确保在Boot场景中加载 `game_config.json`
 - 在Preloader场景中使用资源前，确保配置已加载完成
 - 检查加载器的注册顺序
-
-### 调试工具
-
-启用调试日志查看资源加载过程：
-
-```typescript
-// 在浏览器控制台中
-localStorage.setItem('debug_resources', 'true');
-
-// 重新加载页面查看详细日志
-```
-
-## 📈 未来扩展
-
-### 计划功能
-- [ ] 资源版本管理和缓存策略
-- [ ] 资源加载进度和错误统计
-- [ ] 动态资源热更新
-- [ ] 资源压缩和优化
-- [ ] 多语言资源支持
-
-### 扩展点
-- 添加新的资源类型支持
-- 实现自定义缓存策略
-- 集成资源监控和分析
-- 支持资源的条件加载
-
 ---
 
 通过统一的资源管理系统，项目实现了灵活的资源部署策略，支持从开发到生产的无缝切换，为游戏的扩展和优化提供了强大的基础。
