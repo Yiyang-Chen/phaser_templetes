@@ -451,7 +451,7 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
   "image": "terrain_grass_block_center",  // 🆕 Resource key instead of path
   "imageheight": 64,
   "imagewidth": 64,
-  "name": "terrain_grass_block_center",
+  "name": "terrain_grass_block_center",   // ⚠️ MUST match image field exactly
   "tilecount": 1,
   "tileheight": 64,
   "tilewidth": 64,
@@ -529,7 +529,7 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
 {
   "firstgid": 3,
   "image": "character_purple_image",  // 🆕 Use image resource key
-  "name": "character_purple",
+  "name": "character_purple_image",   // ⚠️ MUST match image field exactly
   "tiles": [
     {
       "id": 0,
@@ -757,11 +757,63 @@ Example:
 - [ ] Layer data array length = width × height
 - [ ] Image paths are correct
 - [ ] Color values in #RRGGBB format
+- [ ] **Tileset `name` and `image` fields follow correct rules** ⚠️ **CRITICAL**
+  - [ ] Static images: `name` and `image` identical
+  - [ ] Atlas images: `image` has `_image` suffix, `name` without suffix
 - [ ] **Character tilesets have `atlas: true` property**
 - [ ] **Sprite atlas .json files exist for all atlas tilesets**
 - [ ] **Animation files (_animators.json) exist for animated sprites**
 
 ### Common Issues
+
+#### Tileset Name/Image Mismatch (Critical Error for Static Images)
+- **症状**: 纹理加载失败，地形显示为空白或默认纹理
+- **原因**: 对于静态图像，`name` 和 `image` 字段不一致
+- **解决方案**: 
+  - **静态图像**: `name` 和 `image` 字段必须完全相同
+  - **Atlas 图集**: `image` 使用 `_image` 后缀，`name` 不使用后缀
+- **示例**:
+  ```json
+  // ❌ 错误 - 静态图像 name 和 image 不一致
+  {
+    "image": "terrain_purple_cloud",
+    "name": "terrain_purple"
+  }
+  
+  // ✅ 正确 - 静态图像 name 和 image 一致
+  {
+    "image": "terrain_purple_cloud", 
+    "name": "terrain_purple_cloud"
+  }
+  
+  // ✅ 正确 - Atlas 图集的特殊规则
+  {
+    "image": "character_purple_image",  // 带 _image 后缀
+    "name": "character_purple",         // 不带后缀
+    "tiles": [
+      {
+        "id": 0,
+        "properties": [
+          {"name": "atlas", "type": "bool", "value": true}
+        ]
+      }
+    ]
+  }
+  
+  // ✅ 正确 - 另一个 Atlas 图集示例
+  {
+    "image": "frog_image",              // 带 _image 后缀
+    "name": "frog",                     // 不带后缀
+    "tiles": [
+      {
+        "id": 0,
+        "properties": [
+          {"name": "atlas", "type": "bool", "value": true}
+        ]
+      }
+    ]
+  }
+  ```
 
 #### Objects Not Appearing
 - Check GID matches tileset firstgid
