@@ -153,10 +153,10 @@
             "name": "bgm_baltic_levity",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "bgm_baltic_levity",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/bgm/Baltic Levity.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -167,10 +167,10 @@
             "name": "bgm_alls_fair_in_love",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "bgm_alls_fair_in_love",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/bgm/Alls Fair In Love.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=202&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -181,10 +181,10 @@
             "name": "bgm_attic_secrets",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "bgm_attic_secrets",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/bgm/Attic Secrets.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=203&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -195,10 +195,10 @@
             "name": "sfx_bump",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_bump",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_bump.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=204&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -209,10 +209,10 @@
             "name": "sfx_select",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_select",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_select.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=205&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -223,10 +223,10 @@
             "name": "sfx_jump",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_jump",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_jump.mp3"
+                        "url": "https://myfiles-1301596189.cos.ap-guangzhou.myqcloud.com/dist/assets/audio/sound_effect/sfx_jump.mp3"
                     }
                 }
             ]
@@ -237,10 +237,10 @@
             "name": "sfx_jump_high",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_jump_high",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_jump-high.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=207&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -251,10 +251,10 @@
             "name": "sfx_throw",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_throw",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_throw.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=208&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -265,10 +265,10 @@
             "name": "sfx_hurt",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_hurt",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_hurt.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=209&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -279,10 +279,10 @@
             "name": "sfx_disappear",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_disappear",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_disappear.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=210&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -293,10 +293,10 @@
             "name": "sfx_coin",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_coin",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_coin.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=211&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -307,10 +307,10 @@
             "name": "sfx_gem",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_gem",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_gem.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=212&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
@@ -321,10 +321,10 @@
             "name": "sfx_magic",
             "resources": [
                 {
-                    "local": {
+                    "remote": {
                         "key": "sfx_magic",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "public_path": "assets/audio/sfx/sfx_magic.mp3"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=213&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]

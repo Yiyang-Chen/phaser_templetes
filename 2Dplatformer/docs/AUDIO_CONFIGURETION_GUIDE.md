@@ -21,10 +21,10 @@
       "name": "bgm_baltic_levity",
       "resources": [
         {
-          "local": {
+          "remote": {
             "key": "bgm_baltic_levity",
             "resource_type": "RESOURCE_TYPE_AUDIO",
-            "public_path": "assets/audio/bgm/Baltic Levity.mp3"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&asset_type=ASSET_TYPE_AUDIO"
           }
         }
       ]
@@ -35,10 +35,10 @@
       "name": "sfx_jump",
       "resources": [
         {
-          "local": {
+          "remote": {
             "key": "sfx_jump",
             "resource_type": "RESOURCE_TYPE_AUDIO",
-            "public_path": "assets/audio/sfx/sfx_jump.mp3"
+            "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=204&asset_type=ASSET_TYPE_AUDIO"
           }
         }
       ]
@@ -134,10 +134,10 @@ player.anims.play('jump')
   "name": "bgm_boss_battle",
   "resources": [
     {
-      "local": {
+      "remote": {
         "key": "bgm_boss_battle",
         "resource_type": "RESOURCE_TYPE_AUDIO", 
-        "public_path": "assets/audio/bgm/boss_battle.mp3"
+        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=220&asset_type=ASSET_TYPE_AUDIO"
       }
     }
   ]
@@ -179,10 +179,10 @@ player.anims.play('jump')
   "name": "sfx_enemy_roar",
   "resources": [
     {
-      "local": {
+      "remote": {
         "key": "sfx_enemy_roar",
         "resource_type": "RESOURCE_TYPE_AUDIO",
-        "public_path": "assets/audio/sfx/enemy_roar.mp3"
+        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=230&asset_type=ASSET_TYPE_AUDIO"
       }
     }
   ]
