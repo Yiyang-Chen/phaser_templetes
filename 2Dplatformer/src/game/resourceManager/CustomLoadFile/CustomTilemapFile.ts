@@ -108,58 +108,82 @@ export class CustomTilemapFile extends Phaser.Loader.File {
 
     /**
      * 自动修复大模型生成的错误tileset格式
-     * 将错误放置在tileset.properties中的atlas属性移动到正确的tiles[0].properties中
+     * 将错误放置在tileset.properties中的属性移动到正确的tiles[0].properties中
      */
     private fixTilesetFormat(tileset: any): void {
-        // 检查是否存在tileset级别的atlas属性（错误格式）
-        if (tileset.properties && Array.isArray(tileset.properties)) {
-            const atlasProperty = tileset.properties.find((prop: any) => 
-                prop.name === "atlas" && prop.value === true
-            );
-            
-            if (atlasProperty) {
-                console.log(`🔧 CustomTilemap: 检测到错误的atlas属性位置，正在自动修复 - ${tileset.name}`);
-                
-                // 确保tiles数组存在
-                if (!tileset.tiles) {
-                    tileset.tiles = [];
-                }
-                
-                // 确保第一个tile存在
-                if (tileset.tiles.length === 0) {
-                    tileset.tiles.push({ id: 0, properties: [] });
-                }
-                
-                // 确保第一个tile的properties数组存在
-                if (!tileset.tiles[0].properties) {
-                    tileset.tiles[0].properties = [];
-                }
-                
-                // 检查是否已经存在正确位置的atlas属性
-                const existingAtlasInTiles = tileset.tiles[0].properties.find((prop: any) => 
-                    prop.name === "atlas"
-                );
-                
-                if (!existingAtlasInTiles) {
-                    // 将atlas属性移动到正确位置
-                    tileset.tiles[0].properties.push({
-                        name: "atlas",
-                        type: "bool",
-                        value: true
-                    });
-                    console.log(`✅ CustomTilemap: atlas属性已移动到正确位置 - ${tileset.name}`);
-                }
-                
-                // 从错误位置移除atlas属性
-                tileset.properties = tileset.properties.filter((prop: any) => 
-                    !(prop.name === "atlas" && prop.value === true)
-                );
-                
-                // 如果properties数组为空，删除它
-                if (tileset.properties.length === 0) {
-                    delete tileset.properties;
-                }
+        if (!tileset.properties || !Array.isArray(tileset.properties)) {
+            return;
+        }
+
+        // 需要移动到tiles[0].properties的属性列表
+        const propertiesToMove = ['atlas', 'collides'];
+        const foundProperties: any[] = [];
+
+        // 查找需要移动的属性
+        propertiesToMove.forEach(propName => {
+            const property = tileset.properties.find((prop: any) => prop.name === propName);
+            if (property) {
+                foundProperties.push(property);
             }
+        });
+
+        if (foundProperties.length === 0) {
+            return;
+        }
+
+        console.log(`🔧 CustomTilemap: 检测到错误的属性位置，正在自动修复 - ${tileset.name}`, 
+                   foundProperties.map(p => p.name));
+
+        // 确保tiles数组结构存在
+        this.ensureTilesStructure(tileset);
+
+        // 移动每个找到的属性
+        foundProperties.forEach(property => {
+            // 检查是否已经存在正确位置的属性
+            const existingProperty = tileset.tiles[0].properties.find((prop: any) => 
+                prop.name === property.name
+            );
+
+            if (!existingProperty) {
+                // 将属性移动到正确位置
+                tileset.tiles[0].properties.push({
+                    name: property.name,
+                    type: property.type,
+                    value: property.value
+                });
+                
+                console.log(`✅ CustomTilemap: ${property.name}属性已移动到正确位置 - ${tileset.name}`);
+            }
+        });
+
+        // 从tileset.properties中移除已移动的属性
+        tileset.properties = tileset.properties.filter((prop: any) => 
+            !propertiesToMove.includes(prop.name)
+        );
+
+        // 如果properties数组为空，删除它
+        if (tileset.properties.length === 0) {
+            delete tileset.properties;
+        }
+    }
+
+    /**
+     * 确保tileset具有正确的tiles结构
+     */
+    private ensureTilesStructure(tileset: any): void {
+        // 确保tiles数组存在
+        if (!tileset.tiles) {
+            tileset.tiles = [];
+        }
+        
+        // 确保第一个tile存在
+        if (tileset.tiles.length === 0) {
+            tileset.tiles.push({ id: 0, properties: [] });
+        }
+        
+        // 确保第一个tile的properties数组存在
+        if (!tileset.tiles[0].properties) {
+            tileset.tiles[0].properties = [];
         }
     }
 
@@ -170,32 +194,44 @@ export class CustomTilemapFile extends Phaser.Loader.File {
      * 2. 兼容格式：tileset.properties 中的 atlas 属性（大模型可能生成的错误格式）
      */
     private checkIfAtlas(tileset: any): boolean {
-        // 方法1：检查 tileset.properties 中的 atlas 属性（兼容大模型生成的格式）
+        return this.getTilesetProperty(tileset, 'atlas', false) === true;
+    }
+
+    /**
+     * 通用方法：获取tileset属性值
+     * 支持两种格式：
+     * 1. 标准格式：tileset.tiles[0].properties 中的属性
+     * 2. 兼容格式：tileset.properties 中的属性（大模型可能生成的错误格式）
+     */
+    private getTilesetProperty(tileset: any, propertyName: string, defaultValue: any = undefined): any {
+        // 方法1：检查 tileset.properties 中的属性（兼容大模型生成的格式）
         if (tileset.properties && Array.isArray(tileset.properties)) {
-            const hasAtlasInTilesetProps = tileset.properties.some((prop: any) => 
-                prop.name === "atlas" && prop.value === true
+            const tilesetProperty = tileset.properties.find((prop: any) => 
+                prop.name === propertyName
             );
-            if (hasAtlasInTilesetProps) {
-                console.log(`🔧 CustomTilemap: 检测到tileset级别的atlas属性 (兼容模式) - ${tileset.name}`);
-                return true;
+            if (tilesetProperty !== undefined) {
+                console.log(`🔧 CustomTilemap: 检测到tileset级别的${propertyName}属性 (兼容模式) - ${tileset.name}: ${tilesetProperty.value}`);
+                return tilesetProperty.value;
             }
         }
 
-        // 方法2：检查标准的 tiles[0].properties 中的 atlas 属性
+        // 方法2：检查标准的 tiles[0].properties 中的属性
         const tiles = tileset.tiles;
-        if (!tiles || !Array.isArray(tiles) || tiles.length === 0) return false;
-
-        const properties = tiles[0].properties;
-        if (!properties || !Array.isArray(properties)) return false;
-
-        const hasAtlasInTileProps = properties.some((prop: any) => 
-            prop.name === "atlas" && prop.value === true
-        );
-        
-        if (hasAtlasInTileProps) {
-            console.log(`✅ CustomTilemap: 检测到标准的tiles级别atlas属性 - ${tileset.name}`);
+        if (!tiles || !Array.isArray(tiles) || tiles.length === 0) {
+            return defaultValue;
         }
 
-        return hasAtlasInTileProps;
+        const properties = tiles[0].properties;
+        if (!properties || !Array.isArray(properties)) {
+            return defaultValue;
+        }
+
+        const tileProperty = properties.find((prop: any) => prop.name === propertyName);
+        if (tileProperty !== undefined) {
+            console.log(`✅ CustomTilemap: 检测到标准的tiles级别${propertyName}属性 - ${tileset.name}: ${tileProperty.value}`);
+            return tileProperty.value;
+        }
+
+        return defaultValue;
     }
 }

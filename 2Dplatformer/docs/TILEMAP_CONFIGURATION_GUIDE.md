@@ -565,9 +565,14 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
   "tilecount": 1,
   "tileheight": 102,
   "tilewidth": 84,
-  "properties": [                    // ❌ WRONG: atlas property at tileset level
+  "properties": [                    // ❌ WRONG: properties at tileset level
     {
       "name": "atlas",
+      "type": "bool",
+      "value": true
+    },
+    {
+      "name": "collides",             // ❌ WRONG: collides also at wrong level
       "type": "bool",
       "value": true
     }
@@ -581,7 +586,7 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
   "firstgid": 3,
   "image": "character_purple_image",  // 🆕 Use resource key
   "name": "character_purple",
-  "tiles": [                         // ✅ CORRECT: atlas property in tiles array
+  "tiles": [                         // ✅ CORRECT: properties in tiles array
     {
       "id": 0,
       "properties": [
@@ -589,6 +594,11 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
           "name": "atlas",
           "type": "bool",
           "value": true     // ESSENTIAL for sprite atlases
+        },
+        {
+          "name": "collides",           // ✅ CORRECT: collides at right level
+          "type": "bool",
+          "value": true
         }
       ]
     }
@@ -597,8 +607,13 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
 ```
 
 **Solution:** The system now supports both formats for compatibility:
-1. **Standard format**: `atlas` property in `tiles[0].properties` (recommended)
-2. **Compatibility mode**: `atlas` property in tileset `properties` (auto-detected and handled)
+1. **Standard format**: Properties in `tiles[0].properties` (recommended)
+2. **Compatibility mode**: Properties in tileset `properties` (auto-detected and handled)
+
+**Supported Properties with Auto-Fix:**
+- `atlas`: Sprite atlas detection
+- `collides`: Collision detection for terrain tiles
+- More properties can be easily added to the system
 
 **What happens without `atlas: true`:**
 - ❌ Displays entire sprite sheet as one image
