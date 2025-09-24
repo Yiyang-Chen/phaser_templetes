@@ -795,6 +795,8 @@ Example:
 - [ ] Layer data array length = width × height
 - [ ] Image paths are correct
 - [ ] Color values in #RRGGBB format
+- [ ] **Property names match code expectations exactly** ⚠️ **CRITICAL**
+  - [ ] Check [PROPERTY_NAMING_STANDARDS.md](./PROPERTY_NAMING_STANDARDS.md) for all standard names
 - [ ] **Tileset `name` and `image` fields follow correct rules** ⚠️ **CRITICAL**
   - [ ] Static images: `name` and `image` identical
   - [ ] Atlas images: `image` has `_image` suffix, `name` without suffix
@@ -803,6 +805,20 @@ Example:
 - [ ] **Animation files (_animators.json) exist for animated sprites**
 
 ### Common Issues
+
+#### Property Name Inconsistency (Critical AI Error)
+- **症状**: 游戏对象行为异常，属性不生效，使用默认值
+- **原因**: AI使用了错误的属性名，与代码期望不匹配
+- **常见错误**:
+  - 使用 `move_mode` 而不是 `move_method`
+  - 使用 `health` 而不是 `damage`（对于敌人）
+  - 使用驼峰命名 `moveSpeed` 而不是 `move_speed`
+  - 使用 `patrol_range` 而不是 `patrol_distance`
+- **解决方案**: 
+  - 严格参考 [PROPERTY_NAMING_STANDARDS.md](./PROPERTY_NAMING_STANDARDS.md)
+  - 使用snake_case命名约定
+  - 验证所有属性名与代码实现匹配
+- **预防措施**: AI生成配置前必须检查标准属性名文档
 
 #### Tileset Name/Image Mismatch (Critical Error for Static Images)
 - **症状**: 纹理加载失败，地形显示为空白或默认纹理
