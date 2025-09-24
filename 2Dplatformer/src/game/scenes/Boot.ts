@@ -63,7 +63,7 @@ export class Boot extends Scene
         
         if (projectId && apiHost) {
             // 构建远程配置URL
-            const remoteConfigUrl = `https://${apiHost}/game/api/public/projects/${projectId}/game_config?env=dev`;
+            const remoteConfigUrl = `${apiHost}/game/api/public/projects/${projectId}/game_config?env=dev`;
             console.log('[Boot] 检测到project_id和api_host参数，尝试从远程加载配置:', remoteConfigUrl);
             
             // 验证参数格式
