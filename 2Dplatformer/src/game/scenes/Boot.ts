@@ -121,8 +121,8 @@ export class Boot extends Scene
      * 验证api_host参数格式
      */
     private isValidApiHost(apiHost: string): boolean {
-        // api_host应该是有效的域名格式
-        const hostPattern = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        // api_host应该是有效的URL格式（支持https协议）
+        const hostPattern = /^https:\/\/[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         return hostPattern.test(apiHost);
     }
 }
