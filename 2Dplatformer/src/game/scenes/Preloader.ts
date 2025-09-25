@@ -48,7 +48,7 @@ export class Preloader extends Scene
         if (urlParams.hasLevel()) {
             const selectedLevel = urlParams.getLevel();
             if (selectedLevel !== null) {
-                console.log(`[Preloader] 加载指定关卡: level${selectedLevel}`);
+                console.log(`[Preloader] 加载指定关卡: ${selectedLevel}`);
                 // 根据选定的关卡加载对应的 tilemap
                 // 这里可以根据 game_config.json 中的场景配置来动态加载
                 this.loadLevelResources(selectedLevel);

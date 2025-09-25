@@ -3,6 +3,8 @@
  * 管理游戏配置中的资源字典，提供统一的资源访问接口
  */
 
+import { normalizeConfig } from './utils/ConfigNormalizer';
+
 // 资源配置接口
 interface ResourceConfig {
     local?: {
@@ -60,17 +62,20 @@ export class GlobalResourceManager {
     initializeFromConfig(config: GameConfig): void {
         console.log('[GlobalResourceManager] 初始化资源字典...');
         
+        // 标准化配置数据（将所有字符串数字转换为实际数字）
+        const normalizedConfig = normalizeConfig(config);
+        
         // 清空现有字典
         this.assetsDict.clear();
         this.scenesDict.clear();
         this.resourceKeyMap.clear();
 
         // 构建assets字典 (id作为key)
-        config.assets.forEach(asset => {
+        normalizedConfig.assets.forEach((asset: AssetConfig) => {
             this.assetsDict.set(asset.id, asset);
             
             // 同时构建资源key映射表，方便快速查找
-            asset.resources.forEach(resource => {
+            asset.resources.forEach((resource: ResourceConfig) => {
                 if (resource.local) {
                     this.resourceKeyMap.set(resource.local.key, resource);
                 }
@@ -81,11 +86,11 @@ export class GlobalResourceManager {
         });
 
         // 构建scenes字典 (key作为key)
-        config.scenes.forEach(scene => {
+        normalizedConfig.scenes.forEach((scene: SceneConfig) => {
             this.scenesDict.set(scene.key, scene);
             
             // 同时构建资源key映射表
-            scene.resources.forEach(resource => {
+            scene.resources.forEach((resource: ResourceConfig) => {
                 if (resource.local) {
                     this.resourceKeyMap.set(resource.local.key, resource);
                 }
