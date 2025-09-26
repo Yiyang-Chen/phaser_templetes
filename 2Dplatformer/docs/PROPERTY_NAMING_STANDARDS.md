@@ -14,6 +14,20 @@
 |-----------|------|------|--------|
 | `uuid` | string | 唯一标识符 | "enemy-001" |
 
+## 瓦片集属性 (Tileset Properties)
+
+用于瓦片集中瓦片的属性配置：
+
+| 标准属性名 | 类型 | 说明 | 默认值 |
+|-----------|------|------|--------|
+| `collides` | bool | 瓦片是否有碰撞 | false |
+| `atlas` | bool | 是否为精灵图集 | false |
+
+### 瓦片集属性说明
+
+- `collides`: 设置为 `true` 的瓦片会与玩家和其他物体产生碰撞
+- `atlas`: 设置为 `true` 表示该瓦片使用精灵图集，需要对应的 .json 文件定义动画帧
+
 ## 敌人属性 (Enemy Properties)
 
 ### 🎯 核心属性 (必须使用的标准名称)
@@ -89,6 +103,18 @@
 | `health` | int | 生命值 | 3 |
 | `movable` | bool | 可推动 | false |
 
+## 静态危险物属性 (StaticHazard Properties)
+
+| 标准属性名 | 类型 | 说明 | 默认值 |
+|-----------|------|------|--------|
+| `damage` | int | 伤害值 | 1 |
+
+## 目标物属性 (Goal Properties)
+
+目标物（Goal）用于标记关卡完成点，无需特殊属性配置。当玩家接触目标物时：
+- 自动检查是否收集了所有 `must_collect` 为 `true` 的收集品
+- 满足条件时触发胜利场景
+
 ## 触发器属性 (Trigger Properties)
 
 ### 移动触发器
@@ -111,6 +137,23 @@
 | `scale_x` | float | X轴缩放 |
 | `scale_y` | float | Y轴缩放 |
 
+### 触发器视觉属性
+| 标准属性名 | 类型 | 说明 | 默认值 |
+|-----------|------|------|--------|
+| `texture` / `texture_key` | string | 默认纹理键名 | 无 |
+| `active_texture` / `texture_active` | string | 激活状态纹理 | 无 |
+| `inactive_texture` / `texture_inactive` | string | 非激活状态纹理 | 无 |
+| `use_sprite` | bool | 使用动画精灵还是静态图像 | false |
+| `visual_scale` | float | 视觉缩放比例 | 1.0 |
+
+### 视觉属性说明
+- 触发器默认不可见，添加纹理属性可使其可视化
+- `texture` / `texture_key`: 触发器的基础纹理
+- `active_texture`: 触发器激活时显示的纹理
+- `inactive_texture`: 触发器未激活时显示的纹理  
+- `use_sprite`: `true` 使用动画精灵，`false` 使用静态图像
+- `visual_scale`: 控制视觉表示的大小，不影响碰撞区域
+
 ## 🎨 颜色值标准
 
 所有颜色属性必须使用十六进制格式：
@@ -123,6 +166,54 @@
 | `#RRGGBB` | `#FFD700` | 金色 |
 
 ## 📝 配置示例
+
+### 正确的瓦片集配置
+```json
+{
+  "firstgid": 1,
+  "image": "terrain_grass_block",
+  "name": "terrain_grass_block_center",
+  "tilecount": 1,
+  "tileheight": 64,
+  "tilewidth": 64,
+  "tiles": [
+    {
+      "id": 0,
+      "properties": [
+        {
+          "name": "collides",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+### 正确的精灵图集配置
+```json
+{
+  "firstgid": 3,
+  "image": "character_purple_image",
+  "name": "character_purple",
+  "tilecount": 1,
+  "tileheight": 102,
+  "tilewidth": 84,
+  "tiles": [
+    {
+      "id": 0,
+      "properties": [
+        {
+          "name": "atlas",
+          "type": "bool",
+          "value": true
+        }
+      ]
+    }
+  ]
+}
+```
 
 ### 正确的敌人配置
 ```json
@@ -184,6 +275,101 @@
   "width": 64,
   "x": 400,
   "y": 1504
+}
+```
+
+### 正确的静态危险物配置
+```json
+{
+  "gid": 4,
+  "height": 64,
+  "id": 15,
+  "name": "spikes",
+  "properties": [
+    {
+      "name": "uuid",
+      "type": "string",
+      "value": "hazard-spikes-001"
+    },
+    {
+      "name": "damage",
+      "type": "int",
+      "value": 2
+    }
+  ],
+  "rotation": 0,
+  "type": "hazard",
+  "visible": true,
+  "width": 64,
+  "x": 448,
+  "y": 1088
+}
+```
+
+### 正确的可视化触发器配置
+```json
+{
+  "height": 64,
+  "id": 20,
+  "name": "button_trigger",
+  "properties": [
+    {
+      "name": "uuid",
+      "type": "string",
+      "value": "trigger-button-001"
+    },
+    {
+      "name": "event_type",
+      "type": "string",
+      "value": "move"
+    },
+    {
+      "name": "target_uuid",
+      "type": "string",
+      "value": "platform-001"
+    },
+    {
+      "name": "velocity_x",
+      "type": "float",
+      "value": 0
+    },
+    {
+      "name": "velocity_y",
+      "type": "float",
+      "value": -200
+    },
+    {
+      "name": "duration",
+      "type": "int",
+      "value": 2000
+    },
+    {
+      "name": "texture_key",
+      "type": "string",
+      "value": "button_idle"
+    },
+    {
+      "name": "active_texture",
+      "type": "string",
+      "value": "button_pressed"
+    },
+    {
+      "name": "use_sprite",
+      "type": "bool",
+      "value": true
+    },
+    {
+      "name": "visual_scale",
+      "type": "float",
+      "value": 1.2
+    }
+  ],
+  "rotation": 0,
+  "type": "trigger",
+  "visible": false,
+  "width": 128,
+  "x": 384,
+  "y": 708
 }
 ```
 
