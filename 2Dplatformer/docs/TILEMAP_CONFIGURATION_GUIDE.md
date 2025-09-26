@@ -44,6 +44,7 @@ This guide documents how to configure `public/assets/tilemap/scenes/tilemap.json
   "tiledversion": "1.2.2"
 }
 ```
+You must make sure that layer array length do not exceeds width * height.
 
 ## Layer Types
 
