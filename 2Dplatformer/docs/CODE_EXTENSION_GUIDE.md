@@ -1448,9 +1448,11 @@ src/game/resourceManager/
 │   ├── GameConfigLoader.ts     # 游戏配置加载器
 │   ├── AudioConfigLoader.ts    # 音频配置加载器
 │   └── CustomTileMapLoader.ts  # 瓦片地图加载器
-└── CustomLoadFile/             # 自定义文件类型
-    ├── AudioConfigFile.ts      # 音频配置文件
-    └── CustomTilemapFile.ts    # 自定义瓦片地图文件
+├── CustomLoadFile/             # 自定义文件类型
+│   ├── AudioConfigFile.ts      # 音频配置文件
+│   └── CustomTilemapFile.ts    # 自定义瓦片地图文件
+└── utils/                      # 工具类
+    └── AudioLoader.ts          # 音频加载工具
 ```
 
 ### 添加新资源类型
@@ -1474,7 +1476,7 @@ interface CustomResourceConfig extends ResourceConfig {
     };
 }
 
-// Create custom loader
+// Create custom loader with AudioLoader integration
 export function registerCustomResourceLoader(): void {
     Loader.LoaderPlugin.prototype.customResource = function(key: string, configPath: string) {
         const resourceManager = GlobalResourceManager.getInstance();
@@ -1486,11 +1488,19 @@ export function registerCustomResourceLoader(): void {
             // Process custom resources
             data.customResources?.forEach((resourceKey: string) => {
                 const resource = resourceManager.getResource(resourceKey);
-                if (resource && resource.local?.resource_type === 'custom_type') {
+                if (resource) {
                     const actualPath = resourceManager.getResourcePath(resourceKey);
+                    const resourceType = resource.local?.resource_type || resource.remote?.resource_type;
+                    
                     if (actualPath) {
-                        // Add to loading queue with custom handling
-                        this.customLoad(resourceKey, actualPath, resource.local.custom_property);
+                        // 根据资源类型选择加载方式
+                        if (resourceType === 'RESOURCE_TYPE_AUDIO') {
+                            // 使用AudioLoader处理音频
+                            AudioLoader.loadMultiFormat(this, resourceKey, actualPath);
+                        } else {
+                            // 其他资源类型的处理
+                            this.customLoad(resourceKey, actualPath, resource.local?.custom_property);
+                        }
                     }
                 }
             });
@@ -1504,7 +1514,7 @@ export function registerCustomResourceLoader(): void {
 ### Resource Management Best Practices
 
 ```typescript
-// Use resource manager in custom components
+// Use resource manager in custom components with AudioLoader integration
 export class CustomGameObject extends BaseSprite {
     private resourceManager = GlobalResourceManager.getInstance();
     
@@ -1521,7 +1531,7 @@ export class CustomGameObject extends BaseSprite {
             if (resource) {
                 const actualPath = this.resourceManager.getResourcePath(key);
                 if (actualPath) {
-                    // Load resource based on type
+                    // Load resource based on type with AudioLoader support
                     await this.loadResourceByType(key, actualPath, resource);
                 }
             }
@@ -1532,20 +1542,27 @@ export class CustomGameObject extends BaseSprite {
         const resourceType = resource.local?.resource_type || resource.remote?.resource_type;
         
         switch (resourceType) {
-            case 'image':
+            case 'RESOURCE_TYPE_IMAGE':
                 this.scene.load.image(key, path);
                 break;
-            case 'audio':
-                this.scene.load.audio(key, path);
+            case 'RESOURCE_TYPE_AUDIO':
+                // ✅ 使用AudioLoader处理音频
+                AudioLoader.loadMultiFormat(this.scene.load, key, path);
                 break;
-            case 'json':
+            case 'RESOURCE_TYPE_JSON':
                 this.scene.load.json(key, path);
                 break;
             // Add more resource types as needed
         }
         
         return new Promise((resolve) => {
-            this.scene.load.once('complete', resolve);
+            this.scene.load.once('complete', () => {
+                // 处理音频别名
+                if (resourceType === 'RESOURCE_TYPE_AUDIO') {
+                    AudioLoader.processPendingAliases(key, this.scene);
+                }
+                resolve();
+            });
             this.scene.load.start();
         });
     }

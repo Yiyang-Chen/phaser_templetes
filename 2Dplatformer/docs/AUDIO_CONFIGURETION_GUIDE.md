@@ -98,27 +98,41 @@
 ### 初始化阶段
 
 1. **场景初始化**: 在 `Preloader` 场景中初始化 AudioManager
-2. **配置加载**: AudioManager 通过 `setConfig()` 接收音频配置
+2. **配置加载**: 通过 `AudioConfigFile` 自动加载音频配置
 3. **资源解析**: 通过 `GlobalResourceManager` 将资源键解析为实际文件路径
-4. **音频预加载**: 根据配置策略预加载音频文件
+4. **音频预加载**: `AudioConfigFile` 通知 `AudioManager` 进行预加载
+5. **多格式支持**: `AudioLoader` 自动处理多种音频格式和URL缓存
+
+### AudioLoader 工具类
+- **多格式加载**: 自动为每个音频生成 .mp3、.ogg、.wav 格式的URL，让Phaser选择支持的格式
+- **URL缓存**: 避免重复加载相同URL的音频资源
+- **别名系统**: 支持多个key指向同一个音频资源，节省内存
+- **缓存管理**: 自动处理Phaser缓存中的音频别名创建
 
 ### 播放流程
 
 ```typescript
-// 1. BGM 播放 - 通过场景映射自动触发
+// 1. 配置加载和预加载流程
+AudioConfigFile.load('audio-config.json')
+→ 解析配置文件
+→ 调用 AudioManager.preloadFromConfig()
+→ AudioLoader.loadMultiFormat() 处理多格式URL
+→ 检查URL缓存，避免重复加载
+→ 创建音频别名，节省内存
+
+// 2. BGM 播放 - 通过场景映射自动触发
 scene.start('Game') 
 → AudioManager 检测场景变化
 → 查找 sceneMapping["Game"] = "game_theme"
 → 播放 assets.bgm["game_theme"]
-→ 解析 url: "bgm_alls_fair_in_love"
-→ GlobalResourceManager 返回实际路径
+→ AudioLoader.getActualKey() 处理别名
 → 播放音频文件
 
-// 2. SFX 播放 - 通过动画映射自动触发  
+// 3. SFX 播放 - 通过动画映射自动触发  
 player.anims.play('jump')
 → 触发 ANIMATION_PLAY 事件
 → AudioManager 查找 animationMapping["main_player"]["jump"]
-→ 随机选择 ["player_jump"] 中的音效
+→ AudioLoader.getActualKey() 解析实际key
 → 播放对应的音频文件
 ```
 
@@ -257,8 +271,44 @@ audioManager.isReady();
 
 1. **资源键一致性**: `audio-config.json` 中的 `url` 必须与 `game_config.json` 中的 `key` 完全匹配
 2. **用户交互**: 现代浏览器需要用户交互后才能播放音频，AudioManager 会自动处理
-3. **文件格式**: 推荐使用 MP3 格式以获得最佳兼容性
-4. **预加载策略**: 合理配置 `preload` 以平衡加载时间和内存使用
+3. **多格式支持**: AudioLoader 自动处理多种音频格式，无需手动指定格式
+4. **URL格式要求**: Phaser音频URL必须包含格式参数，AudioLoader会自动添加 `&format=.mp3` 等参数
+5. **缓存优化**: 相同URL的音频只会加载一次，后续使用别名系统节省内存
+6. **预加载策略**: 合理配置 `preload` 以平衡加载时间和内存使用
+
+## 🔧 AudioLoader API
+
+### 主要方法
+
+```typescript
+// 加载多格式音频（自动处理格式参数）
+AudioLoader.loadMultiFormat(loader, key, actualPath);
+
+// 获取实际的音频key（处理别名）
+const actualKey = AudioLoader.getActualKey(aliasKey);
+
+// 处理加载完成后的待处理别名
+AudioLoader.processPendingAliases(originalKey, scene);
+
+// 清理缓存（测试用）
+AudioLoader.clearCache();
+```
+
+### 使用示例
+
+```typescript
+// 在自定义加载器中使用
+const resourceManager = GlobalResourceManager.getInstance();
+const actualUrl = resourceManager.getResourcePath(audioKey);
+if (actualUrl) {
+    // 使用AudioLoader而不是直接使用loader.audio
+    AudioLoader.loadMultiFormat(this.load, audioKey, actualUrl);
+}
+
+// 在AudioManager中获取实际key
+const actualKey = AudioLoader.getActualKey(requestedKey);
+const sound = this.loadedSounds.get(actualKey);
+```
 
 ---
 

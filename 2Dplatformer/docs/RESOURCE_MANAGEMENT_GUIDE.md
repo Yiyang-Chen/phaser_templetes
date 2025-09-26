@@ -128,11 +128,13 @@ src/game/resourceManager/
 │   ├── CustomTileMapLoader.ts     # Tilemap加载器
 │   ├── CustomSpriteAtlasLoader.ts # 精灵图集加载器
 │   ├── GameConfigLoader.ts        # 游戏配置加载器
-│   └── LevelSceneConfigLoader.ts  # 关卡场景配置加载器（新增）
+│   └── LevelSceneConfigLoader.ts  # 关卡场景配置加载器
 ├── CustomLoadFile/                 # 自定义文件类型
 │   ├── AudioConfigFile.ts         # 音频配置文件
 │   ├── CustomTilemapFile.ts       # 自定义Tilemap文件
 │   └── SpriteAtlasFile.ts         # 精灵图集文件
+├── utils/                          # 工具类
+│   └── AudioLoader.ts             # 音频加载工具
 └── docs/                          # 文档
     ├── CustomLoader.md
     └── README.md
@@ -594,12 +596,57 @@ register_audio_asset({
 
 ## 🛠️ 自定义加载器
 
+### AudioLoader 工具类
+
+AudioLoader 是音频加载工具类，提供以下核心功能：
+
+#### 主要特性
+- **多格式支持**: 自动为音频URL添加格式参数（.mp3、.ogg、.wav），让Phaser选择最佳格式
+- **URL缓存**: 避免重复加载相同URL的音频资源
+- **别名系统**: 支持多个key指向同一个音频资源，节省内存
+- **延迟别名处理**: 处理音频加载完成后的别名创建
+
+#### API 使用
+
+```typescript
+import { AudioLoader } from '../utils/AudioLoader';
+
+// 加载多格式音频
+AudioLoader.loadMultiFormat(loader, audioKey, actualPath);
+
+// 获取实际的音频key（处理别名）
+const actualKey = AudioLoader.getActualKey(aliasKey);
+
+// 处理加载完成后的待处理别名
+AudioLoader.processPendingAliases(originalKey, scene);
+
+// 清理缓存（测试用）
+AudioLoader.clearCache();
+```
+
+#### 在自定义加载器中使用
+
+```typescript
+// 在AudioConfigFile中的使用示例
+private async notifyAudioManagerForPreload(config: AudioConfig): Promise<void> {
+    const audioManager = AudioManager.getInstance();
+    
+    try {
+        // 通过AudioManager调用AudioLoader
+        await audioManager.preloadFromConfig(config, this.audioType, this.loader.scene);
+    } catch (error) {
+        console.error('❌ AudioConfig: AudioManager预加载失败:', error);
+    }
+}
+```
+
 ### 创建新的资源类型加载器
 
 ```typescript
 // src/game/resourceManager/CustomLoader/MyCustomLoader.ts
 import { Loader } from 'phaser';
 import { GlobalResourceManager } from '../GlobalResourceManager';
+import { AudioLoader } from '../utils/AudioLoader';
 
 export function registerMyCustomLoader(): void {
     Loader.LoaderPlugin.prototype.myCustom = function(key: string, configPath: string) {
@@ -614,8 +661,17 @@ export function registerMyCustomLoader(): void {
             data.resources?.forEach((resourceKey: string) => {
                 const actualPath = resourceManager.getResourcePath(resourceKey);
                 if (actualPath) {
-                    // 添加到加载队列
-                    this.image(resourceKey, actualPath);
+                    // 根据资源类型选择合适的加载方式
+                    const resource = resourceManager.getResource(resourceKey);
+                    const resourceType = resource?.local?.resource_type || resource?.remote?.resource_type;
+                    
+                    if (resourceType === 'RESOURCE_TYPE_AUDIO') {
+                        // 使用AudioLoader处理音频
+                        AudioLoader.loadMultiFormat(this, resourceKey, actualPath);
+                    } else {
+                        // 其他资源类型
+                        this.image(resourceKey, actualPath);
+                    }
                 }
             });
         });
@@ -639,6 +695,20 @@ export function extendLoader() {
 - 使用描述性的key名称：`character_purple_image` 而不是 `img1`
 - 保持一致的命名模式：`{object}_{type}_{variant}`
 - 避免特殊字符和空格
+
+### 2. 音频资源最佳实践
+- **使用AudioLoader**: 所有音频加载都应通过AudioLoader工具类
+- **URL格式**: 确保音频URL支持格式参数（`&format=.mp3`）
+- **缓存策略**: 利用AudioLoader的URL缓存避免重复加载
+- **别名管理**: 对于相同音频的多个引用，使用别名系统节省内存
+
+```typescript
+// ✅ 推荐：使用AudioLoader
+AudioLoader.loadMultiFormat(loader, 'bgm_theme', actualPath);
+
+// ❌ 不推荐：直接使用Phaser加载器
+loader.audio('bgm_theme', actualPath);
+```
 
 ## 🔍 调试和故障排除
 
