@@ -1,5 +1,6 @@
 import { eventBus, GameEvent } from '../events/EventBus';
 import { GlobalResourceManager } from '../resourceManager/GlobalResourceManager';
+import { AudioLoader } from '../resourceManager/utils/AudioLoader';
 
 // 音频类型枚举
 export enum AudioType {
@@ -359,30 +360,31 @@ export class AudioManager {
     }
 
     /**
-     * 预加载音频资源
+     * 从配置中预加载音频资源 (供AudioConfigFile调用)
      */
-    public async preloadAudio(audioType?: AudioType): Promise<void> {
-        if (!this.config || !this.scene) {
-            console.warn('⚠️ AudioManager: 配置或场景未准备好，无法预加载');
+    public async preloadFromConfig(config: AudioConfig, audioType?: AudioType, scene?: Phaser.Scene): Promise<void> {
+        const targetScene = scene || this.scene;
+        if (!targetScene) {
+            console.warn('⚠️ AudioManager: 没有可用的场景，无法预加载');
             return;
         }
 
-        console.log(`🚀 AudioManager: 开始预加载音频 (${audioType || '全部'})`);
-        
+        console.log(`🚀 AudioManager: 从配置预加载音频 (${audioType || '全部'})`);
+
         const assetsToLoad: Array<{ key: string; url: string; type: AudioType }> = [];
-        
+
         // 收集需要预加载的资源
         if (!audioType || audioType === AudioType.BGM) {
-            for (const [key, asset] of Object.entries(this.config.assets.bgm)) {
-                if (asset.preload && !this.loadedAssets.has(key) && !this.scene.cache.audio.exists(key)) {
+            for (const [key, asset] of Object.entries(config.assets.bgm)) {
+                if (asset.preload && !this.loadedAssets.has(key) && !targetScene.cache.audio.exists(key)) {
                     assetsToLoad.push({ key, url: asset.url, type: AudioType.BGM });
                 }
             }
         }
-        
+
         if (!audioType || audioType === AudioType.SFX) {
-            for (const [key, asset] of Object.entries(this.config.assets.sfx)) {
-                if (asset.preload && !this.loadedAssets.has(key) && !this.scene.cache.audio.exists(key)) {
+            for (const [key, asset] of Object.entries(config.assets.sfx)) {
+                if (asset.preload && !this.loadedAssets.has(key) && !targetScene.cache.audio.exists(key)) {
                     assetsToLoad.push({ key, url: asset.url, type: AudioType.SFX });
                 }
             }
@@ -393,35 +395,60 @@ export class AudioManager {
             return;
         }
 
+        return this.loadAudioAssets(assetsToLoad, targetScene);
+    }
+
+    /**
+     * 加载音频资源列表的通用方法
+     */
+    private async loadAudioAssets(assetsToLoad: Array<{ key: string; url: string; type: AudioType }>, scene: Phaser.Scene): Promise<void> {
         return new Promise<void>((resolve) => {
             // 添加到加载队列
             assetsToLoad.forEach(({ key, url }) => {
                 console.log(`📦 AudioManager: 添加到加载队列 - ${key}`);
-                this.scene!.load.audio(key, url);
+                const resourceManager = GlobalResourceManager.getInstance();
+                const actualUrl = resourceManager.getResourcePath(url);
+                if (actualUrl) {
+                    AudioLoader.loadMultiFormat(scene.load, key, actualUrl);
+                } else {
+                    console.error(`❌ AudioManager: 无法解析资源路径: ${url}`);
+                }
+            });
+
+            // 监听加载错误事件
+            scene.load.on('loaderror', (file: any) => {
+                console.error(`🚨 AudioManager: 加载错误 - ${file.key}`, file.src);
             });
 
             // 设置加载完成事件
-            this.scene!.load.once('complete', () => {
+            scene.load.once('complete', () => {
                 let successCount = 0;
                 let errorCount = 0;
-                
-                assetsToLoad.forEach(({ key, type }) => {
-                    if (this.scene!.cache.audio.exists(key)) {
+
+                assetsToLoad.forEach(({ key, url, type }) => {
+                    if (scene.cache.audio.exists(key)) {
                         this.loadedAssets.add(key);
                         successCount++;
                         console.log(`✅ AudioManager: ${type.toUpperCase()} 加载成功 - ${key}`);
+
+                        // 处理待处理的别名
+                        AudioLoader.processPendingAliases(key, scene);
                     } else {
                         errorCount++;
+                        const resourceManager = GlobalResourceManager.getInstance();
+                        const actualUrl = resourceManager.getResourcePath(url);
                         console.error(`❌ AudioManager: ${type.toUpperCase()} 加载失败 - ${key}`);
+                        console.error(`   配置URL: ${url}`);
+                        console.error(`   实际URL: ${actualUrl || '无法解析'}`);
                     }
                 });
-                
+
                 console.log(`🎉 AudioManager: 预加载完成 - 成功: ${successCount}, 失败: ${errorCount}`);
                 resolve();
             });
 
             // 开始加载
-            this.scene!.load.start();
+            scene.load.start();
         });
     }
 
@@ -500,15 +527,18 @@ export class AudioManager {
      */
     private playBGMInstance(bgmKey: string, loop?: boolean, volume?: number): void {
         if (!this.config) return;
-        
+
         // 停止当前BGM
         this.stopBGM();
-        
+
         const asset = this.config.assets.bgm[bgmKey];
-        const sound = this.loadedSounds.get(bgmKey);
+
+        // 处理别名，获取实际的音频key
+        const actualKey = AudioLoader.getActualKey(bgmKey);
+        const sound = this.loadedSounds.get(actualKey);
         
         if (!sound) {
-            console.error(`❌ AudioManager: BGM音频对象不存在 - ${bgmKey}`);
+            console.error(`❌ AudioManager: BGM音频对象不存在 - ${bgmKey} (实际key: ${actualKey})`);
             return;
         }
 
@@ -614,25 +644,32 @@ export class AudioManager {
      */
     private playSFXInstance(sfxKey: string, volume?: number): void {
         if (!this.config) return;
-        
+
         const asset = this.config.assets.sfx[sfxKey];
-        let sound = this.loadedSounds.get(sfxKey);
+
+        // 处理别名，获取实际的音频key
+        const actualKey = AudioLoader.getActualKey(sfxKey);
+        let sound = this.loadedSounds.get(actualKey);
         
         if (!sound) {
-            // 尝试从缓存创建
-            if (this.scene?.cache.audio.exists(sfxKey)) {
+            // 尝试从缓存创建（检查实际key和别名key）
+            const cacheKey = this.scene?.cache.audio.exists(actualKey) ? actualKey :
+                            this.scene?.cache.audio.exists(sfxKey) ? sfxKey : null;
+
+            if (cacheKey && this.scene) {
                 try {
-                    sound = this.scene.sound.add(sfxKey, {
+                    sound = this.scene.sound.add(cacheKey, {
                         volume: volume ?? asset.volume ?? this.config.audioTypes.sfx.defaultVolume,
                         loop: false
                     });
-                    this.loadedSounds.set(sfxKey, sound);
+                    this.loadedSounds.set(actualKey, sound);
+                    console.log(`🎵 AudioManager: 创建SFX音频对象 - ${sfxKey} (实际key: ${actualKey})`);
                 } catch (error) {
                     console.error(`❌ AudioManager: 创建SFX音频对象失败 - ${sfxKey}:`, error);
                     return;
                 }
             } else {
-                console.error(`❌ AudioManager: SFX音频对象不存在 - ${sfxKey}`);
+                console.error(`❌ AudioManager: SFX音频对象不存在 - ${sfxKey} (实际key: ${actualKey})`);
                 return;
             }
         }
@@ -755,7 +792,7 @@ export class AudioManager {
 
         try {
             await new Promise<void>((resolve, reject) => {
-                this.scene!.load.audio(key, actualUrl);
+                AudioLoader.loadMultiFormat(this.scene!.load, key, actualUrl);
                 
                 this.scene!.load.once('complete', () => {
                     if (this.scene!.cache.audio.exists(key)) {
