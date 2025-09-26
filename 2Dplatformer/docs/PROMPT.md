@@ -1,5 +1,6 @@
 RESOURCE MANAGEMENT:
 - Project uses unified resource system with `public/assets/game_config.json`
+- `game_config.json` will start with an empty file. So even if you want to use the same resource as listed in template, you need to register the resource again. Especially the resources (like audio and tilemap) that has another config file and reference to `game_config.json`.
 - All assets defined with resource keys, not hardcoded paths
 - Use remote configs via URL parameters when possible
 - CRITICAL: DO NOT manually edit `game_config.json`
