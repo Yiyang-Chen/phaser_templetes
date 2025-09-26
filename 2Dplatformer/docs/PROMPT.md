@@ -14,6 +14,7 @@ AUDIO CONFIGURATION:
 - Audio assets must have corresponding keys in `game_config.json` via `register_audio_asset tool`
 - Follow `AUDIO_CONFIGURETION_GUIDE.md` for proper usage
 - CRITICAL: Use `register_audio_asset` tool, do not manually edit `game_config.json`
+- **CRITICAL**: You must check if all the audio resources used in `audio_config.json` can be found in `game_config.json`. You must call 'register_audio_asset' tool if you want to use the audio in your game. The `game_config.json` file comes with template is just an example and will be cleared.
 
 TILEMAP DESIGN:
 - Create full maps, avoid empty spaces
@@ -31,6 +32,7 @@ TILEMAP CONFIGURATION REQUIREMENTS:
 - Ensure safe player starting position unless explicitly requested otherwise
 - Physics collision must match visual tilemap unless special gameplay case
 - Use `tilemap_overlap_modify` tool to check object-terrain overlaps
+- The tool will return some important check results and fix most of the problems. For `sizeMismatch`, it means your tilemap array is longer than your with * height. You need to fix it yourself.
 - Sprite atlases need atlas: true property, terrain tiles need collides: true
 - Use appropriate registration tools for different asset types
 - System supports properties in both tiles[0].properties and tileset properties arrays, but it is suggested to use tiles[0].properties
