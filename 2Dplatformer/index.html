@@ -14,29 +14,41 @@
     </div>
     <script type="module" src="/src/main.ts"></script>
     <script>
-        window.addEventListener("error", (event) => {
-          if (event.target instanceof Element) return;
-          sendErrorViaPostMessage(event);
-        });
-  
-        window.addEventListener("unhandledrejection", (event) => {
-          sendErrorViaPostMessage(event);
-        });
-  
-        function sendErrorViaPostMessage(event) {
-          const errorInfo = {
-            timestamp: new Date().toISOString(),
-            message: event.reason?.message || String(event.reason),
-            stack: event.reason?.stack || "No stack trace",
-            source: window.location.href,
-          };
-          window.parent.postMessage(
-            {
-              data: errorInfo,
-            },
-            "*"
-          );
-        }
-      </script>
+      window.addEventListener("error", (event) => {
+        if (event.target instanceof Element) return;
+
+        const errorInfo = {
+          type: "scriptError",
+          timestamp: new Date().toISOString(),
+          message: event.error?.message || event.message,
+          stack: event.error?.stack || "No stack trace",
+          source: window.location.href,
+        };
+
+        sendErrorViaPostMessage(errorInfo);
+      });
+
+      window.addEventListener("unhandledrejection", (event) => {
+        const errorInfo = {
+          type: "unhandledRejection",
+          timestamp: new Date().toISOString(),
+          message: event.reason?.message || String(event.reason),
+          stack: event.reason?.stack || "No stack trace",
+          source: window.location.href,
+        };
+
+        sendErrorViaPostMessage(errorInfo);
+      });
+
+      function sendErrorViaPostMessage(errorInfo) {
+        window.parent.postMessage(
+          {
+            type: "capturedError",
+            data: errorInfo,
+          },
+          "*"
+        );
+      }
+    </script>
 </body>
 </html>
