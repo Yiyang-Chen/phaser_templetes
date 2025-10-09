@@ -21,7 +21,7 @@ export default defineConfig({
     logLevel: 'warning',
     build: {
         // 增加内存限制和优化选项
-        sourcemap: false,
+        sourcemap: true,
         chunkSizeWarningLimit: 300,
         rollupOptions: {
             output: {
