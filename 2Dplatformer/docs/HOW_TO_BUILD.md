@@ -10,6 +10,7 @@
 ```bash
 npm install
 ```
+Do not use npm install --force unless necessary, if you use --force, ignore `npm warn using --force Recommended protections disabled.`. It is not an error. Try build the project directly.
 
 ### 2. Development Mode
 ```bash
