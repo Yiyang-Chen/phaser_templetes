@@ -29,6 +29,7 @@ TILEMAP CONFIGURATION REQUIREMENTS:
 - Use `register_tilemap` tool after adding tilemap files
 - Object name key must match tileset name key exactly
 - CRITICAL Tileset naming rules: Static images name equals image, Atlas images use `_image` suffix for image field
+- **CRITICAL**: Always use resource keys defined in `game_config.json`, never full URLs or file paths in tilemap.json
 - Ensure safe player starting position unless explicitly requested otherwise
 - Physics collision must match visual tilemap unless special gameplay case
 - Use `tilemap_overlap_modify` tool to check object-terrain overlaps

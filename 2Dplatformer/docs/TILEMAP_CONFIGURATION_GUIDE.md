@@ -62,15 +62,13 @@ Defines static terrain with collision detection.
 }
 ```
 
-**Tile GID Mapping:**
 - `0` = Empty (no collision)
-- `1` = terrain_grass_block_center (solid)
-- `2` = terrain_grass_block_top (solid)
 
 **Array Indexing:**
 ```javascript
 index = y * width + x  // Convert coordinates to array index
 ```
+- length of data array should euqals to width * height
 
 ### 2. Object Layer
 Contains all interactive entities.
@@ -84,7 +82,7 @@ Contains all interactive entities.
 }
 ```
 
-## Object Types and Properties
+## Example Object Types and Properties in Template
 
 ### Player (`type: "player"`)
 **File:** `src/game/sprites/Player.ts`
@@ -449,7 +447,7 @@ Tilesets now use resource keys instead of hardcoded file paths. The actual paths
 ```json
 {
   "firstgid": 1,            // Global ID start
-  "image": "terrain_grass_block_center",  // 🆕 Resource key instead of path
+  "image": "terrain_grass_block_center",  // 🆕 Resource key (NOT URL!)
   "imageheight": 64,
   "imagewidth": 64,
   "name": "terrain_grass_block_center",   // ⚠️ MUST match image field exactly
@@ -794,7 +792,8 @@ Example:
 - [ ] Trigger target_uuids exist
 - [ ] Object positions within bounds
 - [ ] Layer data array length = width × height
-- [ ] Image paths are correct
+- [ ] **Tilesets use resource keys, not URLs or file paths** ⚠️ **CRITICAL**
+- [ ] **All resource keys exist in game_config.json** ⚠️ **CRITICAL**
 - [ ] Color values in #RRGGBB format
 - [ ] **Property names match code expectations exactly** ⚠️ **CRITICAL**
   - [ ] Check [PROPERTY_NAMING_STANDARDS.md](./PROPERTY_NAMING_STANDARDS.md) for all standard names
@@ -806,6 +805,19 @@ Example:
 - [ ] **Animation files (_animators.json) exist for animated sprites**
 
 ### Common Issues
+
+#### Resource Key vs URL Path Error (Critical AI Error)
+- **症状**: `[GlobalResourceManager] 未找到资源key: https://game-api.dev.knoffice.tech/...` 错误
+- **原因**: AI生成的tilemap.json中tilesets.image字段使用了完整URL而不是资源键
+- **常见错误**: 
+  - 直接使用API下载URL作为image值
+  - 使用本地文件路径而不是资源键
+  - 资源键与game_config.json中定义的不匹配
+- **解决方案**:
+  - 检查tilemap.json中所有tilesets的image字段
+  - 确保使用game_config.json中定义的资源键
+  - 验证资源键名称完全匹配
+- **预防措施**: AI生成tilemap前必须先检查game_config.json中的可用资源键
 
 #### Property Name Inconsistency (Critical AI Error)
 - **症状**: 游戏对象行为异常，属性不生效，使用默认值

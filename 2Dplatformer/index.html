@@ -13,5 +13,30 @@
         <div id="game-container"></div>
     </div>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+        window.addEventListener("error", (event) => {
+          if (event.target instanceof Element) return;
+          sendErrorViaPostMessage(event);
+        });
+  
+        window.addEventListener("unhandledrejection", (event) => {
+          sendErrorViaPostMessage(event);
+        });
+  
+        function sendErrorViaPostMessage(event) {
+          const errorInfo = {
+            timestamp: new Date().toISOString(),
+            message: event.reason?.message || String(event.reason),
+            stack: event.reason?.stack || "No stack trace",
+            source: window.location.href,
+          };
+          window.parent.postMessage(
+            {
+              data: errorInfo,
+            },
+            "*"
+          );
+        }
+      </script>
 </body>
 </html>
