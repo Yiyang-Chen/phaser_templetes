@@ -15,6 +15,7 @@ AUDIO CONFIGURATION:
 - Follow `AUDIO_CONFIGURETION_GUIDE.md` for proper usage
 - CRITICAL: Use `register_audio_asset` tool, do not manually edit `game_config.json`
 - **CRITICAL**: You must check if all the audio resources used in `audio_config.json` can be found in `game_config.json`. You must call 'register_audio_asset' tool if you want to use the audio in your game. The `game_config.json` file comes with template is just an example and will be cleared.
+- **🚨 CRITICAL**: `audio-config.json` must contain BOTH `audioTypes` AND `assets` sections. AI-generated configs often miss the `assets` section, causing audio to fail. Always verify complete structure before use.
 
 TILEMAP DESIGN:
 - Create full maps, avoid empty spaces
