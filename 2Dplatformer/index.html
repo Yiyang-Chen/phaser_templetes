@@ -12,7 +12,7 @@
 
         const errorInfo = {
           type: "scriptError",
-          timestamp: new Date().toISOString(),
+          timestamp: Date.now().toString(),
           message: event.error?.message || event.message,
           stack: event.error?.stack || "No stack trace",
           source: window.location.href,
@@ -24,7 +24,7 @@
       window.addEventListener("unhandledrejection", (event) => {
         const errorInfo = {
           type: "unhandledRejection",
-          timestamp: new Date().toISOString(),
+          timestamp: Date.now().toString(),
           message: event.reason?.message || String(event.reason),
           stack: event.reason?.stack || "No stack trace",
           source: window.location.href,
@@ -41,7 +41,7 @@
         const errorInfo = args.map((arg) => {
           return {
             type: "consoleError",
-            timestamp: new Date().toISOString(),
+            timestamp: Date.now().toString(),
             source: window.location.href,
             message: arg instanceof Error ? arg.message : arg.toString(),
             stack: arg instanceof Error ? arg.stack : null,
