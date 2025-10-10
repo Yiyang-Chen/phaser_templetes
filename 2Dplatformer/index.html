@@ -54,7 +54,7 @@
       function sendErrorViaPostMessage(errorInfo) {
         window.parent.postMessage(
           {
-            type: "capturedError",
+            type: "adventureGameError",
             data: errorInfo,
           },
           "*"
