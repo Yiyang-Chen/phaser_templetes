@@ -8,7 +8,7 @@ export class CustomTilemapFile extends Phaser.Loader.File {
     constructor(loader: Phaser.Loader.LoaderPlugin, key: string, url: string) {
         const fileConfig = {
             type: 'customTilemap',
-            cache: loader.scene.cache.tilemap,  // 存储解析后的配置到JSON cache
+            cache: loader.scene.cache.json,  // 存储解析后的配置到JSON cache
             extension: 'json',
             responseType: 'text' as XMLHttpRequestResponseType,
             key: key,
