@@ -66,8 +66,8 @@
 - Update `PROPERTY_NAMING_STANDARDS.md` if code changes affect tilemap variables.
 - If you update the codebase to support more properties, update `PROPERTY_NAMING_STANDARDS.md` so that you can set properties correctly.
 </for_code>
-<attention>
+<attention_for_all_agents>
 - Never edit `assets/game_config.json` directly; update it only through the provided tools (`register_project`, `batch_register_assets`, `register_tilemap`) so the shared configuration stays consistent. Every `image` field in the tilemap tilesets must use keys returned by `batch_register_assets`, and using unregistered assets is strictly forbidden. Use appropriate registration tools for different asset types.
-</attention>
+</attention_for_all_agents>
 </tilemap_configuration>
 
