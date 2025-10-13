@@ -10,6 +10,9 @@
 </resource_management>
 
 <audio_configuration>
+<additional_tool_list>
+`register_audio_asset`
+</additional_tool_list>
 - Audio in audio_config.json are template demos, delete unused keys
 - All game audio must be listed in `audio_config.json`
 - Audio assets must have corresponding keys in `game_config.json` via `register_audio_asset tool`
@@ -20,6 +23,9 @@
 </audio_configuration>
 
 <tilemap_configuration>
+<additional_tool_list>
+`tilemap_overlap_check`, `register_tilemap`
+</additional_tool_list>
 1. Embed tileset image references directly in the tilemap JSON; do not point to external `.tsx` files.
 2. Every tileset entry must include `firstgid`, `image`, `imageheight`, `imagewidth`, `tileheight`, `tilewidth`, `name`, and `tilecount`.
 3. **CRITICAL - Tileset Configuration Rules**: 
