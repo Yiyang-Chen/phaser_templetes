@@ -6,6 +6,7 @@
 - Always use HTTPS URLs, never HTTP
 - Before modifying config files, read `game_config.json` first
 - See `RESOURCE_MANAGEMENT_GUIDE.md` for detailed instructions
+- The config files like `audio_config.json` and `tilemap.json` in the template are just examples. If it is the first time to edit the files after clone the project, make sure to start from blank to avoid incorrect key references to `game_config.json`. 
 </for_all_agents>
 
 <resource_management>
