@@ -17,7 +17,7 @@
 <audio_configuration>
 <for_config_subagent>
 <additional_tool_list>
-`register_audio_asset`
+`register_audio_asset`, `search_audio`
 </additional_tool_list>
 - Follow `AUDIO_CONFIGURATION_GUIDE.md` for proper usage
 - All game audio must be listed in `audio_config.json`
