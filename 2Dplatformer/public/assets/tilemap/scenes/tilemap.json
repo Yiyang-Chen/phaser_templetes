@@ -83,11 +83,6 @@
               "value": true
             },
             {
-              "name": "can_charge_jump",
-              "type": "bool",
-              "value": true
-            },
-            {
               "name": "can_shoot",
               "type": "bool",
               "value": true

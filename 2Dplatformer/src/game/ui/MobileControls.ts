@@ -496,12 +496,6 @@ export class MobileControls {
         }
     }
     
-    updateJumpButtonProgress(level: number): void {
-        if (this.jumpButton) {
-            this.jumpButton.updateProgressLevel(level);
-        }
-    }
-    
     destroy(): void {
         this.joystick?.destroy();
         this.jumpButton?.destroy();

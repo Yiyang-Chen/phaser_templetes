@@ -10,7 +10,6 @@ export enum GameEvent {
     PLAYER_JUMP = 'player:jump',
     PLAYER_DOUBLE_JUMP = 'player:double_jump',
     PLAYER_WALL_JUMP = 'player:wall_jump',
-    PLAYER_CHARGE_JUMP = 'player:charge_jump',
     PLAYER_MOVE = 'player:move',
     PLAYER_IDLE = 'player:idle',
     PLAYER_DAMAGE = 'player:damage',
@@ -83,11 +82,6 @@ export interface EventData {
     [GameEvent.PLAYER_WALL_JUMP]: {
         player: any;
         direction: 'left' | 'right';
-    };
-    [GameEvent.PLAYER_CHARGE_JUMP]: {
-        player: any;
-        chargeTime: number;
-        velocity: number;
     };
     [GameEvent.PLAYER_MOVE]: {
         player: any;

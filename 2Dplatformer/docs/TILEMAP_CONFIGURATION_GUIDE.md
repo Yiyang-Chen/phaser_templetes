@@ -108,7 +108,6 @@ Contains all interactive entities.
     {"name": "can_double_jump", "type": "bool", "value": true},
     {"name": "can_wall_jump", "type": "bool", "value": true},
     {"name": "can_wall_slide", "type": "bool", "value": true},
-    {"name": "can_charge_jump", "type": "bool", "value": true},
     {"name": "can_shoot", "type": "bool", "value": true},
     
     // Physics (optional)
@@ -988,7 +987,6 @@ Adjust enemy properties:
 Place platforms requiring specific abilities:
 - Double jump: Higher platforms
 - Wall jump: Vertical shafts
-- Charge jump: Maximum distance gaps
 
 ## File References
 

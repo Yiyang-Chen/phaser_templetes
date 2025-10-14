@@ -286,7 +286,7 @@ https://yourgame.com/?project_id=160&api_host=game-api.dev.knoffice.tech&debug=t
 
 ### 玩家能力系统
 - **基础移动**: 左右移动、跳跃
-- **高级能力**: 二段跳、墙跳、滑墙、蓄力跳
+- **高级能力**: 二段跳、墙跳、滑墙
 - **战斗系统**: 射击、生命值管理
 - **能力配置**: 通过tilemap属性控制
 

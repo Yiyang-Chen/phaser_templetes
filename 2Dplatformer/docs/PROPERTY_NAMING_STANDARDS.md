@@ -79,7 +79,6 @@
 | `can_double_jump` | bool | 可以二段跳 | true |
 | `can_wall_jump` | bool | 可以墙跳 | true |
 | `can_wall_slide` | bool | 可以墙滑 | true |
-| `can_charge_jump` | bool | 可以蓄力跳 | true |
 | `can_shoot` | bool | 可以射击 | true |
 | `move_speed` | int | 移动速度 | 200 |
 | `jump_speed` | int | 跳跃速度 | 500 |

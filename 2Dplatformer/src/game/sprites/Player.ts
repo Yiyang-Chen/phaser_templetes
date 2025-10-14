@@ -8,7 +8,6 @@ interface PlayerAbilities {
     canDoubleJump: boolean;
     canWallJump: boolean;
     canWallSlide: boolean;
-    canChargeJump: boolean;
     canShoot: boolean;
     canMove: boolean;
 }
@@ -32,7 +31,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         canDoubleJump: true,
         canWallJump: true,
         canWallSlide: true,
-        canChargeJump: true,
         canShoot: true,
         canMove: true
     };
@@ -45,13 +43,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     private isTouchingWall: boolean = false;
     private wallJumpCooldown: number = 0;
     private wallJumpSpeed: number = 400;
-    
-    // Charge jump
-    private isCharging: boolean = false;
-    private chargeTime: number = 0;
-    private maxChargeTime: number = 1000;
-    private minChargeTime: number = 200;
-    private chargeJumpMultiplier: number = 2;
     
     // Health and damage
     private health: number = 3;
@@ -78,7 +69,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     private mobileJumpPressed: boolean = false;
     private mobileShootPressed: boolean = false;
     private mobileJumpJustPressed: boolean = false;
-    private mobileJumpJustReleased: boolean = false;
 
     constructor(scene: Phaser.Scene, tiledObject: Phaser.Types.Tilemaps.TiledObject) {
         let x = tiledObject.x ?? 0;
@@ -173,9 +163,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
                 case 'can_wall_slide':
                     this.abilities.canWallSlide = prop.value;
                     break;
-                case 'can_charge_jump':
-                    this.abilities.canChargeJump = prop.value;
-                    break;
                 case 'can_shoot':
                     this.abilities.canShoot = prop.value;
                     break;
@@ -223,13 +210,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
                 }
             },
             // On release
-            (duration: number) => {
+            (_duration: number) => {
                 this.mobileJumpPressed = false;
-                this.mobileJumpJustReleased = true;
             },
-            // On hold (for charge indicator)
-            (duration: number) => {
-                // Charging feedback handled in update
+            // On hold
+            (_duration: number) => {
+                // No action needed
             }
         );
         
@@ -356,7 +342,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.setVelocityX(0);
             
-            if (onGround && !this.cursors.down.isDown && !this.wasdKeys.S.isDown && !this.isCharging) {
+            if (onGround && !this.cursors.down.isDown && !this.wasdKeys.S.isDown) {
                 this.playAnimation('idle');
                 
                 // Emit player idle event
@@ -374,15 +360,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         const upKey = this.cursors.up;
         const wKey = this.wasdKeys.W;
         
-        // Check if either jump key is pressed (keyboard or mobile)
-        const jumpKeyPressed = spaceKey?.isDown || upKey.isDown || wKey.isDown || this.mobileJumpPressed;
+        // Check if jump key is just pressed (keyboard or mobile)
         const jumpKeyJustPressed = Phaser.Input.Keyboard.JustDown(spaceKey!) || Phaser.Input.Keyboard.JustDown(upKey) || 
                                   Phaser.Input.Keyboard.JustDown(wKey) || this.mobileJumpJustPressed;
-        const jumpKeyJustReleased = Phaser.Input.Keyboard.JustUp(spaceKey!) || Phaser.Input.Keyboard.JustUp(upKey) || 
-                                   Phaser.Input.Keyboard.JustUp(wKey) || this.mobileJumpJustReleased;
         
         // Handle jump logic
-        if (jumpKeyJustPressed && !this.isCharging) {
+        if (jumpKeyJustPressed) {
             // Wall jump
             if (this.isTouchingWall && this.wallJumpCooldown <= 0 && this.abilities.canWallJump) {
                 const wallJumpX = touchingLeft ? this.wallJumpSpeed : -this.wallJumpSpeed;
@@ -411,15 +394,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
                 this.jumpCount++;
                 this.playAnimation('jump');
             }
-            // Check if we should start charging (ducking + jump for both mobile and keyboard)
-            else if (onGround && isDucking && this.abilities.canChargeJump) {
-                // Start charging when ducking
-                this.isCharging = true;
-                this.chargeTime = 0;
-                this.playAnimation('duck');
-            }
-            // Normal jump (not ducking)
-            else if (onGround && !isDucking && this.jumpCount < this.maxJumps && this.abilities.canJump) {
+            // Normal jump
+            else if (onGround && this.jumpCount < this.maxJumps && this.abilities.canJump) {
                 const jumpPower = this.jumpSpeed;
                 this.setVelocityY(-jumpPower);
                 
@@ -433,89 +409,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             }
         }
         
-        // Continue charging if jump key is held while ducking
-        if (this.isCharging && jumpKeyPressed && isDucking) {
-            this.chargeTime += this.scene.game.loop.delta;
-            if (this.chargeTime > this.maxChargeTime) {
-                this.chargeTime = this.maxChargeTime;
-            }
-            
-            // Visual feedback for charging (tint color based on charge level)
-            const chargePercent = this.chargeTime / this.maxChargeTime;
-            const tintValue = 0xffffff - Math.floor(chargePercent * 0x008888);
-            this.setTint(tintValue);
-            
-            // Update jump button visual for mobile
-            if (this.mobileControls) {
-                this.mobileControls.updateJumpButtonProgress(chargePercent);
-            }
-            
-            // Keep showing duck animation if ducking
-            if (isDucking && this.anims.currentAnim?.key !== 'duck') {
-                this.playAnimation('duck');
-            }
-        }
-        
-        // Cancel charging if not ducking anymore or left ground
-        if (this.isCharging && (!isDucking || !onGround)) {
-            // If we have enough charge and released jump key, perform charged jump
-            if (!jumpKeyPressed && this.chargeTime >= this.minChargeTime) {
-                const chargeMultiplier = 1 + (this.chargeTime / this.maxChargeTime) * (this.chargeJumpMultiplier - 1);
-                const jumpVelocity = -this.jumpSpeed * chargeMultiplier;
-                this.setVelocityY(jumpVelocity);
-                this.jumpCount = 1;
-                
-                // Emit charge jump event
-                eventBus.emit(GameEvent.PLAYER_CHARGE_JUMP, {
-                    player: this,
-                    chargeTime: this.chargeTime,
-                    velocity: jumpVelocity
-                });
-                
-                this.playAnimation('jump');
-            }
-            
-            // Clear charging state
-            this.isCharging = false;
-            this.chargeTime = 0;
-            this.clearTint();
-            
-            // Reset button visual for mobile
-            if (this.mobileControls) {
-                this.mobileControls.updateJumpButtonProgress(0);
-            }
-        }
-        
-        // Release charged jump when releasing jump key while charging
-        if (jumpKeyJustReleased && this.isCharging && isDucking) {
-            if (this.chargeTime >= this.minChargeTime) {
-                const chargeMultiplier = 1 + (this.chargeTime / this.maxChargeTime) * (this.chargeJumpMultiplier - 1);
-                const jumpVelocity = -this.jumpSpeed * chargeMultiplier;
-                this.setVelocityY(jumpVelocity);
-                this.jumpCount = 1;
-                
-                // Emit charge jump event
-                eventBus.emit(GameEvent.PLAYER_CHARGE_JUMP, {
-                    player: this,
-                    chargeTime: this.chargeTime,
-                    velocity: jumpVelocity
-                });
-                
-                this.playAnimation('jump');
-            }
-            
-            this.isCharging = false;
-            this.chargeTime = 0;
-            this.clearTint();
-            
-            // Reset button visual for mobile
-            if (this.mobileControls) {
-                this.mobileControls.updateJumpButtonProgress(0);
-            }
-        }
-        
-        // Show duck animation when ducking and not charging
-        if (isDucking && !this.isCharging) {
+        // Show duck animation when ducking
+        if (isDucking) {
             this.playAnimation('duck');
         }
         
@@ -539,7 +434,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         
         // Reset mobile input flags at end of frame
         this.mobileJumpJustPressed = false;
-        this.mobileJumpJustReleased = false;
     }
     
     private shoot(): void {
