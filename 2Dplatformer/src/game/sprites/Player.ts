@@ -83,10 +83,12 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Phaser.Scene, tiledObject: Phaser.Types.Tilemaps.TiledObject) {
         let x = tiledObject.x ?? 0;
         let y = tiledObject.y ?? 0;
+        let height = tiledObject.height ?? 64;
 
         let key = tiledObject.name;
 
-        super(scene, x, y, key);
+        // Convert Tiled bottom coordinate to Phaser center coordinate
+        super(scene, x, y - height / 2, key);
 
         this.key = key;
         

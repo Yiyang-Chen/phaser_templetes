@@ -48,9 +48,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Scene, enemyObject: Phaser.Types.Tilemaps.TiledObject) {
         const x = enemyObject.x || 0;
         const y = enemyObject.y || 0;
+        const height = enemyObject.height || 64;
         const texture = enemyObject.name || 'enemy';
         
-        super(scene, x, y - 32, texture);
+        // Convert Tiled bottom coordinate to Phaser center coordinate
+        super(scene, x, y - height / 2, texture);
         
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -68,10 +70,10 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         
         // Set size based on texture
         const textureFrame = this.texture.get(0);
-        const width = textureFrame.width * 0.8;
-        const height = textureFrame.height * 0.8;
-        this.setSize(width, height);
-        this.setOffset(width * 0.1, height * 0.1);
+        const bodyWidth = textureFrame.width * 0.8;
+        const bodyHeight = textureFrame.height * 0.8;
+        this.setSize(bodyWidth, bodyHeight);
+        this.setOffset(bodyWidth * 0.1, bodyHeight * 0.1);
         
         // Extract properties from tilemap
         this.extractProperties(enemyObject);

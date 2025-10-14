@@ -9,9 +9,11 @@ export class StaticHazard extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Scene, hazardObject: Phaser.Types.Tilemaps.TiledObject) {
         const x = hazardObject.x || 0;
         const y = hazardObject.y || 0;
+        const height = hazardObject.height || 64;
         const texture = hazardObject.name || 'hazard';
         
-        super(scene, x, y - 32, texture);
+        // Convert Tiled bottom coordinate to Phaser center coordinate
+        super(scene, x, y - height / 2, texture);
         
         scene.add.existing(this);
         scene.physics.add.existing(this, true);

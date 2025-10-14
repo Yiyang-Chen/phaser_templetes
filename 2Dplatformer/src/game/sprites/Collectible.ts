@@ -28,9 +28,11 @@ export class Collectible extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Scene, collectibleObject: Phaser.Types.Tilemaps.TiledObject) {
         const x = collectibleObject.x || 0;
         const y = collectibleObject.y || 0;
+        const height = collectibleObject.height || 64;
         const texture = collectibleObject.name || 'collectible';
         
-        super(scene, x, y - 32, texture);
+        // Convert Tiled bottom coordinate to Phaser center coordinate
+        super(scene, x, y - height / 2, texture);
         
         scene.add.existing(this);
         scene.physics.add.existing(this, true);

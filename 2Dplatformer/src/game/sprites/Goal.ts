@@ -10,9 +10,11 @@ export class Goal extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Scene, goalObject: Phaser.Types.Tilemaps.TiledObject) {
         const x = goalObject.x || 0;
         const y = goalObject.y || 0;
+        const height = goalObject.height || 64;
         const texture = goalObject.name || 'goal';
         
-        super(scene, x, y - 32, texture);
+        // Convert Tiled bottom coordinate to Phaser center coordinate
+        super(scene, x, y - height / 2, texture);
         
         scene.add.existing(this);
         scene.physics.add.existing(this, true);

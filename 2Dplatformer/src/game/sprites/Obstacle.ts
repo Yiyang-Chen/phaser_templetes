@@ -12,9 +12,11 @@ export class Obstacle extends Phaser.Physics.Arcade.Sprite {
     constructor(scene: Scene, obstacleObject: Phaser.Types.Tilemaps.TiledObject) {
         const x = obstacleObject.x || 0;
         const y = obstacleObject.y || 0;
+        const height = obstacleObject.height || 64;
         const texture = obstacleObject.name || 'block_empty';
         
-        super(scene, x, y - 32, texture);
+        // Convert Tiled bottom coordinate to Phaser center coordinate
+        super(scene, x, y - height / 2, texture);
         
         // Parse properties from array format first to determine if movable
         const properties = obstacleObject.properties as any[];
