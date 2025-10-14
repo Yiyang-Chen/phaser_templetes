@@ -20,9 +20,8 @@
 `register_audio_asset`, `search_audio`
 </additional_tool_list>
 - Follow `AUDIO_CONFIGURATION_GUIDE.md` for proper usage
-- All game audio must be listed in `audio_config.json`
-- Remove unused keys from `audio_config.json`
-- All audio resources in `audio_config.json` must exist in `game_config.json`. Use `register_audio_asset` to register
+- **CRITICAL**: All audio resources in `audio_config.json` must exist in `game_config.json`.
+- Remove unused keys and keys not listed in `game_config.json` from `audio_config.json`
 - **CRITICAL**: `audio-config.json` must contain BOTH `audioTypes` AND `assets` sections. AI-generated configs often miss `assets`, causing audio to fail
 </for_config_subagent>
 </audio_configuration>
