@@ -1,5 +1,4 @@
 {
-  "loadStrategy": "preload_all",
   "audioTypes": {
     "bgm": {
       "defaultVolume": 0.7,
@@ -103,115 +102,115 @@
     "sfx": {
       "player_walk_1": {
         "url": "sfx_bump",
-        "preload": true
+        "preload": false
       },
       "player_walk_2": {
         "url": "sfx_select",
-        "preload": true
+        "preload": false
       },
       "player_jump": {
         "url": "sfx_jump",
-        "preload": true
+        "preload": false
       },
       "player_jump_high": {
         "url": "sfx_jump_high",
-        "preload": true
+        "preload": false
       },
       "player_land": {
         "url": "sfx_bump",
-        "preload": true
+        "preload": false
       },
       "player_attack": {
         "url": "sfx_throw",
-        "preload": true
+        "preload": false
       },
       "player_hurt": {
         "url": "sfx_hurt",
-        "preload": true
+        "preload": false
       },
       "player_die": {
         "url": "sfx_disappear",
-        "preload": true
+        "preload": false
       },
       "collect_coin": {
         "url": "sfx_coin",
-        "preload": true
+        "preload": false
       },
       "collect_gem": {
         "url": "sfx_gem",
-        "preload": true
+        "preload": false
       },
       "magic_cast": {
         "url": "sfx_magic",
-        "preload": true
+        "preload": false
       },
       "purple_walk_1": {
         "url": "sfx_select",
-        "preload": true
+        "preload": false
       },
       "purple_jump": {
         "url": "sfx_jump",
-        "preload": true
+        "preload": false
       },
       "purple_hurt": {
         "url": "sfx_hurt",
-        "preload": true
+        "preload": false
       },
       "frog_jump_1": {
         "url": "sfx_jump",
-        "preload": true
+        "preload": false
       },
       "frog_jump_2": {
         "url": "sfx_select",
-        "preload": true
+        "preload": false
       },
       "frog_hurt": {
         "url": "sfx_hurt",
-        "preload": true
+        "preload": false
       },
       "frog_die": {
         "url": "sfx_disappear",
-        "preload": true
+        "preload": false
       },
       "frog_attack": {
         "url": "sfx_throw",
-        "preload": true
+        "preload": false
       },
       "enemy_walk": {
         "url": "sfx_select",
-        "preload": true
+        "preload": false
       },
       "enemy_jump": {
         "url": "sfx_jump",
-        "preload": true
+        "preload": false
       },
       "enemy_attack": {
         "url": "sfx_throw",
-        "preload": true
+        "preload": false
       },
       "enemy_hurt": {
         "url": "sfx_hurt",
-        "preload": true
+        "preload": false
       },
       "enemy_die": {
         "url": "sfx_disappear",
-        "preload": true
+        "preload": false
       },
       "coin_collect": {
         "url": "sfx_coin",
-        "preload": true
+        "preload": false
       },
       "key_collect": {
         "url": "sfx_gem",
-        "preload": true
+        "preload": false
       },
       "flag_reach": {
         "url": "sfx_magic",
-        "preload": true
+        "preload": false
       },
       "spike_damage": {
         "url": "sfx_hurt",
-        "preload": true
+        "preload": false
       }
     }
   }

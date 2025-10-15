@@ -3,6 +3,7 @@ import { eventBus, GameEvent } from '../events/EventBus';
 import { UIManager, UILayoutConfig } from '../managers/UIManager';
 import { DeviceDetector } from '../utils/DeviceDetector';
 import { FullscreenManager } from '../managers/FullscreenManager';
+import { AudioManager } from '../audio/AudioManager';
 
 export class MainMenu extends Scene
 {
@@ -152,6 +153,10 @@ export class MainMenu extends Scene
         if (DeviceDetector.isMobile() && DeviceDetector.isFullscreenSupported()) {
             FullscreenManager.getInstance().createFullscreenButton(this);
         }
+        
+        // 启动音频后台加载
+        console.log('🎵 MainMenu: 启动音频后台加载...');
+        AudioManager.getInstance().startBackgroundLoading();
     }
 
     private startGame(): void {

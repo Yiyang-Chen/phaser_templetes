@@ -149,182 +149,182 @@
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 201,
+            "id": 218,
             "name": "bgm_baltic_levity",
             "resources": [
                 {
                     "remote": {
                         "key": "bgm_baltic_levity",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=201&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=218&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 202,
+            "id": 219,
             "name": "bgm_alls_fair_in_love",
             "resources": [
                 {
                     "remote": {
                         "key": "bgm_alls_fair_in_love",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=202&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=219&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 203,
+            "id": 253,
             "name": "bgm_attic_secrets",
             "resources": [
                 {
                     "remote": {
                         "key": "bgm_attic_secrets",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=203&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=253&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 204,
+            "id": 137,
             "name": "sfx_bump",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_bump",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=204&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=137&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 205,
+            "id": 140,
             "name": "sfx_select",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_select",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=205&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=140&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 206,
+            "id": 16,
             "name": "sfx_jump",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_jump",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=206&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=16&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 207,
+            "id": 136,
             "name": "sfx_jump_high",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_jump_high",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=207&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=136&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 208,
+            "id": 131,
             "name": "sfx_throw",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_throw",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=208&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=131&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 209,
+            "id": 134,
             "name": "sfx_hurt",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_hurt",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=209&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=134&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 210,
+            "id": 135,
             "name": "sfx_disappear",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_disappear",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=210&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=135&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 211,
+            "id": 124,
             "name": "sfx_coin",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_coin",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=211&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=124&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 212,
+            "id": 139,
             "name": "sfx_gem",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_gem",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=212&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=139&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
         },
         {
             "type": "ASSET_TYPE_AUDIO",
-            "id": 213,
+            "id": 138,
             "name": "sfx_magic",
             "resources": [
                 {
                     "remote": {
                         "key": "sfx_magic",
                         "resource_type": "RESOURCE_TYPE_AUDIO",
-                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=213&asset_type=ASSET_TYPE_AUDIO"
+                        "url": "https://game-api.dev.knoffice.tech/game/api/public/assets/download?asset_id=138&asset_type=ASSET_TYPE_AUDIO"
                     }
                 }
             ]
