@@ -62,7 +62,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     private canShoot: boolean = true;
     private shootCooldown: number = 500;
     private lastShootTime: number = 0;
-    private bullets: Phaser.Physics.Arcade.Group;
     
     // Mobile controls
     private mobileControls: MobileControls | null = null;
@@ -133,12 +132,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         };
         
         this.shootKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.X);
-        
-        this.bullets = scene.physics.add.group({
-            classType: Bullet,
-            runChildUpdate: true,
-            maxSize: 10
-        });
         
         // Play initial animation using AnimationManager
         this.playAnimation('idle');
@@ -465,11 +458,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             y: this.body?.velocity.y || 0
         };
         
-        const bullet = new Bullet(this.scene, bulletX, bulletY, direction, playerVelocity);
-        this.bullets.add(bullet);
+        // Create bullet and emit event for Game scene to handle
+        const bullet = new Bullet(this.scene, bulletX, bulletY, direction, this, playerVelocity);
         
         // Check immediate collision with obstacles after bullet creation
         bullet.setImmediateCollisionCheck(true);
+        
+        // Notify Game scene about the new bullet
+        eventBus.emit(GameEvent.BULLET_CREATED, {
+            bullet: bullet,
+            owner: this
+        });
         
         eventBus.emit(GameEvent.SOUND_EFFECT_PLAY, {
             key: 'player_shoot',
@@ -477,10 +476,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         });
         
         this.setVelocityX(this.body?.velocity.x! - (direction * 50));
-    }
-    
-    getBullets(): Phaser.Physics.Arcade.Group {
-        return this.bullets;
     }
 
     takeDamage(damage: number): void {

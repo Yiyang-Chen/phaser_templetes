@@ -48,6 +48,10 @@ export enum GameEvent {
     ENEMY_DEATH = 'enemy:death',
     ENEMY_ATTACK = 'enemy:attack',
     
+    // Bullet events
+    BULLET_CREATED = 'bullet:created',
+    BULLET_DESTROYED = 'bullet:destroyed',
+    
     // Obstacle events
     OBSTACLE_DESTROYED = 'obstacle:destroyed'
 }
@@ -174,6 +178,14 @@ export interface EventData {
     [GameEvent.ENEMY_ATTACK]: {
         enemy: any;
         target: any;
+    };
+    
+    [GameEvent.BULLET_CREATED]: {
+        bullet: any;
+        owner: any;
+    };
+    [GameEvent.BULLET_DESTROYED]: {
+        bullet: any;
     };
     
     [GameEvent.OBSTACLE_DESTROYED]: {

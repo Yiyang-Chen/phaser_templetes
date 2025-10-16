@@ -11,8 +11,9 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     private minBounceVelocity: number = 250;
     private maxBounceVelocity: number = 350;
     private needsImmediateCheck: boolean = false;
+    private owner: Phaser.Physics.Arcade.Sprite;
     
-    constructor(scene: Phaser.Scene, x: number, y: number, direction: number, playerVelocity?: { x: number, y: number }) {
+    constructor(scene: Phaser.Scene, x: number, y: number, direction: number, owner: Phaser.Physics.Arcade.Sprite, playerVelocity?: { x: number, y: number }) {
         super(scene, x, y, 'bullet');
 
         
@@ -20,6 +21,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         
         this.direction = direction;
+        this.owner = owner;
         
         this.setCircle(8);
         this.setScale(1.5);
@@ -233,5 +235,9 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
     
     getNeedsImmediateCheck(): boolean {
         return this.needsImmediateCheck;
+    }
+    
+    getOwner(): Phaser.Physics.Arcade.Sprite {
+        return this.owner;
     }
 }

@@ -29,6 +29,7 @@ export class Game extends Scene
     goals: Phaser.Physics.Arcade.StaticGroup;
     collectibles: Phaser.Physics.Arcade.StaticGroup;
     enemies: Phaser.Physics.Arcade.Group;
+    bullets: Phaser.Physics.Arcade.Group;
     triggers: Trigger[];
     obstacles: Phaser.Physics.Arcade.StaticGroup;
     movableObstacles: Phaser.Physics.Arcade.Group;
@@ -69,6 +70,20 @@ export class Game extends Scene
         
         // Emit game start event
         eventBus.emit(GameEvent.GAME_START);
+        
+        // Create unified bullets group for all entities
+        this.bullets = this.physics.add.group({
+            classType: Bullet,
+            runChildUpdate: true,
+            maxSize: 20
+        });
+        
+        // Listen for bullet creation events
+        eventBus.on(GameEvent.BULLET_CREATED, (data) => {
+            if (data.bullet && this.bullets) {
+                this.bullets.add(data.bullet);
+            }
+        });
         
         // Reset collected items manager for new game
         this.collectedItemsManager.reset();
@@ -456,10 +471,10 @@ export class Game extends Scene
             );
         }
         
-        // Setup bullets vs enemies collision
-        if (this.player && this.enemies) {
+        // Setup bullets vs enemies collision (unified bullet management)
+        if (this.bullets && this.enemies) {
             this.physics.add.overlap(
-                this.player.getBullets(),
+                this.bullets,
                 this.enemies,
                 this.handleBulletEnemyCollision,
                 undefined,
@@ -467,11 +482,11 @@ export class Game extends Scene
             );
         }
         
-        // Setup bullets vs tilemap collision
-        if (this.player) {
+        // Setup bullets vs tilemap collision (unified bullet management)
+        if (this.bullets) {
             this.layers.forEach(layer => {
                 this.physics.add.collider(
-                    this.player.getBullets(),
+                    this.bullets,
                     layer
                 );
             });
@@ -479,7 +494,7 @@ export class Game extends Scene
             // Setup bullets vs static obstacles collision with damage handling
             if (this.obstacles) {
                 this.physics.add.collider(
-                    this.player.getBullets(),
+                    this.bullets,
                     this.obstacles,
                     this.handleBulletObstacleCollision,
                     undefined,
@@ -490,7 +505,7 @@ export class Game extends Scene
             // Setup bullets vs movable obstacles collision with damage handling
             if (this.movableObstacles) {
                 this.physics.add.collider(
-                    this.player.getBullets(),
+                    this.bullets,
                     this.movableObstacles,
                     this.handleBulletObstacleCollision,
                     undefined,
@@ -901,40 +916,38 @@ export class Game extends Scene
     update() {
         if (this.player) {
             this.player.update();
-            
-            // No longer forcing boxes to stop - let physics handle natural deceleration
-            
-            // Check for bullets that need immediate collision check
-            if (this.obstacles || this.movableObstacles) {
-                this.player.getBullets().children.entries.forEach((bullet: any) => {
-                    const bulletInstance = bullet as Bullet;
-                    if (bulletInstance.getNeedsImmediateCheck && bulletInstance.getNeedsImmediateCheck()) {
-                        // Check collision with static obstacles
-                        if (this.obstacles) {
-                            this.physics.world.overlap(bulletInstance, this.obstacles, 
-                                (b: any, o: any) => {
-                                    this.handleBulletObstacleCollision(b, o);
-                                }, 
-                                undefined, 
-                                this
-                            );
-                        }
-                        
-                        // Check collision with movable obstacles
-                        if (this.movableObstacles) {
-                            this.physics.world.overlap(bulletInstance, this.movableObstacles, 
-                                (b: any, o: any) => {
-                                    this.handleBulletObstacleCollision(b, o);
-                                }, 
-                                undefined, 
-                                this
-                            );
-                        }
-                        
-                        bulletInstance.setImmediateCollisionCheck(false);
+        }
+        
+        // Check for bullets that need immediate collision check (unified bullet management)
+        if (this.bullets && (this.obstacles || this.movableObstacles)) {
+            this.bullets.children.entries.forEach((bullet: any) => {
+                const bulletInstance = bullet as Bullet;
+                if (bulletInstance.getNeedsImmediateCheck && bulletInstance.getNeedsImmediateCheck()) {
+                    // Check collision with static obstacles
+                    if (this.obstacles) {
+                        this.physics.world.overlap(bulletInstance, this.obstacles, 
+                            (b: any, o: any) => {
+                                this.handleBulletObstacleCollision(b, o);
+                            }, 
+                            undefined, 
+                            this
+                        );
                     }
-                });
-            }
+                    
+                    // Check collision with movable obstacles
+                    if (this.movableObstacles) {
+                        this.physics.world.overlap(bulletInstance, this.movableObstacles, 
+                            (b: any, o: any) => {
+                                this.handleBulletObstacleCollision(b, o);
+                            }, 
+                            undefined, 
+                            this
+                        );
+                    }
+                    
+                    bulletInstance.setImmediateCollisionCheck(false);
+                }
+            });
         }
         
         // Check restart key
