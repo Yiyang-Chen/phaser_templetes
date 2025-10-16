@@ -28,13 +28,20 @@
 - audio_config_check
 
 - Follow `AUDIO_CONFIGURATION_GUIDE.md` for proper usage
-- **CRITICAL**: The `resourceKey` field in `audio_config.json` must reference a valid `key` field from `game_config.json`. The mapping relationship is: `audio_config.json` → `assets.bgm/sfx.{audio_name}.resourceKey` must match `game_config.json` → `assets[].resources[].remote.key` or `assets[].resources[].local.key`. This establishes the link between audio configuration and actual resource loading paths.
+- **CRITICAL Structure Requirements**:
+  - `audio-config.json` must contain BOTH `audioTypes` AND `assets` sections. AI-generated configs often miss `assets`, causing audio to fail
+  - `audioTypes` must contain both `bgm` and `sfx` sections
+  - All `sceneMapping` values (e.g., "menu_theme") must exist as keys in `assets.bgm`
+  - All `animationMapping` values (e.g., ["player_jump"]) must exist as keys in `assets.sfx`
+- **CRITICAL Resource Key Mapping**: The `resourceKey` field in `audio_config.json` must reference a valid `key` field from `game_config.json`. The mapping relationship is: `audio_config.json` → `assets.bgm/sfx.{audio_name}.resourceKey` must match `game_config.json` → `assets[].resources[].remote.key` or `assets[].resources[].local.key`. This establishes the link between audio configuration and actual resource loading paths.
 - Remove unused keys and keys not listed in `game_config.json` from `audio_config.json`
-- **CRITICAL**: `audio-config.json` must contain BOTH `audioTypes` AND `assets` sections. AI-generated configs often miss `assets`, causing audio to fail
-- Run `audio_config_check` after modifying audio-config.json to ensure all resourceKeys are registered. Provide:
-  - `audio_config_path`: path to audio-config.json (e.g., `public/assets/audio/audio-config.json`)
-  - `game_config_path`: path to game_config.json (e.g., `public/assets/game_config.json`)
-  - Tool reports missing keys but does not fix them. Use `register_audio_asset` to register missing resources
+- Run `audio_config_check` after modifying audio-config.json to validate structure and references. Tool checks:
+  - Structure integrity (audioTypes and assets sections exist)
+  - Section completeness (bgm and sfx sections present)
+  - Mapping references (sceneMapping and animationMapping values exist in assets)
+  - Resource key registration (all resourceKeys exist in game_config.json)
+  - Provide: `audio_config_path` (e.g., `public/assets/audio/audio-config.json`) and `game_config_path` (e.g., `public/assets/game_config.json`)
+  - Tool reports issues but does not fix them. Use `register_audio_asset` to register missing resources
 
 ---
 
