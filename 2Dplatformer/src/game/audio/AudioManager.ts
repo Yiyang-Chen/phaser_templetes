@@ -9,7 +9,7 @@ export enum AudioType {
 
 // 音频资源接口
 export interface AudioAsset {
-    url: string;
+    resourceKey: string;
     preload?: boolean;
     volume?: number;
     loop?: boolean;
@@ -134,7 +134,7 @@ export class AudioManager {
         for (const [key, asset] of Object.entries(this.config.assets.bgm)) {
             const loaderConfig: AudioAssetConfig = {
                 key,
-                url: asset.url,
+                resourceKey: asset.resourceKey,
                 preload: asset.preload ?? false,
                 volume: asset.volume ?? this.config.audioTypes.bgm.defaultVolume,
                 loop: asset.loop ?? this.config.audioTypes.bgm.loop,
@@ -156,7 +156,7 @@ export class AudioManager {
         for (const [key, asset] of Object.entries(this.config.assets.sfx)) {
             const loaderConfig: AudioAssetConfig = {
                 key,
-                url: asset.url,
+                resourceKey: asset.resourceKey,
                 preload: asset.preload ?? false,
                 volume: asset.volume ?? this.config.audioTypes.sfx.defaultVolume,
                 loop: asset.loop ?? this.config.audioTypes.sfx.loop,

@@ -75,25 +75,25 @@
   "assets": {
     "bgm": {
       "menu_theme": {
-        "url": "bgm_baltic_levity",
+        "resourceKey": "bgm_baltic_levity",
         "preload": true,
         "volume": 0.7,
         "loop": true
       },
       "game_theme": {
-        "url": "bgm_alls_fair_in_love",
+        "resourceKey": "bgm_alls_fair_in_love",
         "preload": false,
         "volume": 0.5,
         "loop": true
       },
       "victory_theme": {
-        "url": "bgm_attic_secrets",
+        "resourceKey": "bgm_attic_secrets",
         "preload": false,
         "volume": 0.8,
         "loop": false
       },
       "gameover_theme": {
-        "url": "bgm_baltic_levity",
+        "resourceKey": "bgm_baltic_levity",
         "preload": false,
         "volume": 0.6,
         "loop": false
@@ -101,115 +101,115 @@
     },
     "sfx": {
       "player_walk_1": {
-        "url": "sfx_bump",
+        "resourceKey": "sfx_bump",
         "preload": false
       },
       "player_walk_2": {
-        "url": "sfx_select",
+        "resourceKey": "sfx_select",
         "preload": false
       },
       "player_jump": {
-        "url": "sfx_jump",
+        "resourceKey": "sfx_jump",
         "preload": false
       },
       "player_jump_high": {
-        "url": "sfx_jump_high",
+        "resourceKey": "sfx_jump_high",
         "preload": false
       },
       "player_land": {
-        "url": "sfx_bump",
+        "resourceKey": "sfx_bump",
         "preload": false
       },
       "player_attack": {
-        "url": "sfx_throw",
+        "resourceKey": "sfx_throw",
         "preload": false
       },
       "player_hurt": {
-        "url": "sfx_hurt",
+        "resourceKey": "sfx_hurt",
         "preload": false
       },
       "player_die": {
-        "url": "sfx_disappear",
+        "resourceKey": "sfx_disappear",
         "preload": false
       },
       "collect_coin": {
-        "url": "sfx_coin",
+        "resourceKey": "sfx_coin",
         "preload": false
       },
       "collect_gem": {
-        "url": "sfx_gem",
+        "resourceKey": "sfx_gem",
         "preload": false
       },
       "magic_cast": {
-        "url": "sfx_magic",
+        "resourceKey": "sfx_magic",
         "preload": false
       },
       "purple_walk_1": {
-        "url": "sfx_select",
+        "resourceKey": "sfx_select",
         "preload": false
       },
       "purple_jump": {
-        "url": "sfx_jump",
+        "resourceKey": "sfx_jump",
         "preload": false
       },
       "purple_hurt": {
-        "url": "sfx_hurt",
+        "resourceKey": "sfx_hurt",
         "preload": false
       },
       "frog_jump_1": {
-        "url": "sfx_jump",
+        "resourceKey": "sfx_jump",
         "preload": false
       },
       "frog_jump_2": {
-        "url": "sfx_select",
+        "resourceKey": "sfx_select",
         "preload": false
       },
       "frog_hurt": {
-        "url": "sfx_hurt",
+        "resourceKey": "sfx_hurt",
         "preload": false
       },
       "frog_die": {
-        "url": "sfx_disappear",
+        "resourceKey": "sfx_disappear",
         "preload": false
       },
       "frog_attack": {
-        "url": "sfx_throw",
+        "resourceKey": "sfx_throw",
         "preload": false
       },
       "enemy_walk": {
-        "url": "sfx_select",
+        "resourceKey": "sfx_select",
         "preload": false
       },
       "enemy_jump": {
-        "url": "sfx_jump",
+        "resourceKey": "sfx_jump",
         "preload": false
       },
       "enemy_attack": {
-        "url": "sfx_throw",
+        "resourceKey": "sfx_throw",
         "preload": false
       },
       "enemy_hurt": {
-        "url": "sfx_hurt",
+        "resourceKey": "sfx_hurt",
         "preload": false
       },
       "enemy_die": {
-        "url": "sfx_disappear",
+        "resourceKey": "sfx_disappear",
         "preload": false
       },
       "coin_collect": {
-        "url": "sfx_coin",
+        "resourceKey": "sfx_coin",
         "preload": false
       },
       "key_collect": {
-        "url": "sfx_gem",
+        "resourceKey": "sfx_gem",
         "preload": false
       },
       "flag_reach": {
-        "url": "sfx_magic",
+        "resourceKey": "sfx_magic",
         "preload": false
       },
       "spike_damage": {
-        "url": "sfx_hurt",
+        "resourceKey": "sfx_hurt",
         "preload": false
       }
     }

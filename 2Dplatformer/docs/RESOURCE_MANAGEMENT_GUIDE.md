@@ -366,13 +366,13 @@ register_sprite_asset({
 }
 ```
 
-#### audio-config.json 中使用key引用：
+#### audio-config.json 中使用resourceKey引用：
 ```json
 {
   "assets": {
     "bgm": {
       "menu_theme": {
-        "url": "bgm_baltic_levity",  // 工具自动生成的key
+        "resourceKey": "bgm_baltic_levity",  // 引用 game_config.json 中的资源键
         "preload": true,
         "volume": 0.7,
         "loop": true
@@ -382,7 +382,10 @@ register_sprite_asset({
 }
 ```
 
-⚠️ **注意**: `game_config.json`中这些key是由对应的注册工具自动生成的，请不要手动修改`game_config.json`。修改`tilempa.json`以及`sudio_config.json`文件以匹配`game_config.json`的key
+⚠️ **注意**: 
+- `game_config.json` 中的资源键（`key`）由对应的注册工具自动生成，请不要手动修改 `game_config.json`
+- `audio-config.json` 中的 `resourceKey` 字段必须引用 `game_config.json` 中已定义的资源键
+- 修改 `tilemap.json` 以及 `audio-config.json` 文件以匹配 `game_config.json` 中的 `key` 字段
 
 ### 3. 程序中获取资源路径
 
@@ -551,9 +554,9 @@ register_audio_asset({
   "image": "grass_tile"  // ✅ 工具生成的key
 }
 
-// audio-config.json - 使用生成的key
+// audio-config.json - 使用生成的资源键
 {
-  "url": "background_music"  // ✅ 工具生成的key  
+  "resourceKey": "background_music"  // ✅ 引用 game_config.json 中的资源键
 }
 ```
 
@@ -728,12 +731,14 @@ loader.audio('bgm_theme', actualPath);
 #### 2. 路径解析错误
 ```
 ❌ CustomTilemap: 无法找到资源key对应的路径: grass_tile
+❌ AudioAssetLoader: 无法解析资源路径: bgm_theme
 ```
 
 **解决方案**：
 - 确保 `GlobalResourceManager` 已正确初始化
 - 检查Boot场景是否正确加载了 `game_config.json`
 - 验证资源配置格式是否正确
+- 确认配置文件中的 `resourceKey` 或 `image` 字段值在 `game_config.json` 中存在对应的 `key` 定义
 
 #### 3. 加载顺序问题
 ```

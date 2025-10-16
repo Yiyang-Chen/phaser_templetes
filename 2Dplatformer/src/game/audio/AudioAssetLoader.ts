@@ -24,7 +24,7 @@ export enum AudioAssetType {
  */
 export interface AudioAssetConfig {
     key: string;
-    url: string;
+    resourceKey: string;
     preload: boolean;
     volume?: number;
     loop?: boolean;
@@ -37,7 +37,7 @@ export interface AudioAssetConfig {
  */
 export class AudioAssetLoader {
     private key: string;
-    private url: string;
+    private resourceKey: string;
     private preload: boolean;
     private volume: number;
     private loop: boolean;
@@ -53,7 +53,7 @@ export class AudioAssetLoader {
 
     constructor(config: AudioAssetConfig) {
         this.key = config.key;
-        this.url = config.url;
+        this.resourceKey = config.resourceKey;
         this.preload = config.preload;
         this.volume = config.volume ?? 0.5;
         this.loop = config.loop ?? false;
@@ -170,10 +170,10 @@ export class AudioAssetLoader {
 
         // 通过 GlobalResourceManager 解析实际URL
         const resourceManager = GlobalResourceManager.getInstance();
-        const actualUrl = resourceManager.getResourcePath(this.url);
+        const actualUrl = resourceManager.getResourcePath(this.resourceKey);
 
         if (!actualUrl) {
-            console.error(`❌ AudioAssetLoader: ${this.key} 无法解析资源路径: ${this.url}`);
+            console.error(`❌ AudioAssetLoader: ${this.key} 无法解析资源路径: ${this.resourceKey}`);
             this.state = AudioLoadState.ERROR;
             return;
         }

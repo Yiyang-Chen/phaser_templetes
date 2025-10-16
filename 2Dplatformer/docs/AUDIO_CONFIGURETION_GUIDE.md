@@ -34,7 +34,8 @@ AudioManager 是游戏的音频系统核心，负责管理背景音乐（BGM）�
 
 ⚠️ **关键规则**：
 - 配置文件必须同时包含 `audioTypes` 和 `assets` 两个部分
-- 所有音频资源的 `url` 必须在 `game_config.json` 中存在
+- 所有音频资源的 `resourceKey` 必须在 `game_config.json` 中存在对应的资源键
+- `resourceKey` 的值必须匹配 `game_config.json` 中 `assets[].resources[].remote.key` 或 `assets[].resources[].local.key` 字段
 - 不要添加未在 `game_config.json` 中定义的资源
 
 ---
@@ -149,13 +150,13 @@ AudioManager 是游戏的音频系统核心，负责管理背景音乐（BGM）�
 "assets": {
   "bgm": {
     "menu_theme": {
-      "url": "bgm_baltic_levity",
+      "resourceKey": "bgm_baltic_levity",
       "preload": true,
       "volume": 0.7,
       "loop": true
     },
     "game_theme": {
-      "url": "bgm_alls_fair_in_love",
+      "resourceKey": "bgm_alls_fair_in_love",
       "preload": false,
       "volume": 0.5,
       "loop": true
@@ -168,7 +169,7 @@ AudioManager 是游戏的音频系统核心，负责管理背景音乐（BGM）�
 
 | 字段 | 类型 | 必需 | 说明 |
 |------|------|------|------|
-| `url` | `string` | ✅ | 资源键，必须在 `game_config.json` 中定义 |
+| `resourceKey` | `string` | ✅ | 资源键，必须在 `game_config.json` 中定义，指向 `assets[].resources[].remote.key` 或 `local.key` |
 | `preload` | `boolean` | ✅ | 是否在 Preloader 场景预加载 |
 | `volume` | `number` | ❌ | 音量（0.0 - 1.0），默认使用 `audioTypes.bgm.defaultVolume` |
 | `loop` | `boolean` | ❌ | 是否循环播放，默认使用 `audioTypes.bgm.loop` |
@@ -195,11 +196,11 @@ AudioManager 是游戏的音频系统核心，负责管理背景音乐（BGM）�
 "assets": {
   "sfx": {
     "player_jump": {
-      "url": "sfx_jump",
+      "resourceKey": "sfx_jump",
       "preload": false
     },
     "player_hurt": {
-      "url": "sfx_hurt",
+      "resourceKey": "sfx_hurt",
       "preload": false
     }
   }
@@ -210,7 +211,7 @@ AudioManager 是游戏的音频系统核心，负责管理背景音乐（BGM）�
 
 | 字段 | 类型 | 必需 | 说明 |
 |------|------|------|------|
-| `url` | `string` | ✅ | 资源键，必须在 `game_config.json` 中定义 |
+| `resourceKey` | `string` | ✅ | 资源键，必须在 `game_config.json` 中定义，指向 `assets[].resources[].remote.key` 或 `local.key` |
 | `preload` | `boolean` | ✅ | 是否在 Preloader 场景预加载 |
 
 SFX 通常不需要指定 `volume` 和 `loop`，使用 `audioTypes.sfx` 中的默认值。
@@ -219,11 +220,11 @@ SFX 通常不需要指定 `volume` 和 `loop`，使用 `audioTypes.sfx` 中的�
 
 ## 资源复用
 
-多个音频可以指向同一个 URL，AudioManager 会自动优化：
+多个音频可以指向同一个资源键，AudioManager 会自动优化：
 
 ```json
-"player_walk_1": { "url": "sfx_bump", "preload": false },
-"player_land": { "url": "sfx_bump", "preload": false }
+"player_walk_1": { "resourceKey": "sfx_bump", "preload": false },
+"player_land": { "resourceKey": "sfx_bump", "preload": false }
 ```
 
 **自动优化**：
@@ -261,13 +262,13 @@ SFX 通常不需要指定 `volume` 和 `loop`，使用 `audioTypes.sfx` 中的�
   "assets": {
     "bgm": {
       "menu_theme": {
-        "url": "bgm_menu_music",
+        "resourceKey": "bgm_menu_music",
         "preload": true,
         "volume": 0.7,
         "loop": true
       },
       "game_theme": {
-        "url": "bgm_game_music",
+        "resourceKey": "bgm_game_music",
         "preload": false,
         "volume": 0.6,
         "loop": true
@@ -275,19 +276,19 @@ SFX 通常不需要指定 `volume` 和 `loop`，使用 `audioTypes.sfx` 中的�
     },
     "sfx": {
       "player_walk_1": {
-        "url": "sfx_step1",
+        "resourceKey": "sfx_step1",
         "preload": false
       },
       "player_walk_2": {
-        "url": "sfx_step2",
+        "resourceKey": "sfx_step2",
         "preload": false
       },
       "player_jump": {
-        "url": "sfx_jump",
+        "resourceKey": "sfx_jump",
         "preload": false
       },
       "player_hurt": {
-        "url": "sfx_hurt",
+        "resourceKey": "sfx_hurt",
         "preload": false
       }
     }
@@ -301,7 +302,7 @@ SFX 通常不需要指定 `volume` 和 `loop`，使用 `audioTypes.sfx` 中的�
 
 ### 音频不播放？
 
-1. **检查 `url` 是否在 `game_config.json` 中定义**
+1. **检查 `resourceKey` 是否在 `game_config.json` 中定义**：确保 `resourceKey` 的值匹配 `game_config.json` 中的 `key` 字段
 2. **检查 `preload` 设置**：后台加载的音频需要等待下载完成
 3. **检查浏览器控制台**：查看是否有加载错误
 4. **检查音量设置**：确保 `volume` 不为 0
@@ -344,7 +345,7 @@ SFX 通常不需要指定 `volume` 和 `loop`，使用 `audioTypes.sfx` 中的�
 
 ### 4. 资源管理
 - 定期清理未使用的音频键
-- 检查所有 `url` 在 `game_config.json` 中存在
+- 检查所有 `resourceKey` 在 `game_config.json` 中存在对应的资源定义
 - 复用相似音效减少资源数量
 
 ### 5. 测试清单
