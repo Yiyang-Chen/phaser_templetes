@@ -25,11 +25,16 @@
 #### Tools
 - register_audio_asset
 - search_audio
+- audio_config_check
 
 - Follow `AUDIO_CONFIGURATION_GUIDE.md` for proper usage
 - **CRITICAL**: The `resourceKey` field in `audio_config.json` must reference a valid `key` field from `game_config.json`. The mapping relationship is: `audio_config.json` → `assets.bgm/sfx.{audio_name}.resourceKey` must match `game_config.json` → `assets[].resources[].remote.key` or `assets[].resources[].local.key`. This establishes the link between audio configuration and actual resource loading paths.
 - Remove unused keys and keys not listed in `game_config.json` from `audio_config.json`
 - **CRITICAL**: `audio-config.json` must contain BOTH `audioTypes` AND `assets` sections. AI-generated configs often miss `assets`, causing audio to fail
+- Run `audio_config_check` after modifying audio-config.json to ensure all resourceKeys are registered. Provide:
+  - `audio_config_path`: path to audio-config.json (e.g., `public/assets/audio/audio-config.json`)
+  - `game_config_path`: path to game_config.json (e.g., `public/assets/game_config.json`)
+  - Tool reports missing keys but does not fix them. Use `register_audio_asset` to register missing resources
 
 ---
 
