@@ -1,4 +1,5 @@
-<for_all_agents>
+## For All Agents
+
 - **NEVER manually edit `game_config.json`** - use registration tools only
 - Project uses unified resource system at `public/assets/game_config.json`
 - `game_config.json` starts empty. All resources must be registered, including those with separate config files
@@ -6,31 +7,40 @@
 - Always use HTTPS URLs, never HTTP
 - Before modifying config files, read `game_config.json` first
 - See `RESOURCE_MANAGEMENT_GUIDE.md` for detailed instructions
-- The config files like `audio_config.json` and `tilemap.json` in the template are just examples. If it is the first time to edit the files after clone the project, make sure to start from blank to avoid incorrect key references to `game_config.json`. 
-</for_all_agents>
+- The config files like `audio_config.json` and `tilemap.json` in the template are just examples. If it is the first time to edit the files after clone the project, make sure to start from blank to avoid incorrect key references to `game_config.json`.
 
-<resource_management>
+---
+
+## Resource Management
+
 - Registration tools: `register_static_image_asset`, `register_sprite_asset`, `register_ground_asset_package`, `register_audio_asset`
 - Use remote configs via URL parameters when possible
-</resource_management>
 
-<audio_configuration>
-<for_config_subagent>
-<additional_tool_list>
-`register_audio_asset`, `search_audio`
-</additional_tool_list>
+---
+
+## Audio Configuration
+
+### For Config Subagent
+
+#### Tools
+- register_audio_asset
+- search_audio
+
 - Follow `AUDIO_CONFIGURATION_GUIDE.md` for proper usage
 - **CRITICAL**: All audio resources in `audio_config.json` must exist in `game_config.json`.
 - Remove unused keys and keys not listed in `game_config.json` from `audio_config.json`
 - **CRITICAL**: `audio-config.json` must contain BOTH `audioTypes` AND `assets` sections. AI-generated configs often miss `assets`, causing audio to fail
-</for_config_subagent>
-</audio_configuration>
 
-<tilemap_configuration>
-<for_config_subagent>
-<additional_tool_list>
-`tilemap_overlap_check`, `register_tilemap`
-</additional_tool_list>
+---
+
+## Tilemap Configuration
+
+### For Config Subagent
+
+#### Tools
+- tilemap_overlap_check
+- register_tilemap
+
 - Read `TILEMAP_CONFIGURATION_GUIDE.md` and follow `PROPERTY_NAMING_STANDARDS.md` for all property names
 - Embed tileset image references in tilemap JSON; do not use external `.tsx` files
 - Every tileset entry must include: `firstgid`, `image`, `imageheight`, `imagewidth`, `tileheight`, `tilewidth`, `name`, `tilecount`
@@ -61,9 +71,7 @@
 - Modify existing tilemap files instead of creating new ones for the same level
 - Create rich, engaging levels with meaningful challenges throughout. Avoid empty spaces
 - Ensure safe player starting position and matching physics collision unless special gameplay requires otherwise
-</for_config_subagent>
-<for_code>
-- Update `PROPERTY_NAMING_STANDARDS.md` if code changes affect tilemap variables or support new properties
-</for_code>
-</tilemap_configuration>
 
+### For Code
+
+- Update `PROPERTY_NAMING_STANDARDS.md` if code changes affect tilemap variables or support new properties
