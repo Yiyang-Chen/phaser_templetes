@@ -41,7 +41,7 @@
   - Mapping references (sceneMapping and animationMapping values exist in assets)
   - Resource key registration (all resourceKeys exist in game_config.json)
   - Provide: `audio_config_path` (e.g., `public/assets/audio/audio-config.json`) and `game_config_path` (e.g., `public/assets/game_config.json`)
-  - Tool reports issues but does not fix them. Use `register_audio_asset` to register missing resources
+  - Tool reports issues but does not fix them. Use `register_audio_asset` to register missing resources or modify `audi_config.json` to fix the issue
 
 ---
 
