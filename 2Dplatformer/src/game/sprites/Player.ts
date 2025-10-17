@@ -458,8 +458,17 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             y: this.body?.velocity.y || 0
         };
         
-        // Create bullet and emit event for Game scene to handle
-        const bullet = new Bullet(this.scene, bulletX, bulletY, direction, this, playerVelocity);
+        // Create bullet with direction vector, velocity, and gravity settings
+        const bullet = new Bullet(
+            this.scene, 
+            bulletX, 
+            bulletY, 
+            { x: direction, y: 0 },  // Horizontal direction vector
+            500,                       // Bullet velocity
+            true,                      // Use gravity
+            this, 
+            playerVelocity
+        );
         
         // Check immediate collision with obstacles after bullet creation
         bullet.setImmediateCollisionCheck(true);

@@ -2,39 +2,55 @@ import Phaser from 'phaser';
 import { eventBus, GameEvent } from '../events/EventBus';
 
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
-    private horizontalSpeed: number = 500;
+    private velocity: number;
     private gravity: number = 800;
     private bounceCount: number = 0;
     private lifetime: number = 5000;
     private createdTime: number;
-    private direction: number;
+    private direction: Phaser.Math.Vector2;
+    private useGravity: boolean;
     private minBounceVelocity: number = 250;
     private maxBounceVelocity: number = 350;
     private needsImmediateCheck: boolean = false;
     private owner: Phaser.Physics.Arcade.Sprite;
     
-    constructor(scene: Phaser.Scene, x: number, y: number, direction: number, owner: Phaser.Physics.Arcade.Sprite, playerVelocity?: { x: number, y: number }) {
+    constructor(
+        scene: Phaser.Scene, 
+        x: number, 
+        y: number, 
+        direction: { x: number, y: number }, 
+        velocity: number, 
+        useGravity: boolean, 
+        owner: Phaser.Physics.Arcade.Sprite, 
+        ownerVelocity?: { x: number, y: number }
+    ) {
         super(scene, x, y, 'bullet');
 
         
         scene.add.existing(this);
         scene.physics.add.existing(this);
         
-        this.direction = direction;
+        // Normalize direction vector
+        this.direction = new Phaser.Math.Vector2(direction.x, direction.y).normalize();
+        this.velocity = velocity;
+        this.useGravity = useGravity;
         this.owner = owner;
         
         this.setCircle(8);
         this.setScale(1.5);
         
         this.setBounce(0, 0.6);
-        this.setGravityY(this.gravity);
         
-        // Set horizontal velocity (combine bullet speed with player velocity)
-        const playerVx = playerVelocity?.x || 0;
-        const playerVy = playerVelocity?.y || 0;
-        this.setVelocityX(this.horizontalSpeed * direction + playerVx * 0.5);
-        // Add a portion of player's vertical velocity too
-        this.setVelocityY(playerVy * 0.3);
+        // Apply gravity only if useGravity is true
+        if (this.useGravity) {
+            this.setGravityY(this.gravity);
+        }
+        
+        // Set velocity based on direction vector and speed
+        const ownerVx = ownerVelocity?.x || 0;
+        const ownerVy = ownerVelocity?.y || 0;
+        this.setVelocityX(this.velocity * this.direction.x + ownerVx * 0.5);
+        this.setVelocityY(this.velocity * this.direction.y + ownerVy * 0.3);
         
         this.createdTime = scene.time.now;
         
@@ -97,16 +113,19 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
             return;
         }
         
-        // Maintain horizontal speed
-        const currentVx = this.body?.velocity.x || 0;
-        if (Math.abs(currentVx) < this.horizontalSpeed * 0.9) {
-            this.setVelocityX(this.horizontalSpeed * this.direction);
+        // Maintain velocity in the direction vector (only if using gravity, otherwise let it fly straight)
+        if (this.useGravity) {
+            const currentVx = this.body?.velocity.x || 0;
+            const targetVx = this.velocity * this.direction.x;
+            if (Math.abs(currentVx) < Math.abs(targetVx) * 0.9) {
+                this.setVelocityX(targetVx);
+            }
         }
         
         if (this.body?.blocked.down || this.body?.blocked.up) {
             this.bounceCount++;
             
-            if (this.body.blocked.down) {
+            if (this.body.blocked.down && this.useGravity) {
                 // Calculate bounce velocity based on current falling speed
                 // but clamp it to maintain consistent bounce height
                 const currentVy = Math.abs(this.body?.velocity.y || 0);
@@ -114,8 +133,8 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
                 bounceVy = Math.max(bounceVy, this.minBounceVelocity);
                 
                 this.setVelocityY(-bounceVy);
-                // Ensure horizontal velocity is maintained after bounce
-                this.setVelocityX(this.horizontalSpeed * this.direction);
+                // Ensure velocity is maintained after bounce
+                this.setVelocityX(this.velocity * this.direction.x);
                 
                 const bounceSpark = this.scene.add.circle(
                     this.x,
