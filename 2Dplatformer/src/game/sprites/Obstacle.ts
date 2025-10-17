@@ -51,7 +51,6 @@ export class Obstacle extends Phaser.Physics.Arcade.Sprite {
             const body = this.body as Phaser.Physics.Arcade.Body;
             
             // Configure physics properties for movable box
-            body.setGravityY(800);
             body.setBounce(0, 0);  // No bouncing
             body.setDrag(800, 0);  // Moderate drag for gradual stop when not pushed
             body.setFriction(0.5, 1);  // Moderate friction

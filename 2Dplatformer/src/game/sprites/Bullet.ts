@@ -3,7 +3,6 @@ import { eventBus, GameEvent } from '../events/EventBus';
 
 export class Bullet extends Phaser.Physics.Arcade.Sprite {
     private velocity: number;
-    private gravity: number = 800;
     private bounceCount: number = 0;
     private lifetime: number = 5000;
     private createdTime: number;
@@ -42,8 +41,8 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(0, 0.6);
         
         // Apply gravity only if useGravity is true
-        if (this.useGravity) {
-            this.setGravityY(this.gravity);
+        if (!this.useGravity) {
+            this.setGravityY(-1400);  // Cancel world gravity for non-gravity bullets
         }
         
         // Set velocity based on direction vector and speed

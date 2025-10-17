@@ -116,7 +116,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         // Only collide with horizontal world bounds, not vertical
         this.setCollideWorldBounds(false);
         this.setBounce(0.1);
-        this.setGravityY(800);
         
         // Player should not be pushable by other objects (e.g., movable boxes)
         this.setPushable(false);

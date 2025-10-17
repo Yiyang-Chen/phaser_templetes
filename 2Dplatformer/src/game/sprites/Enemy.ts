@@ -66,7 +66,6 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
         
         // Set up physics
         this.setBounce(0.1);
-        this.setGravityY(800);
         
         // Set size based on texture
         const textureFrame = this.texture.get(0);
