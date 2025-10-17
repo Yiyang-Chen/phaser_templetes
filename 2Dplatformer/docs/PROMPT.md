@@ -48,6 +48,10 @@
   - Provide: `audio_config_path` (e.g., `public/assets/audio/audio-config.json`) and `game_config_path` (e.g., `public/assets/game_config.json`)
   - Tool reports issues but does not fix them. Use `register_audio_asset` to register missing resources or modify `audi_config.json` to fix the issue
 
+### For Code
+
+- In the game, you need to use the keys listed in `audioTypes` instead of use `resourceKeys`.
+
 ---
 
 ## Tilemap Configuration
