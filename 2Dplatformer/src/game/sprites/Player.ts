@@ -478,11 +478,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             owner: this
         });
         
-        eventBus.emit(GameEvent.SOUND_EFFECT_PLAY, {
-            key: 'player_shoot',
-            volume: 0.3
-        });
-        
         this.setVelocityX(this.body?.velocity.x! - (direction * 50));
     }
 

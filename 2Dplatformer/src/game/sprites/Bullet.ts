@@ -208,12 +208,7 @@ export class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.destroy();
     }
     
-    hitEnemy(): void {
-        eventBus.emit(GameEvent.SOUND_EFFECT_PLAY, {
-            key: 'bullet_hit',
-            volume: 0.4
-        });
-        
+    hitEnemy(): void {     
         for (let i = 0; i < 12; i++) {
             const star = this.scene.add.star(
                 this.x + Phaser.Math.Between(-10, 10),
