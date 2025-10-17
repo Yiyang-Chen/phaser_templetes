@@ -20,6 +20,10 @@
 
 ## Audio Configuration
 
+### For Main Agent
+- This agent does not have memory and context. Everytime you call the tool, you need to provide the context again.
+- After the subagent finished, you can call the `audio_config_check` tool yourself to make sure the subagent does the work correctly. If there are some mistakes, you need to call the subagent again to fix the issues. 
+
 ### For Config Subagent
 
 #### Tools
@@ -27,6 +31,7 @@
 - search_audio
 - audio_config_check
 
+#### Guidelines
 - Follow `AUDIO_CONFIGURATION_GUIDE.md` for proper usage
 - **CRITICAL Structure Requirements**:
   - `audio-config.json` must contain BOTH `audioTypes` AND `assets` sections. AI-generated configs often miss `assets`, causing audio to fail
@@ -47,12 +52,18 @@
 
 ## Tilemap Configuration
 
+### For Main Agent
+- This agent does not have memory and context. Everytime you call the tool, you need to provide the context again.
+- The subagent should have called `register_tilemap`. Check the `project_env.json` file in the project root directory, there should have a tilemap section that contains the infos of the registered tilemap. If the tilemap has been registered you don't need to call `register_tilemap` again.
+- After the subagent finished, you can call the `tilemap_overlap` tool yourself to make sure the subagent does the work correctly. If there are some mistakes, you need to call the subagent again to fix the issues. 
+
 ### For Config Subagent
 
 #### Tools
 - tilemap_overlap_check
 - register_tilemap
 
+#### Guidelines
 - Read `TILEMAP_CONFIGURATION_GUIDE.md` and follow `PROPERTY_NAMING_STANDARDS.md` for all property names
 - Embed tileset image references in tilemap JSON; do not use external `.tsx` files
 - Every tileset entry must include: `firstgid`, `image`, `imageheight`, `imagewidth`, `tileheight`, `tilewidth`, `name`, `tilecount`
