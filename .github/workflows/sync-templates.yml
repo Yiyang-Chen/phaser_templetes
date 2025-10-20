@@ -6,6 +6,7 @@ on:
     paths:
       - '2Dplatformer/**'
       - 'BaseTemplete/**'
+      - '2DTopDown/**'
   workflow_dispatch:
 
 jobs:
@@ -143,6 +144,75 @@ jobs:
         
         # Commit changes with original message and author info
         git commit -m "${{ steps.source-info-basetemplate.outputs.commit_msg }}" --author="${{ steps.source-info-basetemplate.outputs.author_name }} <${{ steps.source-info-basetemplate.outputs.author_email }}>" --date="${{ steps.source-info-basetemplate.outputs.commit_date }}"
+        
+        # Push to main branch (create if doesn't exist)
+        git push origin HEAD:main || git push origin HEAD:master
+
+  sync-2dtopdown:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout source repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.TARGET_REPO_TOKEN }}
+    
+    - name: Setup Git
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+    
+    - name: Get source commit information
+      id: source-info-2dtopdown
+      run: |
+        ORIGINAL_COMMIT_MSG=$(git log -1 --pretty=format:"%s")
+        ORIGINAL_AUTHOR_NAME=$(git log -1 --pretty=format:"%an")
+        ORIGINAL_AUTHOR_EMAIL=$(git log -1 --pretty=format:"%ae")
+        ORIGINAL_COMMIT_DATE=$(git log -1 --pretty=format:"%ad" --date=iso)
+        
+        echo "commit_msg=$ORIGINAL_COMMIT_MSG" >> $GITHUB_OUTPUT
+        echo "author_name=$ORIGINAL_AUTHOR_NAME" >> $GITHUB_OUTPUT
+        echo "author_email=$ORIGINAL_AUTHOR_EMAIL" >> $GITHUB_OUTPUT
+        echo "commit_date=$ORIGINAL_COMMIT_DATE" >> $GITHUB_OUTPUT
+
+    - name: Sync 2DTopDown to template repository
+      env:
+        TARGET_REPO_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
+      run: |
+        # Create temporary directory
+        mkdir temp-2dtopdown
+        cd temp-2dtopdown
+        
+        # Clone the target repository
+        git clone https://$TARGET_REPO_TOKEN@github.com/Yiyang-Chen/2DTopDown_template.git .
+        
+        # Check if clone was successful
+        if [ ! -d ".git" ]; then
+          echo "❌ Failed to clone target repository. Please check:"
+          echo "1. Repository exists: https://github.com/Yiyang-Chen/2DTopDown_template"
+          echo "2. TARGET_REPO_TOKEN has correct permissions"
+          echo "3. Token is not expired"
+          exit 1
+        fi
+        
+        # Remove all existing files except .git
+        find . -not -path './.git*' -delete
+        
+        # Copy 2DTopDown content
+        cp -r ../2DTopDown/* .
+        
+        # Add all changes
+        git add .
+        
+        # Check if there are changes to commit
+        if git diff --staged --quiet; then
+          echo "ℹ️ No changes to commit for 2DTopDown"
+          exit 0
+        fi
+        
+        # Commit changes with original message and author info
+        git commit -m "${{ steps.source-info-2dtopdown.outputs.commit_msg }}" --author="${{ steps.source-info-2dtopdown.outputs.author_name }} <${{ steps.source-info-2dtopdown.outputs.author_email }}>" --date="${{ steps.source-info-2dtopdown.outputs.commit_date }}"
         
         # Push to main branch (create if doesn't exist)
         git push origin HEAD:main || git push origin HEAD:master

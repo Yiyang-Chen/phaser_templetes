@@ -9,6 +9,7 @@ This repository automatically syncs individual templates to separate repositorie
 Create these repositories on GitHub:
 - `Yiyang-Chen/2Dplatformer-template`
 - `Yiyang-Chen/BaseTemplete-template`
+- `Yiyang-Chen/2DTopDown_template`
 
 ### 2. Configure GitHub Secrets
 
@@ -28,6 +29,10 @@ Update the agent configuration to use the individual template repositories:
 If the user wants to develop a 2D tilemap game, use: https://github.com/Yiyang-Chen/2Dplatformer-template.git
 </2d_tilemap_game_development>
 
+<2d_topdown_game_development>
+If the user wants to develop a 2D top-down game, use: https://github.com/Yiyang-Chen/2DTopDown_template.git
+</2d_topdown_game_development>
+
 <general_game_development>
 If there is no recorded game type, use: https://github.com/Yiyang-Chen/BaseTemplete-template.git
 </general_game_development>
@@ -35,7 +40,7 @@ If there is no recorded game type, use: https://github.com/Yiyang-Chen/BaseTempl
 
 ## How It Works
 
-1. When you push changes to `2Dplatformer/` or `BaseTemplete/` directories
+1. When you push changes to `2Dplatformer/`, `BaseTemplete/` or `2DTopDown/` directories
 2. GitHub Actions automatically triggers
 3. The workflow syncs the changes to the corresponding template repository
 4. Agents can then clone the individual template repositories directly
