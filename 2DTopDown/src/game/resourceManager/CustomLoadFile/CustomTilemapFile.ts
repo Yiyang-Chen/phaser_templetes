@@ -1,4 +1,5 @@
 import { GlobalResourceManager } from '../GlobalResourceManager';
+import { addCacheBuster } from '../utils/CacheBusting';
 
 /**
  * 自定义Tilemap文件类型
@@ -12,7 +13,7 @@ export class CustomTilemapFile extends Phaser.Loader.File {
             extension: 'json',
             responseType: 'text' as XMLHttpRequestResponseType,
             key: key,
-            url: url
+            url: addCacheBuster(url)  // 添加时间戳破坏缓存
         };
 
         super(loader, fileConfig);
